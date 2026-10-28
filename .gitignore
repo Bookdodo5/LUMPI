@@ -1,0 +1,14 @@
+build/
+__pycache__/
+*.pyc
+.pio/
+compile_commands.json
+.env
+.venv/
+config/private*
+!config/private.example.h
+*.wav
+!data/audio/*.wav
+!data/word_audio/**/*.wav
+*.partial
+*.sqlite*

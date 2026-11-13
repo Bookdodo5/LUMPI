@@ -2,6 +2,62 @@
 
 Build guide: https://lumpi-build-guide.vercel.app
 
+## What we are building
+
+LUMPI is a reading-buddy system for a classroom. Each child has a small doll on
+their desk. The doll listens while the child reads, helps them practise a wrong
+word and warns them when the room is too noisy. The teacher has one room hub,
+called the **nest**, that manages all the dolls.
+
+The main reading flow is:
+
+`Child reads to doll → Nest receives audio → Laptop AI checks words → Nest decides → Doll responds`
+
+The nest also saves the result for the dashboard and can alert the teacher in
+Discord when a child is stuck.
+
+### The parts
+
+| Part | What it does |
+| --- | --- |
+| Doll 1 and Doll 2 | Detect a child and book, select a page, record reading, move, speak and show status |
+| Nest | Keep each doll's session separate, measure room light and teacher distance, decide the response and queue cloud events |
+| Laptop | Run the pronunciation AI, store book text and word clips, serve the dashboard and send Discord alerts |
+| Cloud | Keep reading and room-event history when the Internet is available |
+
+### Reading mode
+
+1. The pressure mat detects a book and RFID identifies it.
+2. The child chooses a page and presses Record.
+3. The doll records and sends numbered audio pieces to the nest. Missing pieces
+   are sent again.
+4. The nest sends the complete recording to the laptop AI.
+5. The AI scores the words. The nest combines that result with room light and
+   the child's recent attempts.
+6. The doll responds: praise, practise a word, turn on the light or ask the
+   teacher for help.
+
+Both dolls can read at the same time. Every message includes its doll number,
+so their audio, results and feedback do not get mixed together.
+
+### Quiet Study mode
+
+The doll reports the room's sound level to the nest. If it stays loud while no
+child is reading, the nest tells the doll to ask for quiet. A cooldown prevents
+the warning from repeating constantly.
+
+### Safety and reliability
+
+- Every doll has a STOP button that cuts servo power, stops sound and cancels
+  the current reading.
+- Servo power turns off after at most 3 seconds.
+- Each audio piece is numbered and acknowledged so a lost message can be retried.
+- Dolls, nest and laptop work over local Wi-Fi. Reading still works without the
+  Internet; cloud events wait until the connection returns.
+
+Detailed explanation: [How LUMPI works](https://lumpi-build-guide.vercel.app/guide/overview)
+and [one reading end to end](https://lumpi-build-guide.vercel.app/fundamentals/inner-workings).
+
 For now: testing the parts. Code is in `src/bench`.
 Each cpp starts with the wiring and what you should see.
 

@@ -10,7 +10,7 @@
 // Addresses on that Wi-Fi. Give the gateway and the laptop fixed addresses
 // in your router ("DHCP reservation"); the p3_wifi bench test prints them.
 #define LUMPI_GATEWAY_URL "http://192.168.1.50"
-#define LUMPI_ADAPTER_URL "http://192.168.1.60:8080" // the laptop running live_adapter.py
+#define LUMPI_ADAPTER_URL "http://192.168.1.60:8080" // laptop server
 
 // One shared password for every local request (station <-> gateway <-> laptop).
 // Make a random one:  python -c "import secrets; print(secrets.token_hex(16))"

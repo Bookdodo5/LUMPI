@@ -1,43 +1,67 @@
 # LUMPI
 
-A reading buddy puppet: two reading stations, one puppet gateway, a laptop speech AI and a cloud log.
-CEDT Embedded Systems Final Project 2026.
+Build guide: https://lumpi-build-guide.vercel.app
 
-**Build guide (read this first):** https://lumpi-build-guide.vercel.app
+For now: testing the parts. Code is in `src/bench`.
+Each cpp starts with the wiring and what you should see.
 
-This repository starts empty on purpose. Every file is written by the team, following the guide.
+Open this folder in VS Code with PlatformIO installed.
+In PlatformIO > Project Tasks, pick the test name, then click Upload.
+Then click Monitor. Serial speed is 115200.
 
-## First steps (everyone)
+Start with `hello` and just the ESP32 plugged into USB.
+Then follow the groups below, one part at a time. Numbers give the order
+within each group. Run each I2C scan before its OLED or other I2C devices.
+The sensor group uses doll wiring; the gateway group uses nest wiring.
+The puppet group also uses doll wiring; test its STOP button first.
+Opening a cpp does not select it for upload. Pick its environment in Project Tasks.
+For the bottom Upload arrow, set `default_envs` in `platformio.ini` to your test name.
 
-1. Clone the repository and open the folder in VS Code with the PlatformIO extension.
-2. Copy `config/private.example.h` to `config/private.h` and fill it in. Integration sends the real values privately. **Never commit `private.h`.**
-3. Do the [Foundation](https://lumpi-build-guide.vercel.app/foundation/project) together: it creates `platformio.ini`, `partitions.csv`, the settings and the shared drivers.
-4. Then follow your own track.
+For servo commands, use the monitor with Enter-to-send:
 
-## Folders and owners
+```powershell
+pio device monitor -b 115200 --echo --eol LF --filter send_on_enter
+```
 
-| Folder | What goes in it | Owner | Guide |
-| --- | --- | --- | --- |
-| `platformio.ini`, `partitions.csv` | Build settings for every board | Everyone (Foundation) | [Project files](https://lumpi-build-guide.vercel.app/foundation/project) |
-| `config/` | `settings.h` (pins, timings) and your private `private.h` | Everyone / Integration | [Settings](https://lumpi-build-guide.vercel.app/foundation/settings) |
-| `src/drivers/` | Shared helpers and sensor drivers | Everyone (Foundation) | [Sensor drivers](https://lumpi-build-guide.vercel.app/foundation/sensors) |
-| `src/common/` | Code shared by stations and gateway (the referee) | Gateway & Cloud | [The referee](https://lumpi-build-guide.vercel.app/gateway/rules) |
-| `src/bench/` | One small test program per part | Station, Gateway | [Station track](https://lumpi-build-guide.vercel.app/station/), [Gateway track](https://lumpi-build-guide.vercel.app/gateway/) |
-| `src/app/station/` | Station firmware | Sensor Node | [Station firmware](https://lumpi-build-guide.vercel.app/station/firmware) |
-| `src/app/gateway/` | Gateway firmware | Gateway & Cloud | [Plan and startup](https://lumpi-build-guide.vercel.app/gateway/plan) |
-| `src/test/` | Rules tests run on the laptop | Test Lead | [Rules tests](https://lumpi-build-guide.vercel.app/testing/rules-tests) |
-| `adapter/` | Laptop server, reading AI, books, Discord, cloud worker | Integration, Dashboard | [Integration track](https://lumpi-build-guide.vercel.app/integration/) |
-| `dashboard/` | The live dashboard page | Dashboard | [Laptop server and dashboard](https://lumpi-build-guide.vercel.app/dashboard/server) |
-| `tools/` | Helper scripts (IPA, audio checks, gateway watcher) | Integration | [Books, IPA and clips](https://lumpi-build-guide.vercel.app/integration/books) |
-| `tests/` | Python tests for the laptop code | Test Lead | [Test plan](https://lumpi-build-guide.vercel.app/testing/test-plan) |
-| `data/audio/` | The puppet's 4 voice clips (included) | Dashboard | [Commands and downloads](https://lumpi-build-guide.vercel.app/reference/commands) |
-| `data/word_audio/` | One clip per book word | Dashboard | [Books, IPA and clips](https://lumpi-build-guide.vercel.app/integration/books) |
+Use ESP32-WROOM-32 boards. Disconnect power before changing wires.
+Doll and gateway pin maps differ. Don't wire both roles onto the same board.
+No Wi-Fi keys needed for these tests. Never commit `config/private.h` later.
 
-The empty `.gitkeep` files only make Git keep the empty folders. Delete one once its folder has real files.
+Laptop server and AI code will go in `laptop/`.
 
-## Working together
+Notes: [test log](docs/test-log.md).
 
-- `git pull` before you start. Commit small, and push when a test passes.
-- Commit your own files under your own name: the course checks each member's history.
-- Announce in the team chat before editing shared files (`settings.h`, `platformio.ini`, `gateway.h`).
-- Secrets live only in `config/private.h`, which `.gitignore` blocks. The Discord webhook stays in an environment variable.
+Bench files are grouped by the build guide tracks. `sensor` means the doll
+Sensor Node track, which includes its buttons and screen. Upload environment
+names are unchanged; use the environment shown beside each filename.
+
+[Board setup](https://lumpi-build-guide.vercel.app/foundation/hello):
+
+- `setup_1_esp32_serial.cpp` → `hello`
+
+[Sensor Node — doll](https://lumpi-build-guide.vercel.app/station/):
+
+- `sensor_1_doll_buttons.cpp` → `buttons`
+- `sensor_2_fsr402_pressure.cpp` → `pressure`
+- `sensor_3_rc522_rfid.cpp` → `rfid`
+- `sensor_4_inmp441_microphone.cpp` → `microphone`
+- `sensor_5_hcsr501_motion.cpp` → `motion`
+- `sensor_6_doll_i2c_scan.cpp` → `doll_i2c`
+- `sensor_7_doll_ssd1306_oled.cpp` → `doll_oled`
+
+[Gateway — nest](https://lumpi-build-guide.vercel.app/gateway/):
+
+- `gateway_1_i2c_scan.cpp` → `gateway_i2c`
+- `gateway_2_bh1750_light.cpp` → `light`
+- `gateway_3_hcsr04_distance.cpp` → `distance`
+- `gateway_4_ssd1306_oled.cpp` → `gateway_oled`
+- `gateway_5_ack_button.cpp` → `ack_button`
+
+[Puppet — doll outputs](https://lumpi-build-guide.vercel.app/station/puppet):
+
+- `puppet_1_servos_power_stop.cpp` → `servos`
+- `puppet_2_max98357a_speaker.cpp` → `speaker`
+
+Optional spare (outside the main build):
+
+- `optional_1_bme280_environment.cpp` → `bme280`

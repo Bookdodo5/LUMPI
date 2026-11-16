@@ -16,13 +16,15 @@ In progress. The raw room event is built and tested locally. No real broker has 
 - Used JSON `null` instead of invalid JSON when the light reading fails.
 - Rejected cloud configuration unless it uses `mqtts://` and has a CA certificate.
 - Tested all event logic on the laptop without an ESP32.
+- Added the isolated `p3_cloud` ESP32 upload program.
+- Added Wi-Fi, NTP, TLS MQTT, QoS 1 publishing and automatic reconnect logs.
+- Tested the disconnected and reconnected scheduling decisions on the laptop.
+- Compiled the complete `p3_cloud` ESP32 firmware successfully.
 
 ## Next work
 
-1. Add the isolated ESP32 upload program and compile it.
-2. Add a laptop test for disconnect and reconnect behavior.
-3. Add local storage and retrieval proof for received events.
-4. Later, run the real broker test with private credentials and save the before/after logs.
+1. Add local storage and retrieval proof for received events.
+2. Later, run the real broker test with private credentials and save the before/after logs.
 
 ## Evidence
 
@@ -32,6 +34,9 @@ In progress. The raw room event is built and tested locally. No real broker has 
 | Failed light read becomes `null` | Passed locally |
 | Plain `mqtt://` rejected | Passed locally |
 | Missing CA rejected | Passed locally |
+| Disconnect blocks upload | Passed locally |
+| Reconnect resumes upload scheduling | Passed locally |
+| `p3_cloud` ESP32 build | Passed |
 | Credentials absent from Git | Passed |
 | Real MQTT upload | Pending |
 | Real reconnect | Pending |

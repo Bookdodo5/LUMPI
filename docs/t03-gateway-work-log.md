@@ -18,14 +18,16 @@ Code compiles and local logic tests pass. Hardware has not been tested yet.
 - Compiled `p2_i2c_scan` and `p2_light` successfully.
 - Added a local test for I2C address labels, byte joining and lux conversion.
 - Ran the local test successfully without an ESP32 or sensor.
+- Added `p2_distance` with the guide's 10 microsecond trigger and 30 ms timeout.
+- Added a local test for no-echo handling and distance conversion from 20–400 cm.
 
 ## Next work
 
 1. Wire the BH1750 and OLED to GPIO 21 and GPIO 22.
 2. Run `p2_i2c_scan` and confirm `0x23` and `0x3C`.
 3. Run `p2_light` and record covered, room and flashlight values.
-4. Test the HC-SR04 distance sensor.
-5. Build and test node packet reception.
+4. Build and test node packet reception.
+5. Later, test the HC-SR04 on real hardware and calibrate the empty chair.
 
 ## Hardware results
 
@@ -33,7 +35,8 @@ Code compiles and local logic tests pass. Hardware has not been tested yet.
 | --- | --- | --- | --- |
 | I2C scan | `0x23` and `0x3C` | Not tested | Pending |
 | Light sensor | Lux changes with light | Not tested | Pending |
-| Distance sensor | Distance changes in cm | Not tested | Pending |
+| Distance sensor software | Local conversion tests pass | Passed locally | Pass |
+| Distance sensor hardware | Distance changes in cm | Not tested | Pending |
 | Doll 1 packet | Identified as node 1 | Not built | Pending |
 | Doll 2 packet | Identified as node 2 | Not built | Pending |
 | Broken packet | Rejected safely | Not built | Pending |

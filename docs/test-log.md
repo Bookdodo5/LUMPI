@@ -19,3 +19,19 @@
 - Fixed stray text in the pressure build filter.
 
 - Replaced global numbers with setup, sensor, gateway, puppet and optional groups, following the build guide tracks. Numbers now restart within each group.
+
+---
+
+setup_1 SUCCESS
+gateway_1 SUCCESS
+gateway_2 SUCCESS
+gateway_3 SUCCESS
+gateway_4 SUCCESS
+gateway_5 SUCCESS
+sensor_1 SUCCESS
+sensor_2 SUCCESS
+sensor_3 SUCCESS
+sensor_4 NO
+sensor_5 SUCCESS
+sensor_6 SUCCESS
+sensor_7 SUCCESS

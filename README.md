@@ -104,6 +104,7 @@ names are unchanged; use the environment shown beside each filename.
 - `sensor_5_hcsr501_motion.cpp` → `motion`
 - `sensor_6_doll_i2c_scan.cpp` → `doll_i2c`
 - `sensor_7_doll_ssd1306_oled.cpp` → `doll_oled`
+- `sensor_7_doll_sh1106_oled.cpp` → `doll_oled_sh1106` (alternative display)
 
 [Gateway — nest](https://lumpi-build-guide.vercel.app/gateway/):
 
@@ -111,6 +112,7 @@ names are unchanged; use the environment shown beside each filename.
 - `gateway_2_bh1750_light.cpp` → `light`
 - `gateway_3_hcsr04_distance.cpp` → `distance`
 - `gateway_4_ssd1306_oled.cpp` → `gateway_oled`
+- `gateway_4_sh1106_oled.cpp` → `gateway_oled_sh1106` (alternative display)
 - `gateway_5_ack_button.cpp` → `ack_button`
 
 [Puppet — doll outputs](https://lumpi-build-guide.vercel.app/station/puppet):
@@ -121,6 +123,10 @@ names are unchanged; use the environment shown beside each filename.
 Optional spare (outside the main build):
 
 - `optional_1_bme280_environment.cpp` → `bme280`
+
+For SH1106 128x64 OLEDs, choose the matching `_oled_sh1106` environment.
+Gateway: SDA 21, SCL 22. Doll: SDA 32, SCL 33. Both use 3.3V, GND and
+address 0x3C. Run the matching I2C scan first to confirm the address.
 
 ---
 

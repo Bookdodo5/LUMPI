@@ -4,10 +4,10 @@
 // Wait 60 seconds after boot. Move in front of it, then stay still.
 // Expect "Motion" when HIGH and "No motion" when LOW.
 // The module holds HIGH for its delay setting; use its lowest delay to test.
-// Guide: https://lumpi-build-guide.vercel.app/station/pir
+// Guide: https://lumpi-build-guide.vercel.app/station/pir1
 #include <Arduino.h>
 
-const int motionPin = 15;
+const int motionPin = 33;
 
 void setup() {
     Serial.begin(115200);

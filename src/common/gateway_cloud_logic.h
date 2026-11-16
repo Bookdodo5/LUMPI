@@ -9,9 +9,31 @@
 namespace gateway_cloud_logic {
 
 constexpr uint32_t room_event_interval_ms = 10000;
+constexpr uint64_t valid_clock_after = 1700000000;
 
 inline bool secure_config(std::string_view uri, std::string_view ca) {
     return uri.rfind("mqtts://", 0) == 0 && !ca.empty();
+}
+
+inline bool ready_to_connect(
+    bool wifi_connected,
+    uint64_t unix_time,
+    bool client_started,
+    bool config_is_secure
+) {
+    return wifi_connected
+        && unix_time > valid_clock_after
+        && !client_started
+        && config_is_secure;
+}
+
+inline bool room_event_due(
+    bool mqtt_connected,
+    uint32_t now_ms,
+    uint32_t last_event_ms
+) {
+    return mqtt_connected
+        && static_cast<uint32_t>(now_ms - last_event_ms) >= room_event_interval_ms;
 }
 
 inline bool format_room_event(

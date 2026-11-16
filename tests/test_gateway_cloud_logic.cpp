@@ -14,6 +14,17 @@ int main() {
     assert(!secure_config("mqtt://broker.example:1883", "CA certificate"));
     assert(!secure_config("mqtts://broker.example:8883", ""));
 
+    assert(!ready_to_connect(false, 1700000001, false, true));
+    assert(!ready_to_connect(true, 1700000000, false, true));
+    assert(!ready_to_connect(true, 1700000001, true, true));
+    assert(!ready_to_connect(true, 1700000001, false, false));
+    assert(ready_to_connect(true, 1700000001, false, true));
+
+    assert(!room_event_due(false, 20000, 0));
+    assert(!room_event_due(true, 9999, 0));
+    assert(room_event_due(true, 10000, 0));
+    assert(room_event_due(true, 5000, 0xFFFFE890));
+
     char event[128];
 
     assert(format_room_event(event, sizeof(event), 1700000001, 230.5f));

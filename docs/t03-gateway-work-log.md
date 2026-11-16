@@ -5,7 +5,7 @@ Task: Gateway sensors and node packet reception
 
 ## Current status
 
-Code compiles. Hardware has not been tested yet.
+Code compiles and local logic tests pass. Hardware has not been tested yet.
 
 ## Work completed
 
@@ -16,6 +16,8 @@ Code compiles. Hardware has not been tested yet.
 - Added the BH1750 functions in `src/drivers/real_io.cpp`.
 - Added both environments to `platformio.ini`.
 - Compiled `p2_i2c_scan` and `p2_light` successfully.
+- Added a local test for I2C address labels, byte joining and lux conversion.
+- Ran the local test successfully without an ESP32 or sensor.
 
 ## Next work
 

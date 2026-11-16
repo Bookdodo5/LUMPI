@@ -5,7 +5,7 @@ Task: Cloud raw sensor upload and reconnect test
 
 ## Current status
 
-In progress. The raw room event is built and tested locally. No real broker has been contacted yet.
+Software complete. The real broker and ESP32 reconnect test is still pending.
 
 ## Work completed
 

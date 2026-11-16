@@ -171,10 +171,10 @@ and blockers.
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | T01 | Checkpoint | Confirm status, assign tasks and lock interfaces | 🟥 Khanaphat | 12–13 Nov | High | Not started | ❌ | — | Shared plan, assigned work, agreed interfaces and recorded blockers |
 | T02 | Checkpoint | Station sensors and button bench tests | 🟩 Thianrawit | 12–15 Nov | High | Not started | ❌ | T01 | Repeatable PIR, microphone, pressure, RFID and button results; pin map, wiring photo and logs |
-| T03 | Checkpoint | Gateway sensors and node packet reception | 🟨 Tanakit | 12–15 Nov | High | Not started | ❌ | T01 | Light and distance readings, distinct node IDs, rejected bad packets, wiring and logs |
+| T03 | Checkpoint | Gateway sensors and node packet reception | 🟨 Tanakit | 12–15 Nov | High | In progress | ❌ | T01 | Software tests pass; real sensor, wiring and packet logs are pending |
 | T04 | Checkpoint | Define messages, session state and audio route | 🟦 Tapanan | 12–14 Nov | High | Not started | ❌ | T01 | Versioned schema, example packets and one telemetry/feedback round trip |
 | T05 | Checkpoint | Dashboard live sensor and node status | 🟧 Ratchaphon | 13–17 Nov | High | Not started | ❌ | T04 | Two separate node views, live updates, stale-data indication, screenshot and code |
-| T06 | Checkpoint | Cloud raw sensor upload and reconnect test | 🟨 Tanakit | 15–17 Nov | High | Not started | ❌ | T03 | Retrievable timestamped readings, reconnect logs and no credentials in Git |
+| T06 | Checkpoint | Cloud raw sensor upload and reconnect test | 🟨 Tanakit | 15–17 Nov | High | In progress | ❌ | T03 | Software tests pass; real broker upload and reconnect logs are pending |
 | T07 | Checkpoint | Integrate node → gateway → cloud → dashboard | 🟦 Tapanan | 16–18 Nov | **Critical** | Not started | ❌ | T02–T06 | Matching node ID, value and timestamp across the complete physical path |
 | T08 | Checkpoint | Record, review and submit checkpoint video | 🟥 Khanaphat | 18–20 Nov | **Critical** | Not started | ❌ | T07 | Real end-to-end video of 2 minutes or less and submission receipt |
 | T09 | Core features | Quiet Study: noise, PIR and servo warning | 🟩 Thianrawit | 16–23 Nov | High | Not started | ❌ | T02 | Idle invitation, user start, quiet/noisy tests, cooldown and safe stop |

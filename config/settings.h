@@ -1,5 +1,33 @@
 #pragma once
 
+#if __has_include("private.h")
+#include "private.h"
+#endif
+
+#ifndef LUMPI_WIFI_SSID
+#define LUMPI_WIFI_SSID ""
+#endif
+
+#ifndef LUMPI_WIFI_PASSWORD
+#define LUMPI_WIFI_PASSWORD ""
+#endif
+
+#ifndef LUMPI_MQTT_URI
+#define LUMPI_MQTT_URI ""
+#endif
+
+#ifndef LUMPI_MQTT_USER
+#define LUMPI_MQTT_USER ""
+#endif
+
+#ifndef LUMPI_MQTT_PASSWORD
+#define LUMPI_MQTT_PASSWORD ""
+#endif
+
+#ifndef LUMPI_MQTT_CA
+#define LUMPI_MQTT_CA ""
+#endif
+
 // Shared gateway pin map from the LUMPI build guide.
 // Gateway code uses only gateway_pins. Doll pins belong in doll_pins later.
 namespace gateway_pins {

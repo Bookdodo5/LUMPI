@@ -12,3 +12,6 @@ config/private*
 !data/word_audio/**/*.wav
 *.partial
 *.sqlite*
+
+.omc
+docs/dashboard/

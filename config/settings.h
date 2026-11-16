@@ -28,6 +28,14 @@
 #define LUMPI_MQTT_CA ""
 #endif
 
+#ifndef LUMPI_ADAPTER_URL
+#define LUMPI_ADAPTER_URL ""
+#endif
+
+#ifndef LUMPI_LAN_KEY
+#define LUMPI_LAN_KEY ""
+#endif
+
 // Shared gateway pin map from the LUMPI build guide.
 // Gateway code uses only gateway_pins. Doll pins belong in doll_pins later.
 namespace gateway_pins {

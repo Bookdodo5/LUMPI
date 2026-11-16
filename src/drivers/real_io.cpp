@@ -1,11 +1,11 @@
 #include <Arduino.h>
 #include <Wire.h>
 
+#include "gateway_sensor_logic.h"
 #include "real_io.h"
 
 namespace {
 
-constexpr uint8_t light_address = 0x23;
 constexpr uint8_t continuous_high_resolution = 0x10;
 
 }
@@ -13,13 +13,13 @@ constexpr uint8_t continuous_high_resolution = 0x10;
 namespace hardware {
 
 bool light_begin() {
-    Wire.beginTransmission(light_address);
+    Wire.beginTransmission(gateway_sensor_logic::bh1750_address);
     Wire.write(continuous_high_resolution);
     return Wire.endTransmission() == 0;
 }
 
 bool light_read(float& lux) {
-    int received = Wire.requestFrom(light_address, uint8_t(2));
+    int received = Wire.requestFrom(gateway_sensor_logic::bh1750_address, uint8_t(2));
     if (received != 2) {
         return false;
     }
@@ -30,8 +30,8 @@ bool light_read(float& lux) {
         return false;
     }
 
-    int raw = (highByte << 8) | lowByte;
-    lux = raw / 1.2f;
+    uint16_t raw = gateway_sensor_logic::join_bytes(highByte, lowByte);
+    lux = gateway_sensor_logic::bh1750_raw_to_lux(raw);
     return true;
 }
 

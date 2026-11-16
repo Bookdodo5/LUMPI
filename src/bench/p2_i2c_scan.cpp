@@ -7,20 +7,8 @@
 #include <Arduino.h>
 #include <Wire.h>
 
+#include "gateway_sensor_logic.h"
 #include "settings.h"
-
-const char* describe(int address) {
-    if (address == 0x23) {
-        return "BH1750 light sensor   (OK)";
-    }
-    if (address == 0x5C) {
-        return "BH1750 ADDR HIGH      (WRONG: tie ADDR to GND)";
-    }
-    if (address == 0x3C) {
-        return "OLED screen           (OK)";
-    }
-    return "unknown device";
-}
 
 void setup() {
     Serial.begin(115200);
@@ -36,7 +24,9 @@ void loop() {
     for (int address = 1; address <= 126; address++) {
         Wire.beginTransmission(address);
         if (Wire.endTransmission() == 0) {
-            Serial.printf("found 0x%02X  %s\n", address, describe(address));
+            Serial.printf("found 0x%02X  %s\n",
+                          address,
+                          gateway_sensor_logic::i2c_description(address));
             found++;
         }
     }

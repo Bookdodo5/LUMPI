@@ -78,6 +78,40 @@ int main() {
         100.0f
     ));
 
+    assert(format_recording_start_event(
+        event,
+        sizeof(event),
+        "lumpi_1a2b3c4d",
+        482913,
+        9,
+        1700000010,
+        2,
+        4,
+        "04A1B2C3",
+        3,
+        3100
+    ));
+    assert(std::strcmp(
+        event,
+        "{\"id\":\"lumpi_1a2b3c4d/482913/9\",\"body\":{\"kind\":\"recording_start\","
+        "\"recorded_at\":1700000010,\"node\":2,\"attempt\":4,\"book\":\"04A1B2C3\","
+        "\"passage\":3,\"fsr\":3100}}"
+    ) == 0);
+
+    assert(!format_recording_start_event(
+        event,
+        sizeof(event),
+        "lumpi_1a2b3c4d",
+        1,
+        1,
+        1700000010,
+        4,
+        1,
+        "04A1B2C3",
+        1,
+        3100
+    ));
+
     std::cout << "PASS: gateway cloud event logic\n";
     return 0;
 }

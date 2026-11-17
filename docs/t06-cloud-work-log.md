@@ -27,6 +27,8 @@ Software complete. The real broker and ESP32 reconnect test is still pending.
 - Added a cross-language test that sends the actual C++ formatter output through the Python worker into SQLite.
 - Changed the cloud worker to retry even when its first broker connection fails.
 - Added explicit disconnect/retry logs and bounded reconnect delay.
+- Added the guide-defined `recording_start` cloud event with node, session, book and raw FSR data.
+- Passed both gateway room light and station FSR events through the C++ to SQLite contract test.
 
 ## Next work
 
@@ -47,6 +49,7 @@ Software complete. The real broker and ESP32 reconnect test is still pending.
 | Duplicate event handling | Passed locally |
 | Worker reconnect subscription | Passed locally |
 | Actual C++ payload accepted by worker | Passed locally |
+| Timestamped station FSR and session context | Passed locally |
 | Worker retries when broker starts offline | Passed locally |
 | Credentials absent from Git | Passed |
 | Real MQTT upload | Pending |

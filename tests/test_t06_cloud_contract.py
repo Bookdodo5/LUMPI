@@ -32,29 +32,39 @@ class T06CloudContractTest(unittest.TestCase):
                 check=True,
             )
 
-            payload = subprocess.check_output([str(executable)], text=True)
-            event = json.loads(payload)
+            output = subprocess.check_output([str(executable)], text=True)
+            payloads = output.splitlines()
+            self.assertEqual(len(payloads), 2)
 
-            saved_id = commit_event(
-                database_path,
-                "lumpi/lumpi_1a2b3c4d/events",
-                payload,
-            )
-
-            self.assertEqual(saved_id, event["id"])
+            for payload in payloads:
+                event = json.loads(payload)
+                saved_id = commit_event(
+                    database_path,
+                    "lumpi/lumpi_1a2b3c4d/events",
+                    payload,
+                )
+                self.assertEqual(saved_id, event["id"])
 
             with sqlite3.connect(database_path) as database:
-                saved = database.execute(
-                    "select id, body from events where id=?",
-                    (saved_id,),
-                ).fetchone()
+                saved_rows = database.execute(
+                    "select id, body from events order by id",
+                ).fetchall()
 
-            self.assertIsNotNone(saved)
-            self.assertEqual(saved[0], "lumpi_1a2b3c4d/482913/7")
-            saved_body = json.loads(saved[1])
-            self.assertEqual(saved_body["kind"], "room")
-            self.assertEqual(saved_body["recorded_at"], 1700000001)
-            self.assertEqual(saved_body["lux"], 230.5)
+            self.assertEqual(len(saved_rows), 2)
+            saved = {identity: json.loads(body) for identity, body in saved_rows}
+
+            room = saved["lumpi_1a2b3c4d/482913/7"]
+            self.assertEqual(room["kind"], "room")
+            self.assertEqual(room["recorded_at"], 1700000001)
+            self.assertEqual(room["lux"], 230.5)
+
+            station = saved["lumpi_1a2b3c4d/482913/8"]
+            self.assertEqual(station["kind"], "recording_start")
+            self.assertEqual(station["node"], 2)
+            self.assertEqual(station["attempt"], 4)
+            self.assertEqual(station["book"], "04A1B2C3")
+            self.assertEqual(station["passage"], 3)
+            self.assertEqual(station["fsr"], 3100)
 
 
 if __name__ == "__main__":

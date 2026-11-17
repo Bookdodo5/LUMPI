@@ -1,13 +1,13 @@
-// Gateway ACK button bench wiring: GPIO22 -> button -> GND.
-// Disconnect the gateway OLED: GPIO22 is also its SCL pin.
-// The build guide uses GPIO13; change buttonPin and wiring together to use it.
+// Gateway ACK button wiring: GPIO23 -> button -> GND.
+// GPIO23 sits next to GPIO22, on the same side of the board as the other gateway pins.
+// It does not share a pin with the OLED, so the OLED can stay connected.
 // Upload environment: ack_button. Monitor: 115200.
 // Expect raw edges, one debounced press/release, and status every second.
 // HIGH = released, LOW = pressed. Holding must not increase the press count.
 // Guide: https://lumpi-build-guide.vercel.app/gateway/screen
 #include <Arduino.h>
 
-const int buttonPin = 22;
+const int buttonPin = 23;
 bool lastReading = HIGH;
 bool stableReading = HIGH;
 unsigned long changedAt = 0;

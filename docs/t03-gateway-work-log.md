@@ -36,10 +36,10 @@ Code compiles and local logic tests pass. Hardware has not been tested yet.
 
 | Test | Expected | Actual result | Result |
 | --- | --- | --- | --- |
-| I2C scan | `0x23` and `0x3C` | Not tested | Pending |
-| Light sensor | Lux changes with light | Not tested | Pending |
+| I2C scan | `0x23` and `0x3C` | 2 devices found (addresses not recorded) | Partial |
+| Light sensor | Lux changes with light | Error 263 timeouts, a few 0.0 lux reads; after reset "BH1750 not found" | Fail, wiring suspected |
 | Distance sensor software | Local conversion tests pass | Passed locally | Pass |
-| Distance sensor hardware | Distance changes in cm | Not tested | Pending |
+| Distance sensor hardware | Distance changes in cm | Works (confirmed 2026-11-16) | Pass |
 | Doll 1 packet logic | Identified as node 1 | Passed locally | Pass |
 | Doll 2 packet logic | Identified as node 2 | Passed locally | Pass |
 | Simulated node 3 logic | Identified as node 3 | Passed locally | Pass |
@@ -48,7 +48,7 @@ Code compiles and local logic tests pass. Hardware has not been tested yet.
 
 ## Problems and fixes
 
-- None recorded yet.
+- BH1750 2026-11-16: intermittent I2C timeouts, then not found at boot. Same code reads when the link holds, so a loose or unsoldered connection is suspected. Recheck with gateway_i2c, OLED unplugged. USB also dropped a few times (POWERON_RESET).
 
 ## Evidence
 

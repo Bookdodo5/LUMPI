@@ -35,7 +35,7 @@ constexpr int sda = 21;
 constexpr int scl = 22;
 constexpr int trig = 18;
 constexpr int echo = 19;
-constexpr int ack = 13;
+constexpr int ack = 23;
 }
 
 namespace room {

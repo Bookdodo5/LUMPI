@@ -41,6 +41,18 @@ HISTORY_MINUTES = [5, 15, 60]
 
 # Same value as gateway_settings dark_lux in config/settings.h.
 DARK_LUX = 100.0
+# Sensor error, +/- lux around DARK_LUX. The v2 chart shades this band.
+DARK_LUX_ERROR = 20.0
+# v3 gauges. Green = works, amber = inside the +/- margin, red = problem.
+# Light: too bright above BRIGHT_LUX (+/- DARK_LUX_ERROR).
+BRIGHT_LUX = 1000.0
+# Teacher distance: near (green) below TEACHER_NEAR_CM, far (red) above it.
+# Margin is the same as room::teacher_margin_cm in config/settings.h.
+TEACHER_NEAR_CM = 200.0
+TEACHER_MARGIN_CM = 20.0
+# Doll pressure (FSR, 0-4095): book on the mat above FSR_ACTIVE (+/- FSR_MARGIN).
+FSR_ACTIVE = 1500
+FSR_MARGIN = 300
 
 # 0 = nest, 1 and 2 = dolls. The gateway parser allows a third doll.
 SHOWN_NODES = [0, 1, 2]
@@ -112,7 +124,8 @@ HINTS = [
     ("bad length", "Content-Length is missing, or the body is larger than 2048 bytes."),
 ]
 
-PAGE_DIR = Path(__file__).resolve().parent.parent / "dashboard"
+# Serve dashboard/v3 by default. LUMPI_DASHBOARD=v1 or v2 serves an older page.
+PAGE_DIR = Path(__file__).resolve().parent.parent / "dashboard" / os.environ.get("LUMPI_DASHBOARD", "v3")
 PAGE_FILES = {
     "/": ("index.html", "text/html; charset=utf-8"),
     "/style.css": ("style.css", "text/css; charset=utf-8"),
@@ -335,6 +348,12 @@ def history_view(now, minutes):
         "now": now,
         "minutes": minutes,
         "dark_lux": DARK_LUX,
+        "dark_lux_error": DARK_LUX_ERROR,
+        "bright_lux": BRIGHT_LUX,
+        "teacher_near_cm": TEACHER_NEAR_CM,
+        "teacher_margin_cm": TEACHER_MARGIN_CM,
+        "fsr_active": FSR_ACTIVE,
+        "fsr_margin": FSR_MARGIN,
         "stale_after_s": STALE_AFTER_S,
         "nodes": nodes,
     }

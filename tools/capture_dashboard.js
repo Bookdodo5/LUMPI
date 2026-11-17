@@ -1,17 +1,19 @@
-// Playwright screenshots of dashboard v2, one per case, from the real server.
+// Playwright screenshots of the dashboard, one per case, from the real server.
 // Based on tests/prompt-test/v1/01-attempt4-haiku-low/tools/capture.js.
 //
 // Needs: python3, node, and the playwright package (any install, via NODE_PATH).
 // Run from the repo root (port 8080 must be free, takes about 4 minutes):
-//   NODE_PATH=~/.npm/_npx/9833c18b2d85bc59/node_modules node tools/capture_dashboard_v2.js
-// Result: docs/dashboard-v2-screenshots/*.png and capture-report.json
+//   NODE_PATH=~/.npm/_npx/9833c18b2d85bc59/node_modules node tools/capture_dashboard.js
+// LUMPI_DASHBOARD=v2 captures an older page (default v3).
+// Result: docs/dashboard/dashboard-v3-screenshots/*.png and capture-report.json
 const { chromium } = require("playwright");
 const { spawn } = require("child_process");
 const fs = require("fs");
 const path = require("path");
 
 const ROOT = path.resolve(__dirname, "..");
-const OUT = path.join(ROOT, "docs/dashboard-v2-screenshots");
+const VERSION = process.env.LUMPI_DASHBOARD || "v3";
+const OUT = path.join(ROOT, `docs/dashboard/dashboard-${VERSION}-screenshots`);
 const URL = "http://localhost:8080";
 const KEY = "test";
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -21,7 +23,7 @@ const running = new Set();
 const report = [];
 
 function env() {
-  return { ...process.env, LUMPI_LAN_KEY: KEY, LUMPI_DASHBOARD: "v2" };
+  return { ...process.env, LUMPI_LAN_KEY: KEY, LUMPI_DASHBOARD: VERSION };
 }
 
 async function startServer() {

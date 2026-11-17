@@ -1,0 +1,127 @@
+- generic [active] [ref=f2e1]:
+  - banner [ref=f2e2]:
+    - heading "LUMPI Teacher Dashboard" [level=1] [ref=f2e3]
+    - generic [ref=f2e5]:
+      - group "Time range for the charts" [ref=f2e6]:
+        - generic [ref=f2e8] [cursor=pointer]:
+          - radio "5 min" [ref=f2e9]
+          - text: 5 min
+        - generic [ref=f2e10] [cursor=pointer]:
+          - radio "15 min" [checked] [ref=f2e11]
+          - text: 15 min
+        - generic [ref=f2e12] [cursor=pointer]:
+          - radio "1 h" [ref=f2e13]
+          - text: 1 h
+      - status [ref=f2e14]: Server connected
+  - main [ref=f2e15]:
+    - generic [ref=f2e16]:
+      - region "Nest" [ref=f2e17]:
+        - generic [ref=f2e18]:
+          - heading "Nest" [level=2] [ref=f2e19]
+          - generic [ref=f2e20]: UNKNOWN
+        - generic [ref=f2e21]:
+          - generic [ref=f2e22]:
+            - paragraph [ref=f2e23]: Light (lux)
+            - 'img "Light: no reading , no reading" [ref=f2e24]':
+              - generic [ref=f2e55]: "0"
+              - generic [ref=f2e56]: "1500"
+              - generic [ref=f2e57]: —
+              - generic [ref=f2e58]: no reading
+          - generic [ref=f2e59]:
+            - paragraph [ref=f2e60]: Teacher distance (cm)
+            - 'img "Teacher distance: no reading , no reading" [ref=f2e61]':
+              - generic [ref=f2e92]: "0"
+              - generic [ref=f2e93]: "400"
+              - generic [ref=f2e94]: —
+              - generic [ref=f2e95]: no reading
+        - paragraph [ref=f2e96]: No data yet
+      - region "Doll 1" [ref=f2e97]:
+        - generic [ref=f2e98]:
+          - heading "Doll 1" [level=2] [ref=f2e99]
+          - generic [ref=f2e100]: UNKNOWN
+        - paragraph
+        - generic [ref=f2e102]:
+          - paragraph [ref=f2e103]: Pressure (book on the mat)
+          - 'img "Pressure: no reading , no reading" [ref=f2e104]':
+            - generic [ref=f2e135]: "0"
+            - generic [ref=f2e136]: "4095"
+            - generic [ref=f2e137]: —
+            - generic [ref=f2e138]: no reading
+        - paragraph [ref=f2e139]: No data yet
+      - region "Doll 2" [ref=f2e140]:
+        - generic [ref=f2e141]:
+          - heading "Doll 2" [level=2] [ref=f2e142]
+          - generic [ref=f2e143]: UNKNOWN
+        - paragraph
+        - generic [ref=f2e145]:
+          - paragraph [ref=f2e146]: Pressure (book on the mat)
+          - 'img "Pressure: no reading , no reading" [ref=f2e147]':
+            - generic [ref=f2e178]: "0"
+            - generic [ref=f2e179]: "4095"
+            - generic [ref=f2e180]: —
+            - generic [ref=f2e181]: no reading
+        - paragraph [ref=f2e182]: No data yet
+    - generic [ref=f2e183]:
+      - figure "Nest light (lux) — shaded = dark limit ± sensor error" [ref=f2e184]:
+        - img "Light, no data in this time range" [ref=f2e187]:
+          - generic [ref=f2e188]: "0"
+          - generic [ref=f2e189]: "100"
+          - generic [ref=f2e190]: "200"
+          - generic [ref=f2e191]: 10:00 PM
+          - generic [ref=f2e192]: 10:05 PM
+          - generic [ref=f2e193]: 10:10 PM
+          - generic [ref=f2e195]: dark below 100 ± 20 lux
+      - figure "Teacher distance (cm)" [ref=f2e196]:
+        - img "Distance, no data in this time range" [ref=f2e199]:
+          - generic [ref=f2e200]: "0"
+          - generic [ref=f2e201]: "1"
+          - generic [ref=f2e202]: "1"
+          - generic [ref=f2e203]: 10:00 PM
+          - generic [ref=f2e204]: 10:05 PM
+          - generic [ref=f2e205]: 10:10 PM
+    - generic [ref=f2e206]:
+      - figure "Doll 1 activity and pressure" [ref=f2e207]:
+        - 'img "Activity over time. Now: no data. 0 changes." [ref=f2e210]'
+        - img "Pressure, no data in this time range" [ref=f2e212]:
+          - generic [ref=f2e213]: "0"
+          - generic [ref=f2e214]: "1"
+          - generic [ref=f2e215]: "1"
+          - generic [ref=f2e216]: 10:00 PM
+          - generic [ref=f2e217]: 10:05 PM
+          - generic [ref=f2e218]: 10:10 PM
+      - figure "Doll 2 activity and pressure" [ref=f2e219]:
+        - 'img "Activity over time. Now: no data. 0 changes." [ref=f2e222]'
+        - img "Pressure, no data in this time range" [ref=f2e224]:
+          - generic [ref=f2e225]: "0"
+          - generic [ref=f2e226]: "1"
+          - generic [ref=f2e227]: "1"
+          - generic [ref=f2e228]: 10:00 PM
+          - generic [ref=f2e229]: 10:05 PM
+          - generic [ref=f2e230]: 10:10 PM
+    - generic [ref=f2e231]:
+      - figure "Messages received — red = no message for over 30 s" [ref=f2e232]:
+        - img "Messages received. No gaps." [ref=f2e235]:
+          - generic [ref=f2e236]: 10:00 PM
+          - generic [ref=f2e237]: 10:05 PM
+          - generic [ref=f2e238]: 10:10 PM
+          - generic [ref=f2e239]: Nest
+          - generic [ref=f2e240]: Doll 1
+          - generic [ref=f2e241]: Doll 2
+        - list [ref=f2e242]:
+          - listitem [ref=f2e243]: "Nest: 0 received, 0 duplicate"
+          - listitem [ref=f2e244]: "Doll 1: 0 received, 0 duplicate"
+          - listitem [ref=f2e245]: "Doll 2: 0 received, 0 duplicate"
+      - region "Recent events" [ref=f2e246]:
+        - heading "Recent events" [level=2] [ref=f2e247]
+        - table [ref=f2e249]:
+          - rowgroup [ref=f2e250]:
+            - row [ref=f2e251]:
+              - columnheader "Time" [ref=f2e252]
+              - columnheader "Node" [ref=f2e253]
+              - columnheader "Value" [ref=f2e254]
+              - columnheader "Delay" [ref=f2e255]
+              - columnheader "Details" [ref=f2e256]
+          - rowgroup
+    - region "For developers — rejected messages (0)" [ref=f2e257]:
+      - group [ref=f2e258]:
+        - heading "For developers — rejected messages (0)" [level=2] [ref=f2e260] [cursor=pointer]

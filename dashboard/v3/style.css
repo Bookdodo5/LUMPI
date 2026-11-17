@@ -1,0 +1,637 @@
+/* Colours follow docs/dashboard/Design-dashboard.md: 60 white, 30 black, 10 red. */
+:root {
+  --white: #ffffff;
+  --paper: #f7f5f2;
+  --ink: #1a1a1a;
+  --grey: #6b6b6b;
+  --line: #d9d6d1;
+  --red: #c8102e;
+  /* Bright red for live things: the header dot and the current value dot. */
+  --live: #ff1a3c;
+  /* Gauge zones: works, close to the limit, off. Problems use --red. */
+  --good: #1f9d55;
+  --warn: #e8a317;
+  --off: #cfcac3;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: "Noto Sans JP", system-ui, sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+header {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px 24px;
+  padding: 12px max(24px, calc((100% - 1232px) / 2));
+  border-bottom: 1px solid var(--line);
+  background: var(--white);
+}
+
+h1 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+}
+
+.mark {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  margin-right: 12px;
+  border-radius: 50%;
+  background: var(--live);
+}
+
+.header-right {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 20px;
+}
+
+.connection {
+  margin: 0;
+  font-size: 14px;
+  color: var(--grey);
+}
+
+.connection.down {
+  color: var(--red);
+  font-weight: 500;
+}
+
+main {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 16px 24px 32px;
+}
+
+/* Z layout rows: left to right, then down. */
+.row {
+  display: grid;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.row-2 {
+  grid-template-columns: 1fr 1fr;
+}
+
+.row-3 {
+  grid-template-columns: 1fr 1fr 1fr;
+}
+
+.card {
+  background: var(--white);
+  border: 1px solid var(--line);
+  padding: 12px 16px;
+}
+
+.card.is-stale,
+.card.is-offline {
+  border-color: var(--red);
+}
+
+.card-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+h2 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.badge {
+  padding: 2px 10px;
+  border: 1px solid var(--grey);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  color: var(--grey);
+}
+
+.badge.online {
+  border-color: var(--ink);
+  color: var(--ink);
+}
+
+.badge.stale {
+  border-color: var(--red);
+  color: var(--red);
+}
+
+.badge.offline {
+  border-color: var(--red);
+  background: var(--red);
+  color: var(--white);
+}
+
+.warning {
+  margin: 6px 0 0;
+  color: var(--red);
+  font-weight: 500;
+}
+
+.warning:empty {
+  display: none;
+}
+
+.activity {
+  margin: 6px 0 0;
+  color: var(--grey);
+}
+
+.values {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 24px;
+  margin: 10px 0;
+}
+
+.values div {
+  min-width: 70px;
+}
+
+.values dt {
+  font-size: 12px;
+  color: var(--grey);
+}
+
+.values dd {
+  margin: 0;
+  font-size: 22px;
+  line-height: 1.2;
+  font-weight: 300;
+}
+
+.seen {
+  margin: 0;
+  padding-top: 6px;
+  border-top: 1px solid var(--line);
+  font-size: 12px;
+  color: var(--grey);
+}
+
+.events h2 {
+  font-size: 14px;
+}
+
+/* Same height as the messages chart next to it; scroll for older events. */
+.table-scroll {
+  max-height: 210px;
+  margin-top: 8px;
+  overflow: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--white);
+  font-size: 12px;
+}
+
+th {
+  position: sticky;
+  top: 0;
+  background: var(--white);
+}
+
+th,
+td {
+  padding: 4px 8px;
+  vertical-align: top;
+  white-space: nowrap;
+  border-bottom: 1px solid var(--line);
+  text-align: left;
+}
+
+/* Only the Value column wraps. */
+td:nth-child(3) {
+  white-space: normal;
+}
+
+th {
+  font-weight: 500;
+  color: var(--grey);
+}
+
+/* Server lost: nothing on screen is current. */
+body.disconnected .card,
+body.disconnected table,
+body.disconnected .chart-box {
+  opacity: 0.45;
+}
+
+body.disconnected .seen::after {
+  content: " — not current";
+  color: var(--red);
+}
+
+.low-light {
+  margin: 6px 0 0;
+  color: var(--red);
+  font-weight: 500;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.range {
+  display: flex;
+  margin: 0;
+  padding: 0;
+  border: 1px solid var(--line);
+  background: var(--white);
+}
+
+.range label {
+  position: relative;
+  padding: 3px 12px;
+  font-size: 13px;
+  color: var(--grey);
+  cursor: pointer;
+}
+
+.range label + label {
+  border-left: 1px solid var(--line);
+}
+
+.range input {
+  position: absolute;
+  opacity: 0;
+}
+
+.range label:has(input:checked) {
+  background: var(--ink);
+  color: var(--white);
+}
+
+.range label:has(input:focus-visible) {
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
+}
+
+.chart-box {
+  min-width: 0;
+  margin: 0;
+  padding: 10px 14px;
+  background: var(--white);
+  border: 1px solid var(--line);
+}
+
+figcaption {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.caption-note {
+  font-weight: 400;
+  color: var(--grey);
+}
+
+.chart {
+  position: relative;
+  margin-top: 4px;
+}
+
+.chart svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.chart .grid {
+  stroke: #ebe8e3;
+  stroke-width: 1;
+}
+
+.chart .axis-label,
+.chart .row-label {
+  fill: var(--grey);
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+}
+
+.chart .row-label {
+  font-size: 12px;
+}
+
+.chart .line {
+  fill: none;
+  stroke: var(--ink);
+  stroke-width: 2;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+
+.chart .area {
+  fill: var(--ink);
+  opacity: 0.08;
+}
+
+.chart .end-dot {
+  fill: var(--live);
+  stroke: var(--white);
+  stroke-width: 2;
+}
+
+.chart .hover-dot {
+  fill: var(--ink);
+  stroke: var(--white);
+  stroke-width: 2;
+}
+
+.chart .threshold {
+  stroke: var(--red);
+  stroke-width: 1;
+}
+
+/* Dark limit +/- sensor error: 20% red area with dashed edges. */
+.chart .threshold-band {
+  fill: var(--red);
+  opacity: 0.2;
+}
+
+.chart .threshold-edge {
+  stroke: var(--red);
+  stroke-width: 1;
+  stroke-dasharray: 4 3;
+}
+
+.chart .crosshair {
+  stroke: var(--grey);
+  stroke-width: 1;
+}
+
+.chart .tick {
+  stroke: var(--ink);
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+
+.chart .gap {
+  fill: var(--red);
+  opacity: 0.12;
+}
+
+.chart .gap-label {
+  fill: var(--red);
+  font-size: 11px;
+}
+
+.chart .band {
+  fill: #ebe8e3;
+}
+
+.chart .band-idle {
+  fill: #f4f2ee;
+}
+
+.chart .band-recording,
+.chart .band-waiting_ai,
+.chart .band-feedback {
+  fill: #d9d6d1;
+}
+
+.chart .band-stopped {
+  fill: var(--red);
+}
+
+.chart .band-label {
+  fill: var(--ink);
+  font-size: 11px;
+}
+
+.chart .band-label-stopped {
+  fill: var(--white);
+}
+
+.chart-tip {
+  position: absolute;
+  top: 0;
+  padding: 6px 10px;
+  background: var(--ink);
+  color: var(--white);
+  font-size: 12px;
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+.counts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 24px;
+  margin: 8px 0 0;
+  padding: 0;
+  list-style: none;
+  font-size: 13px;
+  color: var(--grey);
+}
+
+/* Details (event JSON and developer errors) */
+details summary {
+  cursor: pointer;
+}
+
+details pre {
+  margin: 4px 0 8px;
+  padding: 10px 12px;
+  max-width: 100%;
+  overflow-x: auto;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  font-size: 12px;
+  line-height: 1.4;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+.detail-title {
+  margin: 10px 0 0;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--grey);
+}
+
+details .detail-title + p {
+  margin: 2px 0 0;
+}
+
+td details summary {
+  color: var(--grey);
+  font-size: 13px;
+}
+
+td details[open] {
+  min-width: 280px;
+}
+
+.dev {
+  margin-top: 8px;
+}
+
+#dev-panel > summary h2 {
+  display: inline;
+  font-size: 14px;
+  color: var(--grey);
+}
+
+.dev-intro,
+.dev-empty {
+  margin: 8px 0;
+  font-size: 14px;
+  color: var(--grey);
+}
+
+#error-list details {
+  margin-top: 8px;
+  padding: 10px 14px;
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--red);
+}
+
+#error-list summary {
+  font-size: 14px;
+}
+
+@media (max-width: 900px) {
+  .row-2,
+  .row-3 {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 720px) {
+
+  header,
+  main {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  th,
+  td {
+    padding: 8px;
+  }
+}
+
+/* Gauges on the cards (v3) */
+.card-body {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px 16px;
+  align-items: center;
+  margin-top: 6px;
+}
+
+.card-body .values {
+  flex-direction: column;
+  gap: 6px;
+  margin: 0;
+}
+
+.values:empty {
+  display: none;
+}
+
+.gauge-title {
+  margin: 0;
+  font-size: 12px;
+  color: var(--grey);
+  text-align: center;
+}
+
+.gauge svg {
+  display: block;
+  width: 100%;
+  max-width: 220px;
+  margin: 0 auto;
+}
+
+.gauge .segment {
+  fill: none;
+  stroke-width: 16;
+}
+
+.gauge .segment-good {
+  stroke: var(--good);
+}
+
+.gauge .segment-warn {
+  stroke: var(--warn);
+}
+
+.gauge .segment-bad {
+  stroke: var(--red);
+}
+
+.gauge .segment-off {
+  stroke: var(--off);
+}
+
+.gauge .faded {
+  opacity: 0.2;
+}
+
+.gauge .gauge-marker {
+  fill: var(--ink);
+}
+
+.gauge .gauge-needle {
+  stroke: var(--ink);
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+
+.gauge .gauge-value {
+  fill: var(--ink);
+  font-size: 30px;
+  font-weight: 300;
+}
+
+.gauge .axis-label {
+  fill: var(--grey);
+  font-size: 12px;
+}
+
+.gauge .gauge-zone {
+  font-size: 16px;
+  font-weight: 500;
+  fill: var(--grey);
+}
+
+.gauge .gauge-zone-good {
+  fill: var(--good);
+}
+
+.gauge .gauge-zone-warn {
+  fill: #a8730a;
+}
+
+.gauge .gauge-zone-bad {
+  fill: var(--red);
+}

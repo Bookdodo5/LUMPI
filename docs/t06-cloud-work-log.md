@@ -7,6 +7,29 @@ Task: Cloud raw sensor upload and reconnect test
 
 Software complete. The real broker and ESP32 reconnect test is still pending.
 
+## Why the software works as intended
+
+The Excel task and the website describe the same basic path:
+
+`ESP32 reading -> MQTT event -> cloud worker -> saved record`
+
+| Requirement | How the code follows it | Proof |
+| --- | --- | --- |
+| Upload a timestamped gateway reading | `p3_cloud.cpp` reads the BH1750 and creates a `room` event containing `recorded_at` and `lux` every 10 seconds. | The native formatter test and C++ to SQLite contract test pass. |
+| Include station identity and session context where available | The `recording_start` formatter includes `node`, `attempt`, `book`, `passage` and the raw `fsr` value. | A real T03 start-packet parser result is formatted, accepted by the worker and read back from SQLite. |
+| Use the website MQTT interface | Firmware publishes with TLS and QoS 1 to `lumpi/<gateway id>/events`. The message uses the website's `{"id":"device/boot/number","body":{...}}` envelope. | The test uses the actual compiled C++ topic and payload instead of a separately written Python example. |
+| Reject insecure or malformed input | Firmware requires an `mqtts://` URI and CA certificate. The worker rejects the wrong topic, invalid JSON, oversized messages, mismatched gateway IDs and conflicting duplicate IDs. | Boundary and malformed-input tests pass; the worker has 100% statement and branch coverage. |
+| Restore operation after reconnecting | ESP-MQTT automatic reconnect is enabled. The worker reconnects, subscribes again and continues storing new events. | A real local broker outage test saved one record before the outage and another after reconnection. |
+| Make records retrievable | The worker stores each accepted event in SQLite by its unique event ID. Repeated delivery of the same ID and body is harmless. | Storage, retrieval, deduplication and conflicting-duplicate tests pass. |
+| Keep credentials out of Git | ESP32 credentials stay in ignored `config/private.h`; worker credentials come from environment variables. | No private configuration, password file, key or certificate is tracked in Git. |
+| Document any loss | T06 sends a fresh reading after reconnecting but does not save readings created while offline. A 30-second outage loses about three 10-second room samples. | This limitation is recorded here instead of claiming that offline buffering already exists. |
+
+This matches the website's [message format](https://lumpi-build-guide.vercel.app/reference/messages), [gateway cloud behavior](https://lumpi-build-guide.vercel.app/gateway/sensors-cloud) and [cloud worker validation](https://lumpi-build-guide.vercel.app/gateway/worker).
+
+The website's 64-file offline outbox and PUBACK retry system is not part of this checkpoint implementation. The Excel tracker assigns that stronger delivery behavior to T18. T06 only requires reconnect recovery with any loss documented.
+
+The software evidence is complete, but the Excel completion sentence also requires actual hardware readings in the real private cloud. T06 should remain marked **In progress** until the ESP32 is uploaded, the Internet is disconnected and restored, and the before/after private-broker records are saved as evidence.
+
 ## Work completed
 
 - Added safe empty defaults when `config/private.h` is absent.

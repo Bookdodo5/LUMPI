@@ -5,7 +5,7 @@ Task: Cloud raw sensor upload and reconnect test
 
 ## Current status
 
-In progress. The raw room event is built and tested locally. No real broker has been contacted yet.
+Software complete. The real broker and ESP32 reconnect test is still pending.
 
 ## Work completed
 
@@ -20,11 +20,13 @@ In progress. The raw room event is built and tested locally. No real broker has 
 - Added Wi-Fi, NTP, TLS MQTT, QoS 1 publishing and automatic reconnect logs.
 - Tested the disconnected and reconnected scheduling decisions on the laptop.
 - Compiled the complete `p3_cloud` ESP32 firmware successfully.
+- Added the laptop cloud worker that validates and stores MQTT events in SQLite.
+- Added timestamped record retrieval and duplicate-ID tests.
+- Tested that the worker subscribes again after a simulated reconnect.
 
 ## Next work
 
-1. Add local storage and retrieval proof for received events.
-2. Later, run the real broker test with private credentials and save the before/after logs.
+1. Later, run the real broker test with private credentials and save the before/after logs.
 
 ## Evidence
 
@@ -37,6 +39,9 @@ In progress. The raw room event is built and tested locally. No real broker has 
 | Disconnect blocks upload | Passed locally |
 | Reconnect resumes upload scheduling | Passed locally |
 | `p3_cloud` ESP32 build | Passed |
+| SQLite storage and retrieval | Passed locally |
+| Duplicate event handling | Passed locally |
+| Worker reconnect subscription | Passed locally |
 | Credentials absent from Git | Passed |
 | Real MQTT upload | Pending |
 | Real reconnect | Pending |

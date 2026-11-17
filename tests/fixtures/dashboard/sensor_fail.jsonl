@@ -1,0 +1,5 @@
+{"delay": 0.2, "event": {"event_id": "lumpi_1a2b3c4d/1", "node_id": 0, "event_type": "room", "recorded_at": 1794794400, "activity": null, "data": {"lux": 231.0, "distance_cm": 160.5}}, "expect": "added"}
+{"delay": 3.2, "event": {"event_id": "lumpi_1a2b3c4d/2", "node_id": 1, "event_type": "status", "recorded_at": 1794794403, "activity": "idle", "data": {"uid": null, "passage": null, "attempt": null, "fsr": 0}}, "expect": "added"}
+{"delay": 6.7, "event": {"event_id": "lumpi_1a2b3c4d/3", "node_id": 0, "event_type": "room", "recorded_at": 1794794410, "activity": null, "data": {"lux": null, "distance_cm": 158.0}}, "expect": "added"}
+{"delay": 3.4, "event": {"event_id": "lumpi_1a2b3c4d/4", "node_id": 1, "event_type": "status", "recorded_at": 1794794413, "activity": "book_on", "data": {"uid": "04A1B2C3", "passage": 1, "attempt": 1, "fsr": null}}, "expect": "added"}
+{"delay": 6.8, "event": {"event_id": "lumpi_1a2b3c4d/5", "node_id": 0, "event_type": "room", "recorded_at": 1794794420, "activity": null, "data": {"lux": null, "distance_cm": null}}, "expect": "added"}

@@ -29,6 +29,8 @@ Software complete. The real broker and ESP32 reconnect test is still pending.
 - Added explicit disconnect/retry logs and bounded reconnect delay.
 - Added the guide-defined `recording_start` cloud event with node, session, book and raw FSR data.
 - Passed both gateway room light and station FSR events through the C++ to SQLite contract test.
+- Passed the actual T03 start-packet parser output into the station cloud record formatter.
+- Passed a real local MQTT publish, broker outage, automatic reconnect and SQLite retrieval test.
 
 ## Next work
 
@@ -51,6 +53,7 @@ Software complete. The real broker and ESP32 reconnect test is still pending.
 | Actual C++ payload accepted by worker | Passed locally |
 | Timestamped station FSR and session context | Passed locally |
 | Worker retries when broker starts offline | Passed locally |
+| Real local MQTT outage and reconnect | Passed locally |
 | Credentials absent from Git | Passed |
 | Real MQTT upload | Pending |
 | Real reconnect | Pending |

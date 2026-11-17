@@ -1,6 +1,7 @@
 #include <iostream>
 
 #include "gateway_cloud_logic.h"
+#include "gateway_start_packet.h"
 
 int main() {
     char event[384];
@@ -21,6 +22,16 @@ int main() {
 
     std::cout << event << '\n';
 
+    gateway_start_packet::StartPacket packet;
+    gateway_start_packet::ParseResult packet_result = gateway_start_packet::parse(
+        "node=2&attempt=4&passage=3&uid=04A1B2C3&fsr=3100",
+        packet
+    );
+
+    if (packet_result != gateway_start_packet::ParseResult::ok) {
+        return 1;
+    }
+
     ready = gateway_cloud_logic::format_recording_start_event(
         event,
         sizeof(event),
@@ -28,11 +39,11 @@ int main() {
         482913,
         8,
         1700000010,
-        2,
-        4,
-        "04A1B2C3",
-        3,
-        3100
+        packet.node,
+        packet.attempt,
+        packet.uid,
+        packet.passage,
+        packet.fsr
     );
 
     if (!ready) {

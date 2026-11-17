@@ -1,0 +1,12 @@
+
+Claude configuration file not found at: /home/kaikub/.claude.json
+A backup file exists at: /home/kaikub/.claude/backups/.claude.json.backup.1794914943519
+You can manually restore it by running: cp -f "/home/kaikub/.claude/backups/.claude.json.backup.1794914943519" "/home/kaikub/.claude.json"
+
+
+Claude configuration file not found at: /home/kaikub/.claude.json
+A backup file exists at: /home/kaikub/.claude/backups/.claude.json.backup.1794914943519
+You can manually restore it by running: cp -f "/home/kaikub/.claude/backups/.claude.json.backup.1794914943519" "/home/kaikub/.claude.json"
+
+Failed to authenticate: OAuth session expired and could not be refreshed
+exit 1

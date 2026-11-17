@@ -28,15 +28,14 @@ void setup() {
     audio.dma_buf_len = 512;
 
     i2s_pin_config_t pins = {};
-    pins.bck_io_num = 23;      // SCK
-    pins.ws_io_num = 22;       // WS
+    pins.bck_io_num = 26;      // SCK (guide pin map; 23/22/19 belong to RFID and the tongue servo)
+    pins.ws_io_num = 25;       // WS
     pins.data_out_num = I2S_PIN_NO_CHANGE;
-    pins.data_in_num = 19;     // SD
+    pins.data_in_num = 34;     // SD (input-only pin)
 
     esp_err_t result = i2s_driver_install(I2S_NUM_0, &audio, 0, nullptr);
     if (result == ESP_OK) {
         result = i2s_set_pin(I2S_NUM_0, &pins);
-        gpio_set_pull_mode(GPIO_NUM_19, GPIO_PULLDOWN_ONLY);
         REG_SET_BIT(I2S_TIMING_REG(I2S_NUM_0), BIT(9));
         REG_SET_BIT(I2S_CONF_REG(I2S_NUM_0), I2S_RX_MSB_SHIFT);
     }

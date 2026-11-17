@@ -1,7 +1,7 @@
 // Nest sends live data to the laptop dashboard (T07 path).
 // BH1750 wiring: VCC -> 3.3V, GND -> GND, SDA -> GPIO21, SCL -> GPIO22.
-// HC-SR04 wiring: VCC -> USB 5V, GND -> GND, TRIG -> GPIO18,
-//   ECHO -> 1k resistor -> GPIO19 -> 2k resistor -> GND (never 5V straight into the ESP32).
+// HC-SR04 wiring: VCC -> USB 5V, GND -> GND, TRIG -> GPIO26,
+//   ECHO -> 1k resistor -> GPIO27 -> 2k resistor -> GND (never 5V straight into the ESP32).
 // Copy config/private.example.h to config/private.h and fill in
 //   LUMPI_WIFI_SSID, LUMPI_WIFI_PASSWORD, LUMPI_ADAPTER_URL, LUMPI_LAN_KEY.
 // On the laptop, with the same key:

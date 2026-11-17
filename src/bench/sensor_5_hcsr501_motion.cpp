@@ -7,7 +7,7 @@
 // Guide: https://lumpi-build-guide.vercel.app/station/pir1
 #include <Arduino.h>
 
-const int motionPin = 33;
+const int motionPin = 15;  // guide pin map; GPIO 33 is the doll OLED's SCL
 
 void setup() {
     Serial.begin(115200);

@@ -31,6 +31,29 @@ Software complete. The real broker and ESP32 reconnect test is still pending.
 - Passed both gateway room light and station FSR events through the C++ to SQLite contract test.
 - Passed the actual T03 start-packet parser output into the station cloud record formatter.
 - Passed a real local MQTT publish, broker outage, automatic reconnect and SQLite retrieval test.
+- Passed an external TLS MQTT publish and SQLite retrieval test using both compiled C++ payloads and fake data.
+- Checked every MQTT setup return value and report publish failure honestly.
+- Expanded formatter tests for null buffers, truncation, invalid identifiers, infinities and range errors.
+
+## Scope and known loss
+
+- The Excel T06 checkpoint requires reconnect recovery and says to document any loss.
+- This checkpoint creates a room record only while MQTT is connected. A 30-second outage therefore skips about three 10-second room samples; the first new sample is uploaded after reconnect.
+- The website's final design prevents that loss with a 64-file LittleFS outbox and PUBACK retry. That is tracked separately as T18 (E4 ACK/retry and offline buffer), so it is not falsely claimed here.
+- A real ESP32, BH1750, Wi-Fi network and private HiveMQ account are still required for the physical acceptance log.
+
+## Requirement cross-check
+
+| Source requirement | Code or evidence |
+| --- | --- |
+| Timestamped gateway raw reading | `room` event has `recorded_at` and `lux` |
+| Timestamped station reading with context | `recording_start` has `recorded_at`, `node`, `attempt`, `book`, `passage` and `fsr` |
+| MQTT topic | Actual C++ output is `lumpi/<gateway id>/events` |
+| Cloud envelope | Actual C++ output has `id` and `body`; worker accepts and retrieves it |
+| Reconnect restores upload | Real local MQTT outage/reconnect test stored records before and after reconnect |
+| Document loss | Offline checkpoint samples are explicitly documented above |
+| No credentials in Git | Real values stay in ignored `config/private.h` or environment variables |
+| Website 64-file outbox | Deferred to its assigned T18/E4 task; not claimed as T06 work |
 
 ## Next work
 
@@ -54,6 +77,9 @@ Software complete. The real broker and ESP32 reconnect test is still pending.
 | Timestamped station FSR and session context | Passed locally |
 | Worker retries when broker starts offline | Passed locally |
 | Real local MQTT outage and reconnect | Passed locally |
+| External TLS MQTT publish and retrieval | Passed with fake data |
 | Credentials absent from Git | Passed |
+| C++ shared logic line coverage | 100% |
+| Python worker statement/branch coverage | 100% |
 | Real MQTT upload | Pending |
 | Real reconnect | Pending |

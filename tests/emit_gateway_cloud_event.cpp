@@ -4,9 +4,22 @@
 #include "gateway_start_packet.h"
 
 int main() {
+    char topic[64];
     char event[384];
 
-    bool ready = gateway_cloud_logic::format_room_event(
+    bool ready = gateway_cloud_logic::format_event_topic(
+        topic,
+        sizeof(topic),
+        "lumpi_1a2b3c4d"
+    );
+
+    if (!ready) {
+        return 1;
+    }
+
+    std::cout << topic << '\n';
+
+    ready = gateway_cloud_logic::format_room_event(
         event,
         sizeof(event),
         "lumpi_1a2b3c4d",

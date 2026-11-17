@@ -33,14 +33,19 @@ class T06CloudContractTest(unittest.TestCase):
             )
 
             output = subprocess.check_output([str(executable)], text=True)
-            payloads = output.splitlines()
+            lines = output.splitlines()
+            self.assertEqual(len(lines), 3)
+
+            topic = lines[0]
+            payloads = lines[1:]
+            self.assertEqual(topic, "lumpi/lumpi_1a2b3c4d/events")
             self.assertEqual(len(payloads), 2)
 
             for payload in payloads:
                 event = json.loads(payload)
                 saved_id = commit_event(
                     database_path,
-                    "lumpi/lumpi_1a2b3c4d/events",
+                    topic,
                     payload,
                 )
                 self.assertEqual(saved_id, event["id"])
@@ -54,11 +59,16 @@ class T06CloudContractTest(unittest.TestCase):
             saved = {identity: json.loads(body) for identity, body in saved_rows}
 
             room = saved["lumpi_1a2b3c4d/482913/7"]
+            self.assertEqual(set(room), {"kind", "recorded_at", "lux"})
             self.assertEqual(room["kind"], "room")
             self.assertEqual(room["recorded_at"], 1700000001)
             self.assertEqual(room["lux"], 230.5)
 
             station = saved["lumpi_1a2b3c4d/482913/8"]
+            self.assertEqual(
+                set(station),
+                {"kind", "recorded_at", "node", "attempt", "book", "passage", "fsr"},
+            )
             self.assertEqual(station["kind"], "recording_start")
             self.assertEqual(station["node"], 2)
             self.assertEqual(station["attempt"], 4)

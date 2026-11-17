@@ -15,6 +15,10 @@ inline bool secure_config(std::string_view uri, std::string_view ca) {
     return uri.rfind("mqtts://", 0) == 0 && !ca.empty();
 }
 
+inline bool publish_succeeded(int message_id) {
+    return message_id >= 0;
+}
+
 inline bool ready_to_connect(
     bool wifi_connected,
     uint64_t unix_time,
@@ -56,6 +60,26 @@ inline bool safe_identifier(std::string_view text, size_t maximum_size) {
     return true;
 }
 
+inline bool format_event_topic(
+    char* output,
+    size_t output_size,
+    std::string_view device_id
+) {
+    if (output == nullptr || output_size == 0 || !safe_identifier(device_id, 32)) {
+        return false;
+    }
+
+    int written = std::snprintf(
+        output,
+        output_size,
+        "lumpi/%.*s/events",
+        static_cast<int>(device_id.size()),
+        device_id.data()
+    );
+
+    return written >= 0 && static_cast<size_t>(written) < output_size;
+}
+
 inline bool format_room_event(
     char* output,
     size_t output_size,
@@ -65,6 +89,9 @@ inline bool format_room_event(
     uint64_t recorded_at,
     float lux
 ) {
+    if (output == nullptr || output_size == 0) {
+        return false;
+    }
     if (!safe_identifier(device_id, 32)) {
         return false;
     }
@@ -114,6 +141,9 @@ inline bool format_recording_start_event(
     uint32_t passage,
     uint32_t fsr
 ) {
+    if (output == nullptr || output_size == 0) {
+        return false;
+    }
     if (!safe_identifier(device_id, 32) || !safe_identifier(book, 32)) {
         return false;
     }

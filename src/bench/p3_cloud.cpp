@@ -23,6 +23,7 @@ char event_topic[64];
 uint32_t last_room_event_ms = 0;
 uint32_t boot_number = 0;
 uint32_t event_number = 0;
+bool cloud_identity_ready = false;
 wl_status_t previous_wifi_status = WL_NO_SHIELD;
 
 void on_mqtt_event(
@@ -44,7 +45,7 @@ void on_mqtt_event(
     }
 }
 
-void start_cloud() {
+bool start_cloud() {
     esp_mqtt_client_config_t mqtt_config = {};
     mqtt_config.uri = LUMPI_MQTT_URI;
     mqtt_config.cert_pem = LUMPI_MQTT_CA;
@@ -56,17 +57,33 @@ void start_cloud() {
     mqtt_client = esp_mqtt_client_init(&mqtt_config);
     if (mqtt_client == nullptr) {
         Serial.println("[cloud] client setup failed");
-        return;
+        return false;
     }
 
-    esp_mqtt_client_register_event(
+    esp_err_t register_result = esp_mqtt_client_register_event(
         mqtt_client,
         MQTT_EVENT_ANY,
         on_mqtt_event,
         nullptr
     );
-    esp_mqtt_client_start(mqtt_client);
+
+    if (register_result != ESP_OK) {
+        Serial.printf("[cloud] event setup failed: %d\n", register_result);
+        esp_mqtt_client_destroy(mqtt_client);
+        mqtt_client = nullptr;
+        return false;
+    }
+
+    esp_err_t start_result = esp_mqtt_client_start(mqtt_client);
+    if (start_result != ESP_OK) {
+        Serial.printf("[cloud] client start failed: %d\n", start_result);
+        esp_mqtt_client_destroy(mqtt_client);
+        mqtt_client = nullptr;
+        return false;
+    }
+
     Serial.println("[cloud] TLS client started");
+    return true;
 }
 
 void setup() {
@@ -77,13 +94,25 @@ void setup() {
     hardware::light_begin();
 
     uint32_t chip_id = static_cast<uint32_t>(ESP.getEfuseMac());
-    std::snprintf(
+    int device_id_length = std::snprintf(
         device_id,
         sizeof(device_id),
         "lumpi_%08lx",
         static_cast<unsigned long>(chip_id)
     );
-    std::snprintf(event_topic, sizeof(event_topic), "lumpi/%s/events", device_id);
+
+    if (device_id_length < 0
+        || static_cast<size_t>(device_id_length) >= sizeof(device_id)
+        || !gateway_cloud_logic::format_event_topic(
+            event_topic,
+            sizeof(event_topic),
+            device_id
+        )) {
+        Serial.println("[cloud] device identity setup failed");
+        return;
+    }
+
+    cloud_identity_ready = true;
     boot_number = esp_random() % 1000000;
 
     Serial.println("=== T06: cloud raw light upload ===");
@@ -115,10 +144,8 @@ void loop() {
         previous_wifi_status = wifi_status;
     }
 
-    bool config_is_secure = gateway_cloud_logic::secure_config(
-        LUMPI_MQTT_URI,
-        LUMPI_MQTT_CA
-    );
+    bool config_is_secure = cloud_identity_ready
+        && gateway_cloud_logic::secure_config(LUMPI_MQTT_URI, LUMPI_MQTT_CA);
 
     if (gateway_cloud_logic::ready_to_connect(
         wifi_status == WL_CONNECTED,
@@ -160,7 +187,11 @@ void loop() {
                 1,
                 0
             );
-            Serial.printf("[cloud] publish message=%d %s\n", message_id, event);
+            if (gateway_cloud_logic::publish_succeeded(message_id)) {
+                Serial.printf("[cloud] publish message=%d %s\n", message_id, event);
+            } else {
+                Serial.println("[cloud] publish failed; this checkpoint sample was lost");
+            }
         } else {
             Serial.println("[cloud] room event was too large");
         }

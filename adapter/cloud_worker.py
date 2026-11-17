@@ -6,12 +6,14 @@ import sqlite3
 import ssl
 from pathlib import Path
 
-
 MAX_PAYLOAD_BYTES = 2048
 EVENT_TOPIC = "lumpi/+/events"
 
 
 def gateway_from_topic(topic):
+    if not isinstance(topic, str):
+        return None
+
     parts = topic.split("/")
     if len(parts) != 3:
         return None
@@ -77,7 +79,14 @@ def commit_event(database_path, topic, payload):
             database.commit()
 
         return identity
-    except (json.JSONDecodeError, KeyError, TypeError, UnicodeError, ValueError, sqlite3.Error):
+    except (
+        json.JSONDecodeError,
+        KeyError,
+        TypeError,
+        UnicodeError,
+        ValueError,
+        sqlite3.Error,
+    ):
         return None
 
 

@@ -23,6 +23,8 @@ Software complete. The real broker and ESP32 reconnect test is still pending.
 - Added the laptop cloud worker that validates and stores MQTT events in SQLite.
 - Added timestamped record retrieval and duplicate-ID tests.
 - Tested that the worker subscribes again after a simulated reconnect.
+- Fixed the firmware-to-worker contract: firmware now publishes the required `id` and `body` envelope.
+- Added a cross-language test that sends the actual C++ formatter output through the Python worker into SQLite.
 
 ## Next work
 
@@ -42,6 +44,7 @@ Software complete. The real broker and ESP32 reconnect test is still pending.
 | SQLite storage and retrieval | Passed locally |
 | Duplicate event handling | Passed locally |
 | Worker reconnect subscription | Passed locally |
+| Actual C++ payload accepted by worker | Passed locally |
 | Credentials absent from Git | Passed |
 | Real MQTT upload | Pending |
 | Real reconnect | Pending |

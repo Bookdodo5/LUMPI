@@ -10,6 +10,7 @@
 #include <atomic>
 #include <ctime>
 #include <mqtt_client.h>
+#include <esp_system.h>
 
 #include "gateway_cloud_logic.h"
 #include "real_io.h"
@@ -20,6 +21,8 @@ esp_mqtt_client_handle_t mqtt_client = nullptr;
 char device_id[24];
 char event_topic[64];
 uint32_t last_room_event_ms = 0;
+uint32_t boot_number = 0;
+uint32_t event_number = 0;
 wl_status_t previous_wifi_status = WL_NO_SHIELD;
 
 void on_mqtt_event(
@@ -74,8 +77,14 @@ void setup() {
     hardware::light_begin();
 
     uint32_t chip_id = static_cast<uint32_t>(ESP.getEfuseMac());
-    std::snprintf(device_id, sizeof(device_id), "lumpi_%08lx", chip_id);
+    std::snprintf(
+        device_id,
+        sizeof(device_id),
+        "lumpi_%08lx",
+        static_cast<unsigned long>(chip_id)
+    );
     std::snprintf(event_topic, sizeof(event_topic), "lumpi/%s/events", device_id);
+    boot_number = esp_random() % 1000000;
 
     Serial.println("=== T06: cloud raw light upload ===");
 
@@ -129,10 +138,15 @@ void loop() {
         float lux = NAN;
         hardware::light_read(lux);
 
-        char event[128];
+        event_number += 1;
+
+        char event[256];
         bool event_ready = gateway_cloud_logic::format_room_event(
             event,
             sizeof(event),
+            device_id,
+            boot_number,
+            event_number,
             static_cast<uint64_t>(std::time(nullptr)),
             lux
         );

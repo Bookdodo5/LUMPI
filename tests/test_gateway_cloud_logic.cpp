@@ -25,22 +25,58 @@ int main() {
     assert(room_event_due(true, 10000, 0));
     assert(room_event_due(true, 5000, 0xFFFFE890));
 
-    char event[128];
+    char event[256];
 
-    assert(format_room_event(event, sizeof(event), 1700000001, 230.5f));
+    assert(format_room_event(
+        event,
+        sizeof(event),
+        "lumpi_1a2b3c4d",
+        482913,
+        7,
+        1700000001,
+        230.5f
+    ));
     assert(std::strcmp(
         event,
-        "{\"kind\":\"room\",\"recorded_at\":1700000001,\"lux\":230.5}"
+        "{\"id\":\"lumpi_1a2b3c4d/482913/7\",\"body\":{\"kind\":\"room\","
+        "\"recorded_at\":1700000001,\"lux\":230.5}}"
     ) == 0);
 
-    assert(format_room_event(event, sizeof(event), 1700000002, NAN));
+    assert(format_room_event(
+        event,
+        sizeof(event),
+        "lumpi_1a2b3c4d",
+        482913,
+        8,
+        1700000002,
+        NAN
+    ));
     assert(std::strcmp(
         event,
-        "{\"kind\":\"room\",\"recorded_at\":1700000002,\"lux\":null}"
+        "{\"id\":\"lumpi_1a2b3c4d/482913/8\",\"body\":{\"kind\":\"room\","
+        "\"recorded_at\":1700000002,\"lux\":null}}"
     ) == 0);
 
     char too_small[8];
-    assert(!format_room_event(too_small, sizeof(too_small), 1700000003, 100.0f));
+    assert(!format_room_event(
+        too_small,
+        sizeof(too_small),
+        "lumpi_1a2b3c4d",
+        1,
+        1,
+        1700000003,
+        100.0f
+    ));
+
+    assert(!format_room_event(
+        event,
+        sizeof(event),
+        "bad\"device",
+        1,
+        1,
+        1700000003,
+        100.0f
+    ));
 
     std::cout << "PASS: gateway cloud event logic\n";
     return 0;

@@ -39,16 +39,40 @@ inline bool room_event_due(
 inline bool format_room_event(
     char* output,
     size_t output_size,
+    std::string_view device_id,
+    uint32_t boot_number,
+    uint32_t event_number,
     uint64_t recorded_at,
     float lux
 ) {
+    if (device_id.empty() || device_id.size() > 32) {
+        return false;
+    }
+
+    for (char character : device_id) {
+        bool safe_character = (character >= 'a' && character <= 'z')
+            || (character >= 'A' && character <= 'Z')
+            || (character >= '0' && character <= '9')
+            || character == '_'
+            || character == '-';
+
+        if (!safe_character) {
+            return false;
+        }
+    }
+
     int written = 0;
 
     if (std::isfinite(lux)) {
         written = std::snprintf(
             output,
             output_size,
-            "{\"kind\":\"room\",\"recorded_at\":%llu,\"lux\":%.1f}",
+            "{\"id\":\"%.*s/%lu/%lu\",\"body\":{\"kind\":\"room\","
+            "\"recorded_at\":%llu,\"lux\":%.1f}}",
+            static_cast<int>(device_id.size()),
+            device_id.data(),
+            static_cast<unsigned long>(boot_number),
+            static_cast<unsigned long>(event_number),
             static_cast<unsigned long long>(recorded_at),
             static_cast<double>(lux)
         );
@@ -56,7 +80,12 @@ inline bool format_room_event(
         written = std::snprintf(
             output,
             output_size,
-            "{\"kind\":\"room\",\"recorded_at\":%llu,\"lux\":null}",
+            "{\"id\":\"%.*s/%lu/%lu\",\"body\":{\"kind\":\"room\","
+            "\"recorded_at\":%llu,\"lux\":null}}",
+            static_cast<int>(device_id.size()),
+            device_id.data(),
+            static_cast<unsigned long>(boot_number),
+            static_cast<unsigned long>(event_number),
             static_cast<unsigned long long>(recorded_at)
         );
     }

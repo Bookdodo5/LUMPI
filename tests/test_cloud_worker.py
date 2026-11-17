@@ -4,15 +4,27 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from adapter.cloud_worker import commit_event, on_connect
+from adapter.cloud_worker import commit_event, on_connect, run_network_loop
 
 
 class FakeClient:
     def __init__(self):
         self.subscriptions = []
+        self.reconnect_delay = None
+        self.connection = None
+        self.retry_first_connection = None
 
     def subscribe(self, topic, qos):
         self.subscriptions.append((topic, qos))
+
+    def reconnect_delay_set(self, min_delay, max_delay):
+        self.reconnect_delay = (min_delay, max_delay)
+
+    def connect_async(self, host, port, keepalive):
+        self.connection = (host, port, keepalive)
+
+    def loop_forever(self, retry_first_connection):
+        self.retry_first_connection = retry_first_connection
 
 
 class CloudWorkerTest(unittest.TestCase):
@@ -89,6 +101,15 @@ class CloudWorkerTest(unittest.TestCase):
             client.subscriptions,
             [("lumpi/+/events", 1), ("lumpi/+/events", 1)],
         )
+
+    def test_initial_failure_and_reconnect_are_retried(self):
+        client = FakeClient()
+
+        run_network_loop(client, "broker.example")
+
+        self.assertEqual(client.reconnect_delay, (1, 30))
+        self.assertEqual(client.connection, ("broker.example", 8883, 60))
+        self.assertTrue(client.retry_first_connection)
 
 
 if __name__ == "__main__":

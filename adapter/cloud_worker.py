@@ -91,6 +91,14 @@ def on_connect(client, _userdata, _flags, reason_code, _properties):
     print("cloud connected and subscribed")
 
 
+def on_connect_fail(_client, _userdata):
+    print("cloud connection failed; retrying")
+
+
+def on_disconnect(_client, _userdata, _flags, reason_code, _properties):
+    print(f"cloud disconnected: {reason_code}; retrying")
+
+
 def on_message(_client, userdata, message):
     identity = commit_event(
         userdata["database"],
@@ -102,6 +110,12 @@ def on_message(_client, userdata, message):
         print(f"ignored a bad message on {message.topic}")
     else:
         print(f"saved {identity}")
+
+
+def run_network_loop(client, host):
+    client.reconnect_delay_set(min_delay=1, max_delay=30)
+    client.connect_async(host, 8883, 60)
+    client.loop_forever(retry_first_connection=True)
 
 
 def main():
@@ -123,9 +137,10 @@ def main():
     client.username_pw_set(username, password)
     client.tls_set(ca_certs=ca_file, cert_reqs=ssl.CERT_REQUIRED)
     client.on_connect = on_connect
+    client.on_connect_fail = on_connect_fail
+    client.on_disconnect = on_disconnect
     client.on_message = on_message
-    client.connect(host, 8883, 60)
-    client.loop_forever()
+    run_network_loop(client, host)
 
 
 if __name__ == "__main__":

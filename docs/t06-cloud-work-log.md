@@ -25,6 +25,8 @@ Software complete. The real broker and ESP32 reconnect test is still pending.
 - Tested that the worker subscribes again after a simulated reconnect.
 - Fixed the firmware-to-worker contract: firmware now publishes the required `id` and `body` envelope.
 - Added a cross-language test that sends the actual C++ formatter output through the Python worker into SQLite.
+- Changed the cloud worker to retry even when its first broker connection fails.
+- Added explicit disconnect/retry logs and bounded reconnect delay.
 
 ## Next work
 
@@ -45,6 +47,7 @@ Software complete. The real broker and ESP32 reconnect test is still pending.
 | Duplicate event handling | Passed locally |
 | Worker reconnect subscription | Passed locally |
 | Actual C++ payload accepted by worker | Passed locally |
+| Worker retries when broker starts offline | Passed locally |
 | Credentials absent from Git | Passed |
 | Real MQTT upload | Pending |
 | Real reconnect | Pending |

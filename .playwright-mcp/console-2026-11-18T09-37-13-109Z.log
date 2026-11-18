@@ -1,0 +1,25 @@
+[   16125ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/nodes:1
+[   16126ms] [WARNING] dashboard poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at poll (http://localhost:8080/app.js:423:25) @ http://localhost:8080/app.js:428
+[   18131ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/nodes:1
+[   18131ms] [WARNING] dashboard poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at poll (http://localhost:8080/app.js:423:25) @ http://localhost:8080/app.js:428
+[   20134ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/nodes:1
+[   20134ms] [WARNING] dashboard poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at poll (http://localhost:8080/app.js:423:25) @ http://localhost:8080/app.js:428
+[   20189ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/history?minutes=60:1
+[   20189ms] [WARNING] activity poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollActivity (http://localhost:8080/app.js:441:27) @ http://localhost:8080/app.js:446
+[   20194ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[   20194ms] [WARNING] score poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at loadScores (http://localhost:8080/app.js:405:24)
+    at pollScores (http://localhost:8080/app.js:416:11) @ http://localhost:8080/app.js:410
+[   22137ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/nodes:1
+[   22137ms] [WARNING] dashboard poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at poll (http://localhost:8080/app.js:423:25) @ http://localhost:8080/app.js:428

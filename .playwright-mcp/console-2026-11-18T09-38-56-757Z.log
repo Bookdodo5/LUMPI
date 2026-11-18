@@ -1,0 +1,2092 @@
+[   20042ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[   20042ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[   30045ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[   30045ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[   40048ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[   40048ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[   50051ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[   50051ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[   60052ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[   60052ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[   70055ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[   70055ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[   80056ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[   80056ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[   90058ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[   90058ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[  100059ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[  100059ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[  110062ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[  110062ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[  120064ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[  120064ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[  130066ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[  130066ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[  140069ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[  140069ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[  150072ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[  150072ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[  160075ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[  160075ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[  170078ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[  170078ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[  180081ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[  180081ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[  190084ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[  190084ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[  200087ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[  200087ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[  210090ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[  210090ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[  220092ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[  220093ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[  230095ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[  230095ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[  240098ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[  240099ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[  250101ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[  250101ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[  260104ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[  260104ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[  270106ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[  270106ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[  280109ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[  280109ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[  290112ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[  290113ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[  300114ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[  300114ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[  310117ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[  310117ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[  320120ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[  320120ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[  330123ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[  330123ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[  340125ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[  340126ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[  350128ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[  350129ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[  360131ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[  360132ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[  370134ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[  370135ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[  380138ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[  380138ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[  390140ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[  390140ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[  400143ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[  400143ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[  410146ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[  410146ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[  420149ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[  420149ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[  430152ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[  430152ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[  440154ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[  440154ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[  450157ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[  450157ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[  460159ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[  460160ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[  470163ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[  470163ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[  480166ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[  480166ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[  490168ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[  490169ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[  500171ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[  500172ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[  510173ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[  510173ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[  520176ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[  520176ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[  530179ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[  530179ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[  540182ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[  540182ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[  550185ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[  550185ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[  560188ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[  560188ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[  570191ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[  570191ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[  580194ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[  580194ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[  590197ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[  590197ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[  600199ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[  600199ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[  610201ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[  610201ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[  620204ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[  620204ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[  630207ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[  630207ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[  640210ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[  640210ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[  650212ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[  650212ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[  660215ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[  660215ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[  670218ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[  670218ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[  680221ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[  680221ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[  690223ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[  690223ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[  700226ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[  700226ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[  710229ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[  710229ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[  720231ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[  720231ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[  730233ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[  730233ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[  740236ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[  740236ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[  750239ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[  750239ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[  760242ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[  760242ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[  770245ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[  770245ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[  780249ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[  780249ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[  790251ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[  790251ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[  800254ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[  800254ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[  810256ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[  810256ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[  820259ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[  820259ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[  830262ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[  830262ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[  840264ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[  840264ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[  850268ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[  850268ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[  860271ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[  860271ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[  870274ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[  870274ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[  880276ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[  880276ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[  890279ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[  890279ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[  900282ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[  900282ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[  910285ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[  910285ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[  920288ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[  920288ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[  930290ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[  930290ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 1030381ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 1030381ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 1040383ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 1040383ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 1050385ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 1050385ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 1060387ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 1060387ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 1070390ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 1070390ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 1080392ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 1080392ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 1090394ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 1090394ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 1100397ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 1100397ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 1110400ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 1110400ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 1120402ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 1120403ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 1130406ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 1130406ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 1140408ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 1140409ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 1150411ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 1150411ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 1160414ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 1160414ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 1170417ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 1170417ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 1180419ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 1180420ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 1190422ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 1190422ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 1200425ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 1200425ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 1210428ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 1210428ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 1220430ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 1220430ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 1230433ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 1230433ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 1240436ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 1240436ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 1250438ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 1250438ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 1260440ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 1260440ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 1270442ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 1270442ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 1280445ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 1280445ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 1290448ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 1290449ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 1300451ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 1300452ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 1310454ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 1310454ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 1320457ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 1320457ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 1330460ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 1330460ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 1340463ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 1340463ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 1350466ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 1350466ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 1360467ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 1360467ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 1370469ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 1370470ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 1380472ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 1380472ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 1390475ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 1390475ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 1400478ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 1400478ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 1410481ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 1410481ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 1420484ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 1420484ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 1430486ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 1430486ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 1440489ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 1440489ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 1450492ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 1450492ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 1460495ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 1460495ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 1470498ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 1470498ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 1480500ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 1480500ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 1490503ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 1490503ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 1500506ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 1500506ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 1510509ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 1510509ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 1520512ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 1520512ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 1530515ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 1530515ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 1540518ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 1540518ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 1550520ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 1550520ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 1560523ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 1560523ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 1570526ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 1570526ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 1580529ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 1580529ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 1590531ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 1590531ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 1600533ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 1600533ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 1610534ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 1610534ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 1620535ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 1620535ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 1630537ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 1630537ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 1640539ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 1640539ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 1650541ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 1650541ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 1660542ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 1660542ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 1670544ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 1670544ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 1680546ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 1680546ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 1690547ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 1690547ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 1700548ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 1700549ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 1710550ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 1710550ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 1720551ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 1720551ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 1730553ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 1730553ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 1740555ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 1740555ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 1750557ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 1750557ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 1760558ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 1760558ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 1770560ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 1770560ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 1780562ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 1780562ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 1790564ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 1790564ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 1800565ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 1800565ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 1810567ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 1810567ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 1820568ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 1820569ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 1830571ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 1830571ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 1840572ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 1840572ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 1850574ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 1850574ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 1860576ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 1860577ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 1870579ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 1870579ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 1880581ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 1880582ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 1890584ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 1890584ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 1900586ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 1900586ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 1910587ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 1910587ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 1920589ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 1920590ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 1930592ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 1930593ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 1940594ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 1940594ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 1950597ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 1950597ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 1960599ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 1960600ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 1970601ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 1970602ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 1980604ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 1980604ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 1990607ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 1990607ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 2000610ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 2000610ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 2010612ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 2010612ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 2020615ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 2020615ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 2030618ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 2030618ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 2040621ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 2040621ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 2050624ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 2050624ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 2060627ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 2060627ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 2070629ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 2070630ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 2080632ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 2080633ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 2090635ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 2090635ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 2100638ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 2100638ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 2110641ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 2110641ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 2120643ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 2120643ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 2130646ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 2130646ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 2140649ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 2140649ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 2150652ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 2150652ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 2160654ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 2160654ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 2170657ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 2170657ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 2180659ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 2180659ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 2190662ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 2190662ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 2200665ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 2200665ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 2210667ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 2210667ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 2220669ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 2220670ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 2230672ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 2230672ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 2240675ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 2240675ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 2250677ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 2250677ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 2260680ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 2260680ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 2270682ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 2270683ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 2280685ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 2280685ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 2290688ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 2290688ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 2300690ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 2300691ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 2310693ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 2310693ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 2320695ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 2320696ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 2330698ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 2330698ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 2340701ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 2340701ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 2350703ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 2350703ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 2360706ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 2360706ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 2370708ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 2370708ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 2380710ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 2380710ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 2390714ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 2390714ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 2400715ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 2400715ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 2410717ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 2410718ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 2420720ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 2420720ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 2430722ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 2430722ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 2440724ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 2440724ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 2450726ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 2450726ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 2460728ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 2460729ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 2470731ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 2470731ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 2480734ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 2480734ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 2490737ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 2490737ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 2500738ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 2500739ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 2510741ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 2510741ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 2520744ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 2520744ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 2530746ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 2530747ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 2540750ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 2540750ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 2550752ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 2550752ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 2560755ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 2560755ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 2570758ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 2570758ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 2580760ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 2580760ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 2590763ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 2590763ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 2600766ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 2600766ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 2610768ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 2610769ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 2620771ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 2620771ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 2630774ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 2630774ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 2640777ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 2640777ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 2650779ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 2650780ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 2660782ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 2660783ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 2670785ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 2670785ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 2680788ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 2680788ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 2690791ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 2690791ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 2700793ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 2700793ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 2710796ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 2710796ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 2720798ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 2720798ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 2730801ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 2730801ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 2740803ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 2740803ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 2750805ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 2750805ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 2760808ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 2760808ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 2770811ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 2770811ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 2780813ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 2780813ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 2790816ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 2790816ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 2800818ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 2800818ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 2810821ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 2810821ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 2820823ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 2820824ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 2830826ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 2830826ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 2840829ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 2840829ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 2850831ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 2850831ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 2860834ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 2860834ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 2870836ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 2870836ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 2880839ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 2880839ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 2890842ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 2890842ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 2900845ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 2900845ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 2910847ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 2910848ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 2920850ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 2920850ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 2930853ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 2930853ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 2940855ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 2940855ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 2950858ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 2950858ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 2960860ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 2960861ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 2970865ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 2970865ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 2980868ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 2980868ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 2990871ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 2990871ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 3000873ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 3000874ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 3010876ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 3010876ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 3020879ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 3020879ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 3030882ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 3030882ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 3040884ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 3040884ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 3050885ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 3050885ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 3060888ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 3060888ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 3070890ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 3070890ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 3080893ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 3080893ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 3090896ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 3090896ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 3100899ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 3100899ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 3110901ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 3110901ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 3120903ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 3120903ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 3130904ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 3130904ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 3140906ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 3140906ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 3150908ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 3150909ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 3160910ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 3160910ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 3170912ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 3170913ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 3180915ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 3180915ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 3190917ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 3190917ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 3200920ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 3200920ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 3210922ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 3210923ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 3220925ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 3220925ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 3230928ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 3230929ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 3240931ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 3240931ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 3250933ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 3250933ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 3260935ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 3260935ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 3270941ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 3270941ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 3280943ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 3280943ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 3290946ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 3290946ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 3300949ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 3300949ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 3310951ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 3310951ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 3320953ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 3320953ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 3330955ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 3330955ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 3340958ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 3340958ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 3350961ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 3350961ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 3360965ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 3360965ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 3370968ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 3370968ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 3380970ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 3380971ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 3390973ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 3390973ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 3400976ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 3400976ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 3410978ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 3410978ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 3420980ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 3420980ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 3430982ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 3430982ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 3440985ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 3440985ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 3450987ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 3450987ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 3460989ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 3460989ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 3470992ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 3470992ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 3480995ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 3480995ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 3490998ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 3490998ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 3501000ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 3501001ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 3511002ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 3511002ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 3521004ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 3521004ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 3531007ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 3531007ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 3541010ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 3541010ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 3551013ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 3551013ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 3561014ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 3561014ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 3571017ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 3571017ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 3581018ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 3581019ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 3591021ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 3591021ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 3601023ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 3601023ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 3611026ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 3611026ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 3621028ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 3621028ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 3631030ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 3631031ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 3641033ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 3641033ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 3651035ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 3651036ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 3661038ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 3661038ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 3671040ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 3671040ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 3681043ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 3681043ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 3691045ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 3691046ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 3701049ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 3701049ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 3711051ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 3711051ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 3721054ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 3721054ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 3731056ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 3731056ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 3741059ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 3741059ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 3751061ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 3751061ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 3761063ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 3761063ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 3771066ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 3771066ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 3781068ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 3781068ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 3791071ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 3791071ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 3801074ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 3801074ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 3811081ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 3811081ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 3821084ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 3821084ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 3831085ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 3831085ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 3851091ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 3851091ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 3861093ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 3861093ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 3871096ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 3871096ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 3881102ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 3881102ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 3891104ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 3891104ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 3901107ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 3901107ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 3911109ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 3911109ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 3921110ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 3921111ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 3931113ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 3931113ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 3941115ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 3941115ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 3951117ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 3951117ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 3961119ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 3961119ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 3971122ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 3971122ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 3981124ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 3981124ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 3991126ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 3991126ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 4001128ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 4001128ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 4021144ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 4021144ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 4031146ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 4031147ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 4041149ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 4041150ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 4051152ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 4051152ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 4061154ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 4061154ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 4071156ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 4071156ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 4081157ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 4081158ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 4091160ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 4091160ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 4101162ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 4101162ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 4111166ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 4111166ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 4121169ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 4121169ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 4131171ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 4131171ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 4141175ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 4141175ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 4151177ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 4151177ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 4161179ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 4161179ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 4171189ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 4171189ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 4181191ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 4181192ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 4191194ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 4191194ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 4201197ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 4201197ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 4211199ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 4211199ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 4221218ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 4221218ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 4231223ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 4231224ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 4241226ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 4241226ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 4251229ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 4251229ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 4261231ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 4261232ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 4271234ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 4271234ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 4281236ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 4281236ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 4291239ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 4291239ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 4301242ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 4301242ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 4311245ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 4311245ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 4321247ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 4321247ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 4331249ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 4331249ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 4341251ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 4341252ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 4351254ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 4351254ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 4361256ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 4361256ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 4371258ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 4371258ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 4381261ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 4381261ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 4391263ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 4391263ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 4401266ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 4401266ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 4411273ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 4411273ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 4421276ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 4421276ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 4431279ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 4431279ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 4441281ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 4441281ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 4451283ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 4451283ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 4461286ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 4461286ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 4471291ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 4471291ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 4481294ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 4481294ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 4491296ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 4491296ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 4501298ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 4501298ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 4511301ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 4511301ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 4521303ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 4521303ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 4531305ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 4531305ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 4541307ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 4541307ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 4551310ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 4551310ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 4561312ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 4561312ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 4571314ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 4571314ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 4581317ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 4581317ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 4591320ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 4591320ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 4601321ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 4601321ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 4611323ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 4611324ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 4621326ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 4621326ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 4631329ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 4631329ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 4641331ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 4641331ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 4651333ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 4651333ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 4661413ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 4661414ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 4671416ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 4671416ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 4681420ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 4681420ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 4691422ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 4691422ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 4701429ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 4701429ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 4711432ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 4711432ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 4721434ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 4721434ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 4731437ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 4731437ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 4741441ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 4741445ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 4751448ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 4751448ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 4761451ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 4761451ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 4771454ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 4771454ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 4781455ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 4781455ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 4791457ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 4791457ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 4801460ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 4801460ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 4811462ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 4811462ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 4821464ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 4821464ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 4831467ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 4831467ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 4841470ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 4841470ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 4851474ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 4851474ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 4861476ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 4861477ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 4871478ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 4871479ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 4881481ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 4881481ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 4901498ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 4901498ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 4911503ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 4911504ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 4921508ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 4921508ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 4931510ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 4931511ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 4941513ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 4941513ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 4951515ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 4951515ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 4961518ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 4961518ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 4971524ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 4971524ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 4981526ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 4981526ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 4991529ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 4991529ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 5001531ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 5001531ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 5011532ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 5011532ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 5021536ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 5021536ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 5031541ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 5031541ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 5041543ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 5041543ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 5051545ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 5051545ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 5061546ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 5061546ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 5071548ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 5071548ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 5081549ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 5081550ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 5091551ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 5091551ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 5101553ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 5101553ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 5111558ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 5111558ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 5121560ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 5121560ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 5131562ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 5131562ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 5141563ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 5141563ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 5151565ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 5151566ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 5161567ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 5161567ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 5171572ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 5171573ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 5181575ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 5181575ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 5191579ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 5191579ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 5201581ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 5201581ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 5211583ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 5211583ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 5221584ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 5221584ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 5231585ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 5231585ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 5241587ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 5241587ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 5251589ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 5251589ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 5261590ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 5261590ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 5271591ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 5271591ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 5281592ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 5281592ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 5291594ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 5291594ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 5301602ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 5301603ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 5311607ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 5311607ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 5321610ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 5321610ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 5331612ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 5331612ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 5341614ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 5341614ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 5351616ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 5351616ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194
+[ 5361618ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[ 5361618ms] [WARNING] session poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollScores (http://localhost:8080/session.js:185:24) @ http://localhost:8080/session.js:194

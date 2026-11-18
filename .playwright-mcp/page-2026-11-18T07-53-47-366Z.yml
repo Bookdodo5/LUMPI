@@ -1,0 +1,86 @@
+- generic [ref=e2]:
+  - banner [ref=e3]:
+    - generic [ref=e5]:
+      - generic [ref=e6]: LUMPI
+      - heading "Doll 2" [level=1] [ref=e21]
+      - generic [ref=e22]: —
+      - generic [ref=e23]: Waiting
+      - generic [ref=e24]: No message from this doll yet
+    - generic [ref=e25]:
+      - generic [ref=e26]: Laptop connected · waiting for the nest
+      - generic "The nest does not report its cloud queue to the laptop yet (T06/T07)." [ref=e31]: "Cloud: no status yet"
+  - navigation [ref=e32]:
+    - link "‹ Overview" [ref=e33] [cursor=pointer]:
+      - /url: /
+    - link "Read the passage →" [ref=e34] [cursor=pointer]:
+      - /url: /session.html?doll=2
+  - main [ref=e35]:
+    - generic [ref=e36]:
+      - generic [ref=e37]:
+        - generic [ref=e38]: Latest session
+        - generic [ref=e39]: 0%
+        - generic [ref=e40]: No reading score yet · scores come from the AI (T12)
+      - generic [ref=e41]:
+        - generic [ref=e42]:
+          - heading "Failed words · practice" [level=2] [ref=e43]
+          - generic [ref=e44]: 0 under 60
+        - paragraph [ref=e46]: No word scores yet.
+      - generic [ref=e47]:
+        - generic [ref=e48]:
+          - heading "Mode · last hour" [level=2] [ref=e49]
+          - generic [ref=e50]: Child's choice
+        - generic [ref=e51]:
+          - paragraph [ref=e52]: No messages from this doll in the last hour.
+          - generic [ref=e53]: 0 min reading · 0 min quiet study
+    - generic [ref=e54]:
+      - generic [ref=e55]:
+        - generic [ref=e56]:
+          - 'heading "Last hour: mode, loudness and score" [level=2] [ref=e57]'
+          - generic [ref=e58]: Hover a block for its times
+        - generic [ref=e60]:
+          - generic [ref=e61]: Mode
+          - generic "No data 13:53–14:53" [ref=e64]
+          - generic [ref=e65]: Loudness
+          - generic [ref=e66]: No sound level yet (T09)
+          - generic [ref=e67]: Score
+          - generic [ref=e68]: No scores yet (T12)
+          - generic [ref=e70]:
+            - generic [ref=e71]: 13:53
+            - generic [ref=e72]: 14:23
+            - generic [ref=e73]: now
+      - generic [ref=e74]:
+        - generic [ref=e75]:
+          - heading "Did practising help?" [level=2] [ref=e76]
+          - generic [ref=e77]: 1st try → after practice
+        - paragraph [ref=e79]: No practice results yet. Needs word scores from the AI (T12).
+    - generic [ref=e80]:
+      - generic [ref=e81]:
+        - generic [ref=e82]:
+          - heading "Session history" [level=2] [ref=e83]
+          - generic [ref=e84]: Click to read the passage
+        - paragraph [ref=e86]: No reading sessions yet.
+      - generic [ref=e87]:
+        - heading "Engagement" [level=2] [ref=e89]
+        - generic [ref=e90]:
+          - generic [ref=e91]:
+            - generic [ref=e92]: Reading time · last hour
+            - generic [ref=e93]: 0 min
+          - generic [ref=e94]:
+            - generic [ref=e95]: Quiet Study · last hour
+            - generic [ref=e96]: 0 min
+          - generic [ref=e97]: "Days read this week: needs saved history (T15)."
+      - generic [ref=e98]:
+        - generic [ref=e99]:
+          - heading "Noise at this desk" [level=2] [ref=e100]
+          - generic [ref=e101]: 0 events in Quiet Study
+        - generic [ref=e102]:
+          - generic [ref=e103]: No reading · — dB
+          - generic [ref=e121]:
+            - generic [ref=e122]: OK
+            - generic [ref=e123]: A bit noisy
+            - generic [ref=e124]: Too loud
+          - generic [ref=e125]: The doll does not send its sound level yet (T09).
+  - contentinfo [ref=e126]:
+    - generic [ref=e128]: LUMPI · Interactive Reading Companion
+    - link "Advanced / debug" [ref=e143] [cursor=pointer]:
+      - /url: /debug/

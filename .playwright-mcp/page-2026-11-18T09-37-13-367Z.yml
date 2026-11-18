@@ -1,0 +1,215 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e3]:
+    - banner [ref=e4]:
+      - generic [ref=e6]:
+        - generic [ref=e7]: LUMPI
+        - heading "Classroom overview" [level=1] [ref=e22]
+      - generic [ref=e23]:
+        - group "Scores shown" [ref=e24]:
+          - button "Today" [pressed] [ref=e25] [cursor=pointer]
+          - button "Past classes" [ref=e26] [cursor=pointer]
+        - generic [ref=e27]:
+          - generic [ref=e28]: Nest and laptop connected
+          - generic "The nest does not report its cloud queue to the laptop yet (T06/T07)." [ref=e33]: "Cloud: no status yet"
+    - main [ref=e34]:
+      - generic [ref=e35]:
+        - generic [ref=e36]:
+          - heading "Dolls" [level=2] [ref=e38]
+          - generic [ref=e40]:
+            - link "Doll 1 Quiet study Quiet Study ⚑ Needs help ›" [ref=e41] [cursor=pointer]:
+              - /url: /doll.html?doll=1
+              - generic [ref=e42]:
+                - generic [ref=e43]: Doll 1
+                - generic [ref=e58]: Quiet study
+              - generic [ref=e59]: Quiet Study
+              - generic [ref=e60]: ⚑ Needs help
+              - generic [ref=e61]: ›
+            - link "Doll 2 Book 04D5E6F7 · p.1 · try 24 · Waiting for AI Reading ✓ OK ›" [ref=e62] [cursor=pointer]:
+              - /url: /doll.html?doll=2
+              - generic [ref=e63]:
+                - generic [ref=e64]: Doll 2
+                - generic [ref=e79]: Book 04D5E6F7 · p.1 · try 24 · Waiting for AI
+              - generic [ref=e80]: Reading
+              - generic [ref=e81]: ✓ OK
+              - generic [ref=e82]: ›
+        - generic [ref=e83]:
+          - generic [ref=e84]:
+            - heading "Mode · last hour" [level=2] [ref=e85]
+            - generic [ref=e86]:
+              - generic [ref=e87]: Reading
+              - generic [ref=e89]: Quiet
+              - generic [ref=e91]: Idle
+              - generic [ref=e93]: No data
+          - generic [ref=e96]:
+            - generic [ref=e97]: Doll 1
+            - generic [ref=e98]:
+              - generic "No data 15:37–15:47" [ref=e99]
+              - generic "Idle 15:47–15:49" [ref=e100]
+              - generic "Reading 15:49–16:19" [ref=e101]: Reading 30m
+              - generic "Quiet Study 16:19–16:23" [ref=e102]
+              - generic "Reading 16:23–16:29" [ref=e103]
+              - generic "Quiet Study 16:29–16:34" [ref=e104]
+              - generic "Idle 16:34–16:36" [ref=e105]
+              - generic "Quiet Study 16:36–16:37" [ref=e106]
+            - generic [ref=e107]: Doll 2
+            - generic [ref=e108]:
+              - generic "No data 15:37–15:47" [ref=e109]
+              - generic "Idle 15:47–15:48" [ref=e110]
+              - generic "Reading 15:48–16:37" [ref=e111]: Reading 49m
+            - generic [ref=e112]:
+              - generic [ref=e113]: 15:37
+              - generic [ref=e114]: 16:07
+              - generic [ref=e115]: now
+        - generic [ref=e116]:
+          - generic [ref=e117]:
+            - heading "Recent activity" [level=2] [ref=e118]
+            - generic [ref=e119]: Last hour · newest first
+          - generic [ref=e121]:
+            - link "16:37 Doll 2 → Waiting for AI" [ref=e122] [cursor=pointer]:
+              - /url: /doll.html?doll=2
+              - generic [ref=e123]: 16:37
+              - generic [ref=e124]: Doll 2 → Waiting for AI
+            - link "16:36 Doll 2 → Recording" [ref=e125] [cursor=pointer]:
+              - /url: /doll.html?doll=2
+              - generic [ref=e126]: 16:36
+              - generic [ref=e127]: Doll 2 → Recording
+            - link "16:36 Doll 1 ⚑ asked for help" [ref=e128] [cursor=pointer]:
+              - /url: /doll.html?doll=1
+              - generic [ref=e129]: 16:36
+              - generic [ref=e130]: Doll 1 ⚑ asked for help
+            - link "16:36 Doll 2 → Book on the mat" [ref=e131] [cursor=pointer]:
+              - /url: /doll.html?doll=2
+              - generic [ref=e132]: 16:36
+              - generic [ref=e133]: Doll 2 → Book on the mat
+            - link "16:36 Doll 2 → Giving feedback" [ref=e134] [cursor=pointer]:
+              - /url: /doll.html?doll=2
+              - generic [ref=e135]: 16:36
+              - generic [ref=e136]: Doll 2 → Giving feedback
+      - generic [ref=e137]:
+        - generic [ref=e138]:
+          - generic [ref=e139]:
+            - heading "Score trend" [level=2] [ref=e140]
+            - generic [ref=e141]: Session average · class started 15:48
+          - img "Average score of each reading session today, one line per doll." [ref=e143]:
+            - generic [ref=e144]: "0"
+            - generic [ref=e145]: "20"
+            - generic [ref=e146]: "40"
+            - generic [ref=e147]: "60"
+            - generic [ref=e148]: "80"
+            - generic [ref=e149]: "100"
+            - generic [ref=e150]: Good · 85
+            - generic [ref=e151]: Practise · 60
+            - generic [ref=e152]: 15:48
+            - generic [ref=e153]: 16:12
+            - generic [ref=e154]: now
+            - generic "Doll 1 · 15:49–16:17 · 65% · 14 tries" [ref=e156]
+            - generic "Doll 1 · 16:23–16:27 · 63% · 2 tries" [ref=e157]
+            - generic "Doll 2 · 15:48–16:36 · 65% · 24 tries" [ref=e158]
+            - generic [ref=e159]: Doll 2
+            - generic [ref=e160]: 65%
+            - generic [ref=e161]: Doll 1
+            - generic [ref=e162]: 63% ▼ 2
+        - generic [ref=e163]:
+          - generic [ref=e164]:
+            - heading "Pronunciation by sound (IPA)" [level=2] [ref=e165]
+            - generic [ref=e166]: Class average · weakest first
+          - generic [ref=e167]:
+            - generic [ref=e168]: 65%
+            - generic [ref=e169]: Class score · Close · Doll 1 · 65% | Doll 2 · 65%
+          - generic [ref=e170]:
+            - generic [ref=e171]:
+              - generic [ref=e172]: /θ/
+              - generic [ref=e175]: 44% ×28
+              - generic [ref=e176]: through 56% · thought 62%
+            - generic [ref=e177]:
+              - generic [ref=e178]: /ð/
+              - generic [ref=e181]: 48% ×32
+              - generic [ref=e182]: the 60%
+            - generic [ref=e183]:
+              - generic [ref=e184]: /r/
+              - generic [ref=e187]: 52% ×76
+              - generic [ref=e188]: through 56% · very 61% · rain 61%
+            - generic [ref=e189]:
+              - generic [ref=e190]: /v/
+              - generic [ref=e193]: 56% ×24
+              - generic [ref=e194]: very 61%
+            - generic [ref=e195]:
+              - generic [ref=e196]: /s/
+              - generic [ref=e199]: 60% ×2
+              - generic [ref=e200]: sat 66%
+            - generic [ref=e201]:
+              - generic [ref=e202]: /ʃ/
+              - generic [ref=e205]: 62% ×14
+              - generic [ref=e206]: she 68%
+            - generic [ref=e207]:
+              - generic [ref=e208]: /ɒ/
+              - generic [ref=e211]: 66% ×2
+              - generic [ref=e212]: on 65%
+            - generic [ref=e213]:
+              - generic [ref=e214]: /m/
+              - generic [ref=e217]: 66% ×2
+              - generic [ref=e218]: mat 65%
+      - generic [ref=e219]:
+        - generic [ref=e220]:
+          - generic [ref=e221]: Improved today
+          - generic [ref=e222]: −2 pts overall today · first → latest session
+        - generic [ref=e223]:
+          - generic [ref=e224]:
+            - heading "Room" [level=2] [ref=e225]
+            - generic [ref=e226]: "Teacher near nest: Yes"
+          - generic [ref=e227]:
+            - generic [ref=e228]:
+              - generic [ref=e229]: Light
+              - generic [ref=e230]: Updated 16:37
+            - img "Light gauge around a lit lamp. The marker sits in the green Normal zone, between Too dark on the left and Too bright on the right." [ref=e231]:
+              - generic [ref=e245]: Normal
+              - generic [ref=e246]: 293 lx
+              - generic [ref=e247]: Too dark
+              - generic [ref=e248]: Too bright
+            - generic [ref=e253]:
+              - generic [ref=e254]: Teacher distance
+              - generic [ref=e255]: from the nest
+            - generic [ref=e256]: 144 cm
+            - generic [ref=e259]:
+              - generic [ref=e260]: "0"
+              - generic [ref=e261]: Near · 2 m
+              - generic [ref=e262]: 4 m+
+        - generic [ref=e263]:
+          - generic [ref=e264]:
+            - heading "Words the class struggles with" [level=2] [ref=e265]
+            - link "Read the passages →" [ref=e266] [cursor=pointer]:
+              - /url: /session.html
+          - generic [ref=e267]:
+            - generic [ref=e268]:
+              - generic [ref=e269]: through
+              - generic [ref=e272]: 56% ×14
+            - generic [ref=e273]:
+              - generic [ref=e274]: the
+              - generic [ref=e277]: 60% ×32
+            - generic [ref=e278]:
+              - generic [ref=e279]: very
+              - generic [ref=e282]: 61% ×24
+            - generic [ref=e283]:
+              - generic [ref=e284]: rain
+              - generic [ref=e287]: 61% ×24
+            - generic [ref=e288]:
+              - generic [ref=e289]: thought
+              - generic [ref=e292]: 62% ×14
+            - generic [ref=e293]:
+              - generic [ref=e294]: mat
+              - generic [ref=e297]: 65% ×2
+            - generic [ref=e298]:
+              - generic [ref=e299]: cat
+              - generic [ref=e302]: 65% ×2
+            - generic [ref=e303]:
+              - generic [ref=e304]: "on"
+              - generic [ref=e307]: 65% ×2
+    - contentinfo [ref=e308]:
+      - generic [ref=e310]: LUMPI · Interactive Reading Companion
+      - link "Advanced / debug" [ref=e325] [cursor=pointer]:
+        - /url: /debug/
+  - alert [ref=e326]:
+    - generic [ref=e327]: ⚑ A child needs help
+    - link "Doll 1 · asked at 16:36" [ref=e328] [cursor=pointer]:
+      - /url: /doll.html?doll=1
+    - button "OK, I am going" [ref=e329] [cursor=pointer]

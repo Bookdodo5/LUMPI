@@ -17,3 +17,7 @@ config/private*
 .claude/
 docs/dashboard/
 hermes-run-test/
+
+# Class reading scores saved by laptop/dashboard_server.py
+data/scores/
+data/room/

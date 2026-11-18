@@ -1,0 +1,91 @@
+- generic [ref=f5e2]:
+  - banner [ref=f5e3]:
+    - generic [ref=f5e5]:
+      - generic [ref=f5e6]: LUMPI
+      - generic [ref=f5e21]:
+        - link "Overview" [ref=f5e22] [cursor=pointer]:
+          - /url: /
+        - generic [ref=f5e23]:
+          - text: ·
+          - link "Doll 1" [ref=f5e24] [cursor=pointer]:
+            - /url: /doll.html?doll=1
+      - heading "Reading session" [level=1] [ref=f5e25]
+      - generic [ref=f5e26]: Doll 1 · book 04D5E6F7 · 16:35
+  - main [ref=f5e27]:
+    - generic [ref=f5e28]:
+      - generic [ref=f5e29]:
+        - generic [ref=f5e30]: Reading score · session 16:35
+        - img "Score 62 percent, Close" [ref=f5e32]:
+          - generic [ref=f5e36]: "0"
+          - generic [ref=f5e37]: "100"
+          - generic [ref=f5e38]: Practise
+          - generic [ref=f5e39]: Good
+          - generic [ref=f5e40]: "60"
+          - generic [ref=f5e41]: "85"
+          - generic [ref=f5e43]: 62%
+          - generic [ref=f5e44]: CLOSE
+        - generic [ref=f5e45]: ▼ 8 pts vs previous session (70%)
+        - generic [ref=f5e49]:
+          - generic [ref=f5e50]: ● Good · 0
+          - generic [ref=f5e51]: ● Close · 2
+          - generic [ref=f5e52]: ● Practise · 2
+      - generic [ref=f5e53]:
+        - heading "Timing" [level=2] [ref=f5e55]
+        - generic [ref=f5e56]:
+          - generic [ref=f5e57]:
+            - generic [ref=f5e58]: Started
+            - generic [ref=f5e59]: 16:35
+          - generic [ref=f5e60]:
+            - generic [ref=f5e61]: Total
+            - generic [ref=f5e62]: 2 min
+          - generic [ref=f5e63]:
+            - generic [ref=f5e64]: Tries
+            - generic [ref=f5e65]: "1"
+          - generic [ref=f5e66]:
+            - generic [ref=f5e67]: Passages
+            - generic [ref=f5e68]: "1"
+      - generic [ref=f5e69]:
+        - generic [ref=f5e70]:
+          - heading "Lowest words" [level=2] [ref=f5e71]
+          - generic [ref=f5e72]: Avg accuracy · times read
+        - generic [ref=f5e73]:
+          - generic [ref=f5e74]:
+            - generic [ref=f5e75]: rain
+            - generic [ref=f5e78]: 58% ×1
+          - generic [ref=f5e79]:
+            - generic [ref=f5e80]: very
+            - generic [ref=f5e83]: 59% ×1
+          - generic [ref=f5e84]:
+            - generic [ref=f5e85]: fell
+            - generic [ref=f5e88]: 63% ×1
+          - generic [ref=f5e89]:
+            - generic [ref=f5e90]: light
+            - generic [ref=f5e93]: 67% ×1
+    - generic [ref=f5e94]:
+      - generic [ref=f5e95]:
+        - heading "Passage, word by word · every try" [level=2] [ref=f5e96]
+        - generic [ref=f5e97]: "% correct under each word"
+      - generic [ref=f5e99]:
+        - generic [ref=f5e100]: p.1 · try 1 16:37 · 62%
+        - generic [ref=f5e101]:
+          - generic [ref=f5e102]:
+            - generic "very · 59%" [ref=f5e103]: very
+            - generic [ref=f5e104]: 59%
+          - generic [ref=f5e105]:
+            - generic "light · 67%" [ref=f5e106]: light
+            - generic [ref=f5e107]: 67%
+          - generic [ref=f5e108]:
+            - generic "rain · 58%" [ref=f5e109]: rain
+            - generic [ref=f5e110]: 58%
+          - generic [ref=f5e111]:
+            - generic "fell · 63%" [ref=f5e112]: fell
+            - generic [ref=f5e113]: 63%
+      - generic [ref=f5e114]:
+        - generic [ref=f5e115]: Good · 85+
+        - generic [ref=f5e116]: Close · 60–84
+        - generic [ref=f5e117]: Practise · under 60
+        - generic [ref=f5e118]: Thresholds are placeholders (AI accuracy test Q04).
+  - contentinfo [ref=f5e119]:
+    - generic [ref=f5e121]: LUMPI · Interactive Reading Companion
+    - link "Advanced / debug" [ref=f5e136] [cursor=pointer]:
+      - /url: /debug/

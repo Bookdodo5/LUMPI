@@ -1,8 +1,10 @@
 """LUMPI dashboard server.
 
-Receives events from the nest, keeps the latest state and recent history of
-each node in memory, keeps rejected messages for developers, and serves the
-dashboard page.
+Receives events from the nest and reading scores from the laptop AI, keeps
+the latest state and recent history of each node in memory, saves scores to
+data/scores/<day>.jsonl and one room reading a minute to data/room/<day>.jsonl
+(one file per class day), keeps rejected messages for developers, and serves
+the dashboard page.
 
 Run from the project folder (same key as LUMPI_LAN_KEY in config/private.h):
     LUMPI_LAN_KEY=test python3 laptop/dashboard_server.py
@@ -28,7 +30,9 @@ from urllib.parse import parse_qs, urlsplit
 
 
 PORT = 8080
-MAX_BODY_BYTES = 2048
+# A laptop AI score message carries every word of the passage, so it is bigger than a nest event.
+MAX_BODY_BYTES = 8192
+MAX_WORDS = 80
 STALE_AFTER_S = 30
 OFFLINE_AFTER_S = 60
 RECENT_SIZE = 20
@@ -36,9 +40,11 @@ ERROR_SIZE = 50
 SEEN_LIMIT = 1000
 VALID_CLOCK_AFTER = 1700000000
 
-# One hour of messages every 5 s per node. Heartbeats are every 10 s.
-HISTORY_SIZE = 720
-HISTORY_MINUTES = [5, 15, 60]
+# Three hours of messages every 5 s per node (a whole class day). Heartbeats are every 10 s.
+HISTORY_SIZE = 2160
+HISTORY_MINUTES = [5, 15, 60, 180]
+# Room readings saved to disk at most once a minute; enough for light and teacher analytics.
+ROOM_SAVE_EVERY_S = 60
 
 # Same value as gateway_settings dark_lux in config/settings.h.
 DARK_LUX = 100.0
@@ -61,11 +67,24 @@ VALID_NODES = [0, 1, 2, 3]
 
 # A doll heartbeat carries the full doll state (null when no book), so old
 # book values cannot stay on screen after the book is removed.
+# score: from the laptop AI, one per reading attempt (see EXAMPLES["score"]).
+# help: the child pressed "need help" on the doll. noise: the doll's sound
+# level, sent only while the doll is in Quiet Study.
 REQUIRED_DATA = {
     "room": ["lux", "distance_cm"],
     "start": ["uid", "passage", "attempt", "fsr"],
     "status": ["uid", "passage", "attempt", "fsr"],
+    "score": ["uid", "passage", "attempt", "score", "words"],
+    "help": [],
+    "noise": ["db"],
 }
+
+# These events do not change the doll's mode or book on the page.
+EXTRA_EVENTS = ["score", "help", "noise"]
+
+# A reading session starts when the child switches the doll into reading
+# and ends when the doll leaves reading. Same list as READING_ACTIVITIES in shared.js.
+READING_ACTIVITIES = ["book_on", "recording", "waiting_ai", "feedback"]
 
 ACTIVITIES = [
     None,
@@ -104,6 +123,41 @@ EXAMPLES = {
         "activity": "idle",
         "data": {"uid": None, "passage": None, "attempt": None, "fsr": 0},
     },
+    # Laptop AI -> POST /api/telemetry, same X-LUMPI-Token header as the nest.
+    # score and every word/phoneme score: 0 to 100. ipa: one IPA sound of that word.
+    "score": {
+        "event_id": "laptop_ai/17",
+        "node_id": 1,
+        "event_type": "score",
+        "recorded_at": 1794794410,
+        "activity": None,
+        "data": {
+            "uid": "04A1B2C3",
+            "passage": 2,
+            "attempt": 1,
+            "score": 72,
+            "words": [
+                {"word": "think", "score": 55, "phonemes": [{"ipa": "θ", "score": 30}, {"ipa": "ɪ", "score": 80}, {"ipa": "ŋ", "score": 60}, {"ipa": "k", "score": 50}]},
+                {"word": "fish", "score": 90, "phonemes": [{"ipa": "f", "score": 95}, {"ipa": "ɪ", "score": 85}, {"ipa": "ʃ", "score": 90}]},
+            ],
+        },
+    },
+    "help": {
+        "event_id": "lumpi_1a2b3c4d/45",
+        "node_id": 1,
+        "event_type": "help",
+        "recorded_at": 1794794420,
+        "activity": None,
+        "data": {},
+    },
+    "noise": {
+        "event_id": "lumpi_1a2b3c4d/46",
+        "node_id": 2,
+        "event_type": "noise",
+        "recorded_at": 1794794430,
+        "activity": None,
+        "data": {"db": 68.5},
+    },
 }
 
 # First match wins. Matched against the error text before the ":".
@@ -116,13 +170,15 @@ HINTS = [
     ("bad node_id", "node_id must be the number 0 (nest), 1, 2 or 3 (dolls). A number, not text. Check NODE_ID in the doll firmware."),
     ("room event must", "Only the nest (node_id 0) sends room events."),
     ("doll event cannot", "node_id 0 is the nest. A doll must use its own number: 1, 2 or 3."),
-    ("bad event_type", "event_type must be start, status or room."),
+    ("bad event_type", "event_type must be start, status, room, score, help or noise."),
     ("bad recorded_at", "recorded_at must be unix seconds as a whole number. The nest needs NTP time before sending."),
     ("bad activity", "activity must be idle, book_on, recording, waiting_ai, feedback, quiet_study, stopped, or null."),
     ("data is not", "data must be an object {...}."),
+    ("bad data.score", "score must be a number from 0 to 100."),
+    ("bad data.words", f"words must be a list (at most {MAX_WORDS}) of {{word, score, phonemes: [{{ipa, score}}]}}. Every score is 0 to 100."),
     ("bad data.", "Each data value must be a number, text or null. No lists or nested objects."),
     ("bad token", "The X-LUMPI-Token header is missing or wrong. It must match LUMPI_LAN_KEY on the laptop."),
-    ("bad length", "Content-Length is missing, or the body is larger than 2048 bytes."),
+    ("bad length", f"Content-Length is missing, or the body is larger than {MAX_BODY_BYTES} bytes."),
 ]
 
 # Serve dashboard/v7 by default. LUMPI_DASHBOARD=v1 to v6 serves an older page.
@@ -130,6 +186,9 @@ HINTS = [
 DASHBOARD_DIR = Path(__file__).resolve().parent.parent / "dashboard"
 PAGE_DIR = DASHBOARD_DIR / os.environ.get("LUMPI_DASHBOARD", "v7")
 DEBUG_DIR = DASHBOARD_DIR / "v5"
+# One file per day. The tests point this at a temporary folder.
+SCORES_DIR = Path(__file__).resolve().parent.parent / "data" / "scores"
+ROOM_DIR = Path(__file__).resolve().parent.parent / "data" / "room"
 PAGE_FILES = {
     "/": ("index.html", "text/html; charset=utf-8"),
     "/doll.html": ("doll.html", "text/html; charset=utf-8"),
@@ -138,6 +197,7 @@ PAGE_FILES = {
     "/app.js": ("app.js", "text/javascript; charset=utf-8"),
     "/shared.js": ("shared.js", "text/javascript; charset=utf-8"),
     "/doll.js": ("doll.js", "text/javascript; charset=utf-8"),
+    "/session.js": ("session.js", "text/javascript; charset=utf-8"),
     "/charts.js": ("charts.js", "text/javascript; charset=utf-8"),
 }
 
@@ -148,6 +208,10 @@ history = {}
 counts = {}
 errors = deque(maxlen=ERROR_SIZE)
 totals = {"rejected": 0, "error_id": 0}
+# node_id -> recorded_at when the doll's current reading session began.
+session_start = {}
+# recorded_at of the last room reading saved to disk.
+room_saved = {"at": 0}
 recorder = {"file": None, "last_time": None}
 # Requests run in threads (see make_server), so the state above is changed and
 # read under this one lock.
@@ -163,6 +227,8 @@ def clear_state():
     errors.clear()
     totals["rejected"] = 0
     totals["error_id"] = 0
+    session_start.clear()
+    room_saved["at"] = 0
 
 
 def is_whole_number(value):
@@ -176,6 +242,26 @@ def is_plain_value(value):
     if isinstance(value, bool):
         return False
     return isinstance(value, (int, float))
+
+
+def is_score(value):
+    return isinstance(value, (int, float)) and not isinstance(value, bool) and 0 <= value <= 100
+
+
+def check_words(words):
+    """Return an error message, or None. words = [{word, score, phonemes: [{ipa, score}]}]."""
+    if not isinstance(words, list) or len(words) > MAX_WORDS:
+        return f"bad data.words: got {shown(words)}"
+    for item in words:
+        if not isinstance(item, dict) or not isinstance(item.get("word"), str) or not is_score(item.get("score")):
+            return f"bad data.words item: got {shown(item)}"
+        phonemes = item.get("phonemes")
+        if not isinstance(phonemes, list):
+            return f"bad data.words phonemes: got {shown(item)}"
+        for sound in phonemes:
+            if not isinstance(sound, dict) or not isinstance(sound.get("ipa"), str) or not is_score(sound.get("score")):
+                return f"bad data.words phoneme: got {shown(sound)}"
+    return None
 
 
 def shown(value):
@@ -219,7 +305,16 @@ def check_event(event):
         if key not in data:
             return f"missing data.{key}"
 
+    if event_type == "score":
+        if not is_score(data["score"]):
+            return f"bad data.score: got {shown(data['score'])}"
+        error = check_words(data["words"])
+        if error is not None:
+            return error
+
     for key, value in data.items():
+        if key == "words" and event_type == "score":
+            continue
         if not is_plain_value(value):
             return f"bad data.{key}: got {shown(value)}"
 
@@ -258,6 +353,64 @@ def node_counts(node_id):
     return counts[node_id]
 
 
+def scores_path(day):
+    return SCORES_DIR / f"{day}.jsonl"
+
+
+def append_line(path, line):
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with open(path, "a", encoding="utf-8") as file:
+        file.write(json.dumps(line, ensure_ascii=False) + "\n")
+
+
+def read_lines(path):
+    if not path.exists():
+        return []
+    return [json.loads(text) for text in path.read_text(encoding="utf-8").splitlines() if text.strip()]
+
+
+def save_room(event):
+    """Keep one room reading a minute, so past classes can compare light and teacher distance with scores."""
+    if event["recorded_at"] - room_saved["at"] < ROOM_SAVE_EVERY_S:
+        return
+    room_saved["at"] = event["recorded_at"]
+    line = {"recorded_at": event["recorded_at"], **event["data"]}
+    append_line(ROOM_DIR / f"{day_of(event['recorded_at'])}.jsonl", line)
+
+
+def day_of(unix_seconds):
+    return time.strftime("%Y-%m-%d", time.localtime(unix_seconds))
+
+
+def save_score(event):
+    """Append one score to that day's file, tagged with the doll's reading session."""
+    node_id = event["node_id"]
+    # A score with no reading session open (status lost) starts one.
+    session = session_start.setdefault(node_id, event["recorded_at"])
+    line = {"node_id": node_id, "recorded_at": event["recorded_at"], "session": session, **event["data"]}
+    append_line(scores_path(day_of(event["recorded_at"])), line)
+
+
+def read_scores(day):
+    return read_lines(scores_path(day))
+
+
+def scores_view(now, which):
+    """which = "today" or "past". Past = every saved day, today included, for the trend over classes."""
+    today = day_of(now)
+    if which == "today":
+        return {"today": today, "scores": read_scores(today), "room": read_lines(ROOM_DIR / f"{today}.jsonl")}
+
+    # shortcut: reads every day file on each call; fine for one term, add a summary file if it gets slow.
+    days = sorted(path.stem for path in SCORES_DIR.glob("*.jsonl"))
+    scores = []
+    room = []
+    for day in days:
+        scores.extend(read_scores(day))
+        room.extend(read_lines(ROOM_DIR / f"{day}.jsonl"))
+    return {"today": today, "days": days, "scores": scores, "room": room}
+
+
 def add_event(event, now):
     """Save a valid event. Return 'added' or 'duplicate'."""
     event_id = event["event_id"]
@@ -274,6 +427,14 @@ def add_event(event, now):
 
     node_counts(node_id)["added"] += 1
     recent.appendleft({**event, "received_at": now})
+
+    # Scores come from the laptop AI, not the doll: saved to disk, not to history.
+    if event["event_type"] == "score":
+        save_score(event)
+        return "added"
+
+    if event["event_type"] == "room":
+        save_room(event)
 
     if node_id not in history:
         history[node_id] = deque(maxlen=HISTORY_SIZE)
@@ -293,12 +454,27 @@ def add_event(event, now):
     # Any valid event proves the node is alive.
     node["received_at"] = now
 
+    if event["event_type"] == "help":
+        # Nest time (NTP), so a replayed or late press keeps its real time.
+        node["help_at"] = max(node.get("help_at", 0), event["recorded_at"])
+        return "added"
+
+    if event["event_type"] == "noise":
+        node["noise_db"] = event["data"]["db"]
+        node["noise_at"] = event["recorded_at"]
+        return "added"
+
     # A late, older event must not overwrite newer values.
     if event["recorded_at"] >= node["recorded_at"]:
         node["recorded_at"] = event["recorded_at"]
         node["event_type"] = event["event_type"]
         node["activity"] = event["activity"]
         node["values"].update(event["data"])
+
+        if node_id != 0 and event["activity"] in READING_ACTIVITIES:
+            session_start.setdefault(node_id, event["recorded_at"])
+        elif node_id != 0:
+            session_start.pop(node_id, None)
 
     return "added"
 
@@ -336,6 +512,10 @@ def nodes_view(now):
             "activity": node["activity"],
             "values": node["values"],
             "counts": node_count,
+            "help_at": node.get("help_at"),
+            "help_age_s": None if node.get("help_at") is None else round(time.time() - node["help_at"], 1),
+            "noise_db": node.get("noise_db"),
+            "noise_at": node.get("noise_at"),
         }
 
         if node_id == 0:
@@ -353,7 +533,8 @@ def history_view(now, minutes):
 
     for node_id in sorted(set(SHOWN_NODES) | set(history)):
         points = history.get(node_id, [])
-        nodes[str(node_id)] = [point for point in points if point["t"] >= start]
+        # Both times: a message replayed from an earlier day arrives now but belongs to that day.
+        nodes[str(node_id)] = [point for point in points if point["t"] >= start and point["recorded_at"] >= start]
 
     return {
         "now": now,
@@ -454,6 +635,15 @@ class DashboardHandler(BaseHTTPRequestHandler):
                 return
             with state_lock:
                 self.send_json(200, history_view(time.time(), int(text)))
+            return
+
+        if url.path == "/api/dashboard/scores":
+            which = parse_qs(url.query).get("day", ["today"])[0]
+            if which not in ["today", "past"]:
+                self.send_json(400, {"error": "day must be today or past"})
+                return
+            with state_lock:
+                self.send_json(200, scores_view(time.time(), which))
             return
 
         page_dir = PAGE_DIR

@@ -1,0 +1,667 @@
+[   16119ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/nodes:1
+[   16119ms] [WARNING] doll poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at poll (http://localhost:8080/doll.js:232:25) @ http://localhost:8080/doll.js:236
+[   18121ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/nodes:1
+[   18121ms] [WARNING] doll poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at poll (http://localhost:8080/doll.js:232:25) @ http://localhost:8080/doll.js:236
+[   20082ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[   20082ms] [WARNING] doll score poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at loadScores (http://localhost:8080/doll.js:214:24)
+    at pollScores (http://localhost:8080/doll.js:225:11) @ http://localhost:8080/doll.js:219
+[   20101ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/history?minutes=60:1
+[   20101ms] [WARNING] doll history poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollHistory (http://localhost:8080/doll.js:245:23) @ http://localhost:8080/doll.js:247
+[   20124ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/nodes:1
+[   20124ms] [WARNING] doll poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at poll (http://localhost:8080/doll.js:232:25) @ http://localhost:8080/doll.js:236
+[   22127ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/nodes:1
+[   22127ms] [WARNING] doll poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at poll (http://localhost:8080/doll.js:232:25) @ http://localhost:8080/doll.js:236
+[   24129ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/nodes:1
+[   24129ms] [WARNING] doll poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at poll (http://localhost:8080/doll.js:232:25) @ http://localhost:8080/doll.js:236
+[   26131ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/nodes:1
+[   26131ms] [WARNING] doll poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at poll (http://localhost:8080/doll.js:232:25) @ http://localhost:8080/doll.js:236
+[   28133ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/nodes:1
+[   28133ms] [WARNING] doll poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at poll (http://localhost:8080/doll.js:232:25) @ http://localhost:8080/doll.js:236
+[   30085ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[   30085ms] [WARNING] doll score poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at loadScores (http://localhost:8080/doll.js:214:24)
+    at pollScores (http://localhost:8080/doll.js:225:11) @ http://localhost:8080/doll.js:219
+[   30103ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/history?minutes=60:1
+[   30103ms] [WARNING] doll history poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollHistory (http://localhost:8080/doll.js:245:23) @ http://localhost:8080/doll.js:247
+[   30135ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/nodes:1
+[   30136ms] [WARNING] doll poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at poll (http://localhost:8080/doll.js:232:25) @ http://localhost:8080/doll.js:236
+[   32138ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/nodes:1
+[   32138ms] [WARNING] doll poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at poll (http://localhost:8080/doll.js:232:25) @ http://localhost:8080/doll.js:236
+[   34141ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/nodes:1
+[   34141ms] [WARNING] doll poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at poll (http://localhost:8080/doll.js:232:25) @ http://localhost:8080/doll.js:236
+[   36144ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/nodes:1
+[   36144ms] [WARNING] doll poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at poll (http://localhost:8080/doll.js:232:25) @ http://localhost:8080/doll.js:236
+[   38147ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/nodes:1
+[   38147ms] [WARNING] doll poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at poll (http://localhost:8080/doll.js:232:25) @ http://localhost:8080/doll.js:236
+[   40088ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[   40088ms] [WARNING] doll score poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at loadScores (http://localhost:8080/doll.js:214:24)
+    at pollScores (http://localhost:8080/doll.js:225:11) @ http://localhost:8080/doll.js:219
+[   40106ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/history?minutes=60:1
+[   40106ms] [WARNING] doll history poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollHistory (http://localhost:8080/doll.js:245:23) @ http://localhost:8080/doll.js:247
+[   40150ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/nodes:1
+[   40150ms] [WARNING] doll poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at poll (http://localhost:8080/doll.js:232:25) @ http://localhost:8080/doll.js:236
+[   42152ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/nodes:1
+[   42152ms] [WARNING] doll poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at poll (http://localhost:8080/doll.js:232:25) @ http://localhost:8080/doll.js:236
+[   44155ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/nodes:1
+[   44155ms] [WARNING] doll poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at poll (http://localhost:8080/doll.js:232:25) @ http://localhost:8080/doll.js:236
+[   46158ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/nodes:1
+[   46158ms] [WARNING] doll poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at poll (http://localhost:8080/doll.js:232:25) @ http://localhost:8080/doll.js:236
+[   48160ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/nodes:1
+[   48161ms] [WARNING] doll poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at poll (http://localhost:8080/doll.js:232:25) @ http://localhost:8080/doll.js:236
+[   50091ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[   50091ms] [WARNING] doll score poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at loadScores (http://localhost:8080/doll.js:214:24)
+    at pollScores (http://localhost:8080/doll.js:225:11) @ http://localhost:8080/doll.js:219
+[   50109ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/history?minutes=60:1
+[   50109ms] [WARNING] doll history poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollHistory (http://localhost:8080/doll.js:245:23) @ http://localhost:8080/doll.js:247
+[   50163ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/nodes:1
+[   50163ms] [WARNING] doll poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at poll (http://localhost:8080/doll.js:232:25) @ http://localhost:8080/doll.js:236
+[   52166ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/nodes:1
+[   52166ms] [WARNING] doll poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at poll (http://localhost:8080/doll.js:232:25) @ http://localhost:8080/doll.js:236
+[   54168ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/nodes:1
+[   54168ms] [WARNING] doll poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at poll (http://localhost:8080/doll.js:232:25) @ http://localhost:8080/doll.js:236
+[   56171ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/nodes:1
+[   56171ms] [WARNING] doll poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at poll (http://localhost:8080/doll.js:232:25) @ http://localhost:8080/doll.js:236
+[   58174ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/nodes:1
+[   58174ms] [WARNING] doll poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at poll (http://localhost:8080/doll.js:232:25) @ http://localhost:8080/doll.js:236
+[   60093ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[   60094ms] [WARNING] doll score poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at loadScores (http://localhost:8080/doll.js:214:24)
+    at pollScores (http://localhost:8080/doll.js:225:11) @ http://localhost:8080/doll.js:219
+[   60111ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/history?minutes=60:1
+[   60111ms] [WARNING] doll history poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollHistory (http://localhost:8080/doll.js:245:23) @ http://localhost:8080/doll.js:247
+[   60176ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/nodes:1
+[   60177ms] [WARNING] doll poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at poll (http://localhost:8080/doll.js:232:25) @ http://localhost:8080/doll.js:236
+[   62179ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/nodes:1
+[   62179ms] [WARNING] doll poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at poll (http://localhost:8080/doll.js:232:25) @ http://localhost:8080/doll.js:236
+[   64182ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/nodes:1
+[   64182ms] [WARNING] doll poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at poll (http://localhost:8080/doll.js:232:25) @ http://localhost:8080/doll.js:236
+[   66185ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/nodes:1
+[   66185ms] [WARNING] doll poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at poll (http://localhost:8080/doll.js:232:25) @ http://localhost:8080/doll.js:236
+[   68188ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/nodes:1
+[   68188ms] [WARNING] doll poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at poll (http://localhost:8080/doll.js:232:25) @ http://localhost:8080/doll.js:236
+[   70096ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[   70096ms] [WARNING] doll score poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at loadScores (http://localhost:8080/doll.js:214:24)
+    at pollScores (http://localhost:8080/doll.js:225:11) @ http://localhost:8080/doll.js:219
+[   70114ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/history?minutes=60:1
+[   70114ms] [WARNING] doll history poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollHistory (http://localhost:8080/doll.js:245:23) @ http://localhost:8080/doll.js:247
+[   70190ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/nodes:1
+[   70191ms] [WARNING] doll poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at poll (http://localhost:8080/doll.js:232:25) @ http://localhost:8080/doll.js:236
+[   72193ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/nodes:1
+[   72194ms] [WARNING] doll poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at poll (http://localhost:8080/doll.js:232:25) @ http://localhost:8080/doll.js:236
+[   74196ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/nodes:1
+[   74197ms] [WARNING] doll poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at poll (http://localhost:8080/doll.js:232:25) @ http://localhost:8080/doll.js:236
+[   76199ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/nodes:1
+[   76199ms] [WARNING] doll poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at poll (http://localhost:8080/doll.js:232:25) @ http://localhost:8080/doll.js:236
+[   78202ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/nodes:1
+[   78202ms] [WARNING] doll poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at poll (http://localhost:8080/doll.js:232:25) @ http://localhost:8080/doll.js:236
+[   80099ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[   80099ms] [WARNING] doll score poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at loadScores (http://localhost:8080/doll.js:214:24)
+    at pollScores (http://localhost:8080/doll.js:225:11) @ http://localhost:8080/doll.js:219
+[   80116ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/history?minutes=60:1
+[   80116ms] [WARNING] doll history poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollHistory (http://localhost:8080/doll.js:245:23) @ http://localhost:8080/doll.js:247
+[   80204ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/nodes:1
+[   80204ms] [WARNING] doll poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at poll (http://localhost:8080/doll.js:232:25) @ http://localhost:8080/doll.js:236
+[   82207ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/nodes:1
+[   82207ms] [WARNING] doll poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at poll (http://localhost:8080/doll.js:232:25) @ http://localhost:8080/doll.js:236
+[   84209ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/nodes:1
+[   84210ms] [WARNING] doll poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at poll (http://localhost:8080/doll.js:232:25) @ http://localhost:8080/doll.js:236
+[   86212ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/nodes:1
+[   86213ms] [WARNING] doll poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at poll (http://localhost:8080/doll.js:232:25) @ http://localhost:8080/doll.js:236
+[   88215ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/nodes:1
+[   88215ms] [WARNING] doll poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at poll (http://localhost:8080/doll.js:232:25) @ http://localhost:8080/doll.js:236
+[   90101ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[   90102ms] [WARNING] doll score poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at loadScores (http://localhost:8080/doll.js:214:24)
+    at pollScores (http://localhost:8080/doll.js:225:11) @ http://localhost:8080/doll.js:219
+[   90119ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/history?minutes=60:1
+[   90119ms] [WARNING] doll history poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollHistory (http://localhost:8080/doll.js:245:23) @ http://localhost:8080/doll.js:247
+[   90218ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/nodes:1
+[   90218ms] [WARNING] doll poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at poll (http://localhost:8080/doll.js:232:25) @ http://localhost:8080/doll.js:236
+[   92221ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/nodes:1
+[   92221ms] [WARNING] doll poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at poll (http://localhost:8080/doll.js:232:25) @ http://localhost:8080/doll.js:236
+[   94223ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/nodes:1
+[   94223ms] [WARNING] doll poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at poll (http://localhost:8080/doll.js:232:25) @ http://localhost:8080/doll.js:236
+[   96226ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/nodes:1
+[   96226ms] [WARNING] doll poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at poll (http://localhost:8080/doll.js:232:25) @ http://localhost:8080/doll.js:236
+[   98229ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/nodes:1
+[   98229ms] [WARNING] doll poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at poll (http://localhost:8080/doll.js:232:25) @ http://localhost:8080/doll.js:236
+[  100104ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[  100104ms] [WARNING] doll score poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at loadScores (http://localhost:8080/doll.js:214:24)
+    at pollScores (http://localhost:8080/doll.js:225:11) @ http://localhost:8080/doll.js:219
+[  100121ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/history?minutes=60:1
+[  100121ms] [WARNING] doll history poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollHistory (http://localhost:8080/doll.js:245:23) @ http://localhost:8080/doll.js:247
+[  100232ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/nodes:1
+[  100232ms] [WARNING] doll poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at poll (http://localhost:8080/doll.js:232:25) @ http://localhost:8080/doll.js:236
+[  102235ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/nodes:1
+[  102235ms] [WARNING] doll poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at poll (http://localhost:8080/doll.js:232:25) @ http://localhost:8080/doll.js:236
+[  104238ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/nodes:1
+[  104238ms] [WARNING] doll poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at poll (http://localhost:8080/doll.js:232:25) @ http://localhost:8080/doll.js:236
+[  106244ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/nodes:1
+[  106245ms] [WARNING] doll poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at poll (http://localhost:8080/doll.js:232:25) @ http://localhost:8080/doll.js:236
+[  108249ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/nodes:1
+[  108249ms] [WARNING] doll poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at poll (http://localhost:8080/doll.js:232:25) @ http://localhost:8080/doll.js:236
+[  110107ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[  110107ms] [WARNING] doll score poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at loadScores (http://localhost:8080/doll.js:214:24)
+    at pollScores (http://localhost:8080/doll.js:225:11) @ http://localhost:8080/doll.js:219
+[  110124ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/history?minutes=60:1
+[  110124ms] [WARNING] doll history poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollHistory (http://localhost:8080/doll.js:245:23) @ http://localhost:8080/doll.js:247
+[  110251ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/nodes:1
+[  110251ms] [WARNING] doll poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at poll (http://localhost:8080/doll.js:232:25) @ http://localhost:8080/doll.js:236
+[  112254ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/nodes:1
+[  112254ms] [WARNING] doll poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at poll (http://localhost:8080/doll.js:232:25) @ http://localhost:8080/doll.js:236
+[  114257ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/nodes:1
+[  114257ms] [WARNING] doll poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at poll (http://localhost:8080/doll.js:232:25) @ http://localhost:8080/doll.js:236
+[  116260ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/nodes:1
+[  116260ms] [WARNING] doll poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at poll (http://localhost:8080/doll.js:232:25) @ http://localhost:8080/doll.js:236
+[  118263ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/nodes:1
+[  118263ms] [WARNING] doll poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at poll (http://localhost:8080/doll.js:232:25) @ http://localhost:8080/doll.js:236
+[  120110ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[  120110ms] [WARNING] doll score poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at loadScores (http://localhost:8080/doll.js:214:24)
+    at pollScores (http://localhost:8080/doll.js:225:11) @ http://localhost:8080/doll.js:219
+[  120126ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/history?minutes=60:1
+[  120126ms] [WARNING] doll history poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollHistory (http://localhost:8080/doll.js:245:23) @ http://localhost:8080/doll.js:247
+[  120266ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/nodes:1
+[  120266ms] [WARNING] doll poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at poll (http://localhost:8080/doll.js:232:25) @ http://localhost:8080/doll.js:236
+[  122268ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/nodes:1
+[  122268ms] [WARNING] doll poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at poll (http://localhost:8080/doll.js:232:25) @ http://localhost:8080/doll.js:236
+[  124271ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/nodes:1
+[  124271ms] [WARNING] doll poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at poll (http://localhost:8080/doll.js:232:25) @ http://localhost:8080/doll.js:236
+[  126273ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/nodes:1
+[  126273ms] [WARNING] doll poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at poll (http://localhost:8080/doll.js:232:25) @ http://localhost:8080/doll.js:236
+[  128276ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/nodes:1
+[  128276ms] [WARNING] doll poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at poll (http://localhost:8080/doll.js:232:25) @ http://localhost:8080/doll.js:236
+[  130112ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[  130113ms] [WARNING] doll score poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at loadScores (http://localhost:8080/doll.js:214:24)
+    at pollScores (http://localhost:8080/doll.js:225:11) @ http://localhost:8080/doll.js:219
+[  130129ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/history?minutes=60:1
+[  130129ms] [WARNING] doll history poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollHistory (http://localhost:8080/doll.js:245:23) @ http://localhost:8080/doll.js:247
+[  130278ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/nodes:1
+[  130278ms] [WARNING] doll poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at poll (http://localhost:8080/doll.js:232:25) @ http://localhost:8080/doll.js:236
+[  132281ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/nodes:1
+[  132281ms] [WARNING] doll poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at poll (http://localhost:8080/doll.js:232:25) @ http://localhost:8080/doll.js:236
+[  134284ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/nodes:1
+[  134284ms] [WARNING] doll poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at poll (http://localhost:8080/doll.js:232:25) @ http://localhost:8080/doll.js:236
+[  136286ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/nodes:1
+[  136286ms] [WARNING] doll poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at poll (http://localhost:8080/doll.js:232:25) @ http://localhost:8080/doll.js:236
+[  138289ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/nodes:1
+[  138289ms] [WARNING] doll poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at poll (http://localhost:8080/doll.js:232:25) @ http://localhost:8080/doll.js:236
+[  140115ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[  140115ms] [WARNING] doll score poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at loadScores (http://localhost:8080/doll.js:214:24)
+    at pollScores (http://localhost:8080/doll.js:225:11) @ http://localhost:8080/doll.js:219
+[  140131ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/history?minutes=60:1
+[  140131ms] [WARNING] doll history poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollHistory (http://localhost:8080/doll.js:245:23) @ http://localhost:8080/doll.js:247
+[  140292ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/nodes:1
+[  140292ms] [WARNING] doll poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at poll (http://localhost:8080/doll.js:232:25) @ http://localhost:8080/doll.js:236
+[  142294ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/nodes:1
+[  142294ms] [WARNING] doll poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at poll (http://localhost:8080/doll.js:232:25) @ http://localhost:8080/doll.js:236
+[  144297ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/nodes:1
+[  144297ms] [WARNING] doll poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at poll (http://localhost:8080/doll.js:232:25) @ http://localhost:8080/doll.js:236
+[  146299ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/nodes:1
+[  146300ms] [WARNING] doll poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at poll (http://localhost:8080/doll.js:232:25) @ http://localhost:8080/doll.js:236
+[  148302ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/nodes:1
+[  148302ms] [WARNING] doll poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at poll (http://localhost:8080/doll.js:232:25) @ http://localhost:8080/doll.js:236
+[  150118ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[  150118ms] [WARNING] doll score poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at loadScores (http://localhost:8080/doll.js:214:24)
+    at pollScores (http://localhost:8080/doll.js:225:11) @ http://localhost:8080/doll.js:219
+[  150133ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/history?minutes=60:1
+[  150134ms] [WARNING] doll history poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollHistory (http://localhost:8080/doll.js:245:23) @ http://localhost:8080/doll.js:247
+[  150304ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/nodes:1
+[  150304ms] [WARNING] doll poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at poll (http://localhost:8080/doll.js:232:25) @ http://localhost:8080/doll.js:236
+[  152307ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/nodes:1
+[  152307ms] [WARNING] doll poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at poll (http://localhost:8080/doll.js:232:25) @ http://localhost:8080/doll.js:236
+[  154310ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/nodes:1
+[  154310ms] [WARNING] doll poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at poll (http://localhost:8080/doll.js:232:25) @ http://localhost:8080/doll.js:236
+[  156312ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/nodes:1
+[  156312ms] [WARNING] doll poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at poll (http://localhost:8080/doll.js:232:25) @ http://localhost:8080/doll.js:236
+[  158315ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/nodes:1
+[  158315ms] [WARNING] doll poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at poll (http://localhost:8080/doll.js:232:25) @ http://localhost:8080/doll.js:236
+[  160121ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[  160121ms] [WARNING] doll score poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at loadScores (http://localhost:8080/doll.js:214:24)
+    at pollScores (http://localhost:8080/doll.js:225:11) @ http://localhost:8080/doll.js:219
+[  160136ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/history?minutes=60:1
+[  160136ms] [WARNING] doll history poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollHistory (http://localhost:8080/doll.js:245:23) @ http://localhost:8080/doll.js:247
+[  160317ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/nodes:1
+[  160318ms] [WARNING] doll poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at poll (http://localhost:8080/doll.js:232:25) @ http://localhost:8080/doll.js:236
+[  162320ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/nodes:1
+[  162320ms] [WARNING] doll poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at poll (http://localhost:8080/doll.js:232:25) @ http://localhost:8080/doll.js:236
+[  164323ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/nodes:1
+[  164323ms] [WARNING] doll poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at poll (http://localhost:8080/doll.js:232:25) @ http://localhost:8080/doll.js:236
+[  166325ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/nodes:1
+[  166325ms] [WARNING] doll poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at poll (http://localhost:8080/doll.js:232:25) @ http://localhost:8080/doll.js:236
+[  168328ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/nodes:1
+[  168328ms] [WARNING] doll poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at poll (http://localhost:8080/doll.js:232:25) @ http://localhost:8080/doll.js:236
+[  170123ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[  170123ms] [WARNING] doll score poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at loadScores (http://localhost:8080/doll.js:214:24)
+    at pollScores (http://localhost:8080/doll.js:225:11) @ http://localhost:8080/doll.js:219
+[  170138ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/history?minutes=60:1
+[  170138ms] [WARNING] doll history poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollHistory (http://localhost:8080/doll.js:245:23) @ http://localhost:8080/doll.js:247
+[  170330ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/nodes:1
+[  170330ms] [WARNING] doll poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at poll (http://localhost:8080/doll.js:232:25) @ http://localhost:8080/doll.js:236
+[  172333ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/nodes:1
+[  172333ms] [WARNING] doll poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at poll (http://localhost:8080/doll.js:232:25) @ http://localhost:8080/doll.js:236
+[  174335ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/nodes:1
+[  174335ms] [WARNING] doll poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at poll (http://localhost:8080/doll.js:232:25) @ http://localhost:8080/doll.js:236
+[  176337ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/nodes:1
+[  176337ms] [WARNING] doll poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at poll (http://localhost:8080/doll.js:232:25) @ http://localhost:8080/doll.js:236
+[  178340ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/nodes:1
+[  178340ms] [WARNING] doll poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at poll (http://localhost:8080/doll.js:232:25) @ http://localhost:8080/doll.js:236
+[  180125ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[  180125ms] [WARNING] doll score poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at loadScores (http://localhost:8080/doll.js:214:24)
+    at pollScores (http://localhost:8080/doll.js:225:11) @ http://localhost:8080/doll.js:219
+[  180140ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/history?minutes=60:1
+[  180140ms] [WARNING] doll history poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollHistory (http://localhost:8080/doll.js:245:23) @ http://localhost:8080/doll.js:247
+[  180342ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/nodes:1
+[  180342ms] [WARNING] doll poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at poll (http://localhost:8080/doll.js:232:25) @ http://localhost:8080/doll.js:236
+[  182347ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/nodes:1
+[  182347ms] [WARNING] doll poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at poll (http://localhost:8080/doll.js:232:25) @ http://localhost:8080/doll.js:236
+[  184349ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/nodes:1
+[  184349ms] [WARNING] doll poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at poll (http://localhost:8080/doll.js:232:25) @ http://localhost:8080/doll.js:236
+[  186351ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/nodes:1
+[  186351ms] [WARNING] doll poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at poll (http://localhost:8080/doll.js:232:25) @ http://localhost:8080/doll.js:236
+[  188353ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/nodes:1
+[  188353ms] [WARNING] doll poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at poll (http://localhost:8080/doll.js:232:25) @ http://localhost:8080/doll.js:236
+[  190128ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[  190128ms] [WARNING] doll score poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at loadScores (http://localhost:8080/doll.js:214:24)
+    at pollScores (http://localhost:8080/doll.js:225:11) @ http://localhost:8080/doll.js:219
+[  190142ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/history?minutes=60:1
+[  190142ms] [WARNING] doll history poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollHistory (http://localhost:8080/doll.js:245:23) @ http://localhost:8080/doll.js:247
+[  190356ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/nodes:1
+[  190356ms] [WARNING] doll poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at poll (http://localhost:8080/doll.js:232:25) @ http://localhost:8080/doll.js:236
+[  192358ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/nodes:1
+[  192358ms] [WARNING] doll poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at poll (http://localhost:8080/doll.js:232:25) @ http://localhost:8080/doll.js:236
+[  194361ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/nodes:1
+[  194361ms] [WARNING] doll poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at poll (http://localhost:8080/doll.js:232:25) @ http://localhost:8080/doll.js:236
+[  196364ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/nodes:1
+[  196364ms] [WARNING] doll poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at poll (http://localhost:8080/doll.js:232:25) @ http://localhost:8080/doll.js:236
+[  198366ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/nodes:1
+[  198367ms] [WARNING] doll poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at poll (http://localhost:8080/doll.js:232:25) @ http://localhost:8080/doll.js:236
+[  200130ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[  200131ms] [WARNING] doll score poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at loadScores (http://localhost:8080/doll.js:214:24)
+    at pollScores (http://localhost:8080/doll.js:225:11) @ http://localhost:8080/doll.js:219
+[  200145ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/history?minutes=60:1
+[  200145ms] [WARNING] doll history poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollHistory (http://localhost:8080/doll.js:245:23) @ http://localhost:8080/doll.js:247
+[  200369ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/nodes:1
+[  200369ms] [WARNING] doll poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at poll (http://localhost:8080/doll.js:232:25) @ http://localhost:8080/doll.js:236
+[  202372ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/nodes:1
+[  202372ms] [WARNING] doll poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at poll (http://localhost:8080/doll.js:232:25) @ http://localhost:8080/doll.js:236
+[  204375ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/nodes:1
+[  204375ms] [WARNING] doll poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at poll (http://localhost:8080/doll.js:232:25) @ http://localhost:8080/doll.js:236
+[  206378ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/nodes:1
+[  206378ms] [WARNING] doll poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at poll (http://localhost:8080/doll.js:232:25) @ http://localhost:8080/doll.js:236
+[  208380ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/nodes:1
+[  208381ms] [WARNING] doll poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at poll (http://localhost:8080/doll.js:232:25) @ http://localhost:8080/doll.js:236
+[  210133ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[  210133ms] [WARNING] doll score poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at loadScores (http://localhost:8080/doll.js:214:24)
+    at pollScores (http://localhost:8080/doll.js:225:11) @ http://localhost:8080/doll.js:219
+[  210148ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/history?minutes=60:1
+[  210148ms] [WARNING] doll history poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollHistory (http://localhost:8080/doll.js:245:23) @ http://localhost:8080/doll.js:247
+[  210383ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/nodes:1
+[  210383ms] [WARNING] doll poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at poll (http://localhost:8080/doll.js:232:25) @ http://localhost:8080/doll.js:236
+[  212386ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/nodes:1
+[  212386ms] [WARNING] doll poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at poll (http://localhost:8080/doll.js:232:25) @ http://localhost:8080/doll.js:236
+[  214389ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/nodes:1
+[  214389ms] [WARNING] doll poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at poll (http://localhost:8080/doll.js:232:25) @ http://localhost:8080/doll.js:236
+[  216392ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/nodes:1
+[  216392ms] [WARNING] doll poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at poll (http://localhost:8080/doll.js:232:25) @ http://localhost:8080/doll.js:236
+[  218394ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/nodes:1
+[  218394ms] [WARNING] doll poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at poll (http://localhost:8080/doll.js:232:25) @ http://localhost:8080/doll.js:236
+[  220136ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[  220136ms] [WARNING] doll score poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at loadScores (http://localhost:8080/doll.js:214:24)
+    at pollScores (http://localhost:8080/doll.js:225:11) @ http://localhost:8080/doll.js:219
+[  220151ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/history?minutes=60:1
+[  220151ms] [WARNING] doll history poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollHistory (http://localhost:8080/doll.js:245:23) @ http://localhost:8080/doll.js:247
+[  220396ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/nodes:1
+[  220396ms] [WARNING] doll poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at poll (http://localhost:8080/doll.js:232:25) @ http://localhost:8080/doll.js:236
+[  222398ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/nodes:1
+[  222398ms] [WARNING] doll poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at poll (http://localhost:8080/doll.js:232:25) @ http://localhost:8080/doll.js:236
+[  224400ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/nodes:1
+[  224400ms] [WARNING] doll poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at poll (http://localhost:8080/doll.js:232:25) @ http://localhost:8080/doll.js:236
+[  226402ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/nodes:1
+[  226402ms] [WARNING] doll poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at poll (http://localhost:8080/doll.js:232:25) @ http://localhost:8080/doll.js:236
+[  228405ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/nodes:1
+[  228405ms] [WARNING] doll poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at poll (http://localhost:8080/doll.js:232:25) @ http://localhost:8080/doll.js:236
+[  230138ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[  230138ms] [WARNING] doll score poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at loadScores (http://localhost:8080/doll.js:214:24)
+    at pollScores (http://localhost:8080/doll.js:225:11) @ http://localhost:8080/doll.js:219
+[  230152ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/history?minutes=60:1
+[  230153ms] [WARNING] doll history poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollHistory (http://localhost:8080/doll.js:245:23) @ http://localhost:8080/doll.js:247
+[  230406ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/nodes:1
+[  230406ms] [WARNING] doll poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at poll (http://localhost:8080/doll.js:232:25) @ http://localhost:8080/doll.js:236
+[  232410ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/nodes:1
+[  232410ms] [WARNING] doll poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at poll (http://localhost:8080/doll.js:232:25) @ http://localhost:8080/doll.js:236
+[  234414ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/nodes:1
+[  234414ms] [WARNING] doll poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at poll (http://localhost:8080/doll.js:232:25) @ http://localhost:8080/doll.js:236
+[  236416ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/nodes:1
+[  236416ms] [WARNING] doll poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at poll (http://localhost:8080/doll.js:232:25) @ http://localhost:8080/doll.js:236
+[  238420ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/nodes:1
+[  238421ms] [WARNING] doll poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at poll (http://localhost:8080/doll.js:232:25) @ http://localhost:8080/doll.js:236
+[  240140ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/scores?day=today:1
+[  240141ms] [WARNING] doll score poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at loadScores (http://localhost:8080/doll.js:214:24)
+    at pollScores (http://localhost:8080/doll.js:225:11) @ http://localhost:8080/doll.js:219
+[  240157ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/history?minutes=60:1
+[  240159ms] [WARNING] doll history poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at pollHistory (http://localhost:8080/doll.js:245:23) @ http://localhost:8080/doll.js:247
+[  240430ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/nodes:1
+[  240430ms] [WARNING] doll poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at poll (http://localhost:8080/doll.js:232:25) @ http://localhost:8080/doll.js:236
+[  242437ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/nodes:1
+[  242437ms] [WARNING] doll poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at poll (http://localhost:8080/doll.js:232:25) @ http://localhost:8080/doll.js:236
+[  244441ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/dashboard/nodes:1
+[  244441ms] [WARNING] doll poll failed: TypeError: Failed to fetch
+    at getJson (http://localhost:8080/shared.js:194:26)
+    at poll (http://localhost:8080/doll.js:232:25) @ http://localhost:8080/doll.js:236

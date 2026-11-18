@@ -159,3 +159,73 @@ g++ -std=c++17 -I src/common tests/test_dashboard_event.cpp -o build/test_dashbo
 
 1. Get Tapanan to approve the event contract (PRD section 3).
 2. Agree the nest-to-laptop transport, then send real events in T07.
+
+2026-11-18 (v7 scores)
+
+- Laptop AI format fixed: POST /api/telemetry, same X-LUMPI-Token, one
+  `score` event per reading attempt. Example in `EXAMPLES["score"]` in
+  `laptop/dashboard_server.py`: overall score, then every word with its score
+  and its IPA sounds `{ipa, score}`. All scores 0-100. Body limit now 8192.
+- New nest events: `help` (child pressed help, data `{}`) and `noise`
+  (data `{db}`, sent only in Quiet Study). Nest firmware still has to send them.
+- Session = from the child picking Reading until the doll leaves Reading. The
+  server tags each score with its session and saves it to
+  `data/scores/<day>.jsonl` (gitignored). GET /api/dashboard/scores?day=today|past.
+- Overview: Today / Past classes toggle. Score trend on the class clock
+  (today) or per class day (past). Reading score card replaced by
+  Pronunciation by sound (IPA): average per sound with its weakest words.
+  Words card shows worst words with avg accuracy. Needs help KPI removed,
+  replaced by a popup when a child presses help. Room: noise replaced by
+  teacher distance.
+- Doll page: same toggle, latest session, words to practise, own IPA sounds,
+  session list + chart, noise only in Quiet Study.
+- Needs help is now only the help event (5 min). The 3rd-try rule is gone.
+
+2026-11-18 (v7 round 2)
+
+- `laptop/mock_class.py`: a fake class (past days + today) sent through
+  POST /api/telemetry with the token, like real hardware. Every event type,
+  10 s heartbeats, sessions, scores with words and IPA, noise in Quiet Study,
+  help. `--seed` changes every number. `tests/test_mock_class.py` plays it
+  through the server's checks and compares what is saved with what was sent.
+- Mode bar gaps seen earlier came from sparse test data, not the page. With
+  10 s heartbeats the bar is solid.
+- Server saves one room reading a minute to `data/room/<day>.jsonl`.
+  History keeps 3 hours (`minutes=180`) for the doll's all-day timeline.
+  `help_at` is now the nest's time, so a late press keeps its real time.
+- Overview: Improved says "today" / "overall". Past classes shows light vs
+  score and teacher distance vs score (1 dot per session, with r). Header
+  circle removed. "Passages →" opens the class passage page.
+- Doll page: score meter + Read the passage at top left, one timeline (mode,
+  noise in Quiet Study, scores, help), summary at top right, Did practising
+  help (1st try → latest per word).
+- Session page (`session.js`): class view = each passage, word = class
+  average. `?doll=N` = that doll's latest session, every try word by word.
+- Noise bands 60 / 70 dB are placeholders until the mic is calibrated (T09).
+
+2026-11-18 (v7 round 3)
+
+- Word lists and passage cells show why a word is wrong: its weakest IPA
+  sounds, e.g. "through · Weak sound: /θ/ 43% · /r/ 55%".
+- Did practising help is now plain rows: first % → latest %, change chip,
+  weak sound, reads.
+- Overview Past: Mode and Recent activity (live) are replaced by "Class by
+  class" (date, sessions, tries, average, change, weakest sound).
+- Session page: "‹ Doll N" / "‹ Overview" back button under the header,
+  like the doll page.
+- Earlier "one doll in Score trend": in that mock run Doll 2 never read
+  today. The mock now starts every doll with a reading block.
+- `docs/dashboard-api.md`: message format and routes for the nest and the
+  laptop AI. `test_api_doc_examples_are_accepted` checks every JSON example
+  in it against the server.
+
+- Session page: every word shows all its IPA sounds in reading order, each
+  with its own %, so the teacher sees which sound made the word wrong. The
+  weakest sound is outlined. Class view averages each sound over every read.
+- Session page: "Lowest pronunciation" card (IPA sounds, weakest first,
+  with the words they are in), next to "Lowest words" under the passage.
+- Session page: IPA sounds under each word are now only right (green ✓)
+  or wrong (red ✗, under 60). No percentage.
+- Fixed mock data: `tests/fixtures/dashboard/mock_class.jsonl` (seed 7,
+  4 past days + today, 2314 messages). `mock_class.py --load` sends it with
+  times moved so today ends now; same numbers every run. `--save` makes a new one.

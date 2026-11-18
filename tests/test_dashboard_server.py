@@ -23,6 +23,11 @@ from laptop import dashboard_server as server
 
 
 FIXTURES = Path(__file__).resolve().parent / "fixtures" / "dashboard"
+
+# Never write test data into the real data/ folder.
+TEST_DATA = Path(tempfile.mkdtemp())
+server.SCORES_DIR = TEST_DATA / "scores"
+server.ROOM_DIR = TEST_DATA / "room"
 START = 1000.0
 
 
@@ -251,7 +256,7 @@ class DeveloperViewTest(unittest.TestCase):
         self.assertEqual(server.history_view(START + 400, 5)["nodes"]["2"], [])
 
     def test_history_is_bounded(self):
-        for number in range(800):
+        for number in range(server.HISTORY_SIZE + 80):
             server.add_event(doll_event(number), START + number)
         self.assertEqual(len(server.history[1]), server.HISTORY_SIZE)
 
@@ -424,9 +429,105 @@ class HttpTest(unittest.TestCase):
             idle.close()
 
     def test_page_files_are_served(self):
-        for path in ["/", "/doll.html", "/session.html", "/style.css", "/app.js", "/shared.js", "/doll.js", "/debug/", "/debug/charts.js"]:
+        for path in ["/", "/doll.html", "/session.html", "/style.css", "/app.js", "/shared.js", "/doll.js", "/session.js", "/debug/", "/debug/charts.js"]:
             status, _ = self.get(path)
             self.assertEqual(status, 200)
+
+
+class ScoreTest(unittest.TestCase):
+    """Laptop AI scores, reading sessions, help and noise."""
+
+    def setUp(self):
+        server.clear_state()
+        self.folder = tempfile.mkdtemp()
+        self.old_dir = server.SCORES_DIR
+        self.old_room = server.ROOM_DIR
+        server.SCORES_DIR = Path(self.folder) / "scores"
+        server.ROOM_DIR = Path(self.folder) / "room"
+        self.number = 0
+
+    def tearDown(self):
+        server.SCORES_DIR = self.old_dir
+        server.ROOM_DIR = self.old_room
+        shutil.rmtree(self.folder)
+
+    def send(self, event_type, recorded_at, data, activity=None, node_id=1):
+        self.number += 1
+        event = {
+            "event_id": f"t/{self.number}",
+            "node_id": node_id,
+            "event_type": event_type,
+            "recorded_at": recorded_at,
+            "activity": activity,
+            "data": data,
+        }
+        return server.handle_telemetry(json.dumps(event), 1000.0)
+
+    def status(self, recorded_at, activity):
+        return self.send("status", recorded_at, {"uid": "04A1", "passage": 1, "attempt": 1, "fsr": 3000}, activity)
+
+    def test_example_score_is_accepted_and_saved(self):
+        example = server.EXAMPLES["score"]
+        code, result = server.handle_telemetry(json.dumps(example, ensure_ascii=False), 1000.0)
+        self.assertEqual((code, result), (200, "added"))
+
+        lines = server.read_scores(server.day_of(example["recorded_at"]))
+        self.assertEqual(len(lines), 1)
+        self.assertEqual(lines[0]["words"][0]["phonemes"][0]["ipa"], "θ")
+        # A score does not change the doll's mode or put words into the node values.
+        self.assertNotIn(1, server.latest)
+
+    def test_sessions_follow_reading_mode(self):
+        t = 1794794400
+        self.status(t, "book_on")
+        self.send("score", t + 10, {"uid": "04A1", "passage": 1, "attempt": 1, "score": 50, "words": []})
+        self.status(t + 20, "recording")
+        self.send("score", t + 30, {"uid": "04A1", "passage": 1, "attempt": 2, "score": 70, "words": []})
+        # Leaving reading ends the session; coming back starts a new one.
+        self.status(t + 40, "quiet_study")
+        self.status(t + 50, "book_on")
+        self.send("score", t + 60, {"uid": "04A1", "passage": 1, "attempt": 1, "score": 90, "words": []})
+
+        sessions = [line["session"] for line in server.read_scores(server.day_of(t))]
+        self.assertEqual(sessions, [t, t, t + 50])
+
+    def test_bad_scores_are_rejected(self):
+        t = 1794794400
+        bad = [
+            {"uid": "a", "passage": 1, "attempt": 1, "score": 101, "words": []},
+            {"uid": "a", "passage": 1, "attempt": 1, "score": 50, "words": "think"},
+            {"uid": "a", "passage": 1, "attempt": 1, "score": 50, "words": [{"word": "x", "score": 50}]},
+            {"uid": "a", "passage": 1, "attempt": 1, "score": 50, "words": [{"word": "x", "score": 50, "phonemes": [{"ipa": "θ", "score": -1}]}]},
+            {"uid": "a", "passage": 1, "attempt": 1, "score": 50},
+        ]
+        for data in bad:
+            code, _ = self.send("score", t, data)
+            self.assertEqual(code, 400, data)
+        self.assertFalse(server.SCORES_DIR.exists())
+        for error in server.errors:
+            self.assertNotEqual(error["hint"], "", error["reason"])
+
+    def test_help_and_noise_keep_the_doll_state(self):
+        t = 1794794400
+        self.status(t, "quiet_study")
+        self.send("help", t + 5, {})
+        self.send("noise", t + 6, {"db": 71.5})
+
+        doll = view(1000.0)[1]
+        self.assertEqual(doll["activity"], "quiet_study")
+        self.assertEqual(doll["help_at"], t + 5)
+        self.assertEqual(doll["noise_db"], 71.5)
+
+    def test_past_lists_every_day(self):
+        day_one = 1794794400
+        day_two = day_one + 86400
+        self.send("score", day_one, {"uid": "a", "passage": 1, "attempt": 1, "score": 40, "words": []})
+        self.send("score", day_two, {"uid": "a", "passage": 1, "attempt": 1, "score": 80, "words": []})
+
+        past = server.scores_view(day_two, "past")
+        self.assertEqual(len(past["days"]), 2)
+        self.assertEqual([line["score"] for line in past["scores"]], [40, 80])
+        self.assertEqual(len(server.scores_view(day_two, "today")["scores"]), 1)
 
 
 if __name__ == "__main__":

@@ -13,6 +13,7 @@ config/private*
 *.partial
 *.sqlite*
 
-.omc
+.omc/
+.claude/
 docs/dashboard/
 hermes-run-test/

@@ -124,8 +124,8 @@ HINTS = [
     ("bad length", "Content-Length is missing, or the body is larger than 2048 bytes."),
 ]
 
-# Serve dashboard/v3 by default. LUMPI_DASHBOARD=v1 or v2 serves an older page.
-PAGE_DIR = Path(__file__).resolve().parent.parent / "dashboard" / os.environ.get("LUMPI_DASHBOARD", "v3")
+# Serve dashboard/v5 by default. LUMPI_DASHBOARD=v1 to v4 serves an older page.
+PAGE_DIR = Path(__file__).resolve().parent.parent / "dashboard" / os.environ.get("LUMPI_DASHBOARD", "v5")
 PAGE_FILES = {
     "/": ("index.html", "text/html; charset=utf-8"),
     "/style.css": ("style.css", "text/css; charset=utf-8"),

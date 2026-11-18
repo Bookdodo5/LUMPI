@@ -10,6 +10,7 @@ tests do not wait in real time.
 
 import json
 import shutil
+import socket
 import subprocess
 import tempfile
 import threading
@@ -104,6 +105,22 @@ class ScenarioTest(unittest.TestCase):
         values = view(end + 1)[2]["values"]
         self.assertIsNone(values["uid"])
         self.assertIsNone(values["passage"])
+
+    def test_teacher_view(self):
+        # Mock data for the v7 teacher page: every activity, every light zone, a failed sensor.
+        end = play("teacher_view")
+        nodes = view(end)
+
+        # The late quiet_study message did not overwrite doll 1.
+        self.assertEqual(nodes[1]["activity"], "recording")
+        self.assertEqual(nodes[1]["values"]["attempt"], 2)
+        self.assertEqual(nodes[1]["counts"], {"added": 7, "duplicate": 1})
+        self.assertEqual(nodes[2]["activity"], "stopped")
+        self.assertEqual(nodes[0]["values"], {"lux": 420.0, "distance_cm": 320.0})
+
+        # The late message is still kept in history, for the activity list.
+        activities = [point["activity"] for point in server.history[1]]
+        self.assertIn("quiet_study", activities)
 
     def test_doll2_dies(self):
         end = play("doll2_dies")
@@ -348,7 +365,7 @@ class HttpTest(unittest.TestCase):
             return error.code
 
     def get(self, path):
-        with urllib.request.urlopen(f"http://127.0.0.1:{self.port}{path}") as response:
+        with urllib.request.urlopen(f"http://127.0.0.1:{self.port}{path}", timeout=5) as response:
             return response.status, response.read()
 
     def test_post_and_read_back(self):
@@ -396,8 +413,18 @@ class HttpTest(unittest.TestCase):
             self.get("/api/dashboard/history?minutes=7")
         self.assertEqual(caught.exception.code, 400)
 
+    def test_idle_connection_does_not_block(self):
+        # Found in the v7 live test: Chrome opened a spare connection and sent
+        # nothing, and the single-threaded server stopped answering everyone.
+        idle = socket.create_connection(("127.0.0.1", self.port))
+        try:
+            status, _ = self.get("/api/dashboard/nodes")
+            self.assertEqual(status, 200)
+        finally:
+            idle.close()
+
     def test_page_files_are_served(self):
-        for path in ["/", "/style.css", "/app.js", "/charts.js"]:
+        for path in ["/", "/doll.html", "/session.html", "/style.css", "/app.js", "/shared.js", "/doll.js", "/debug/", "/debug/charts.js"]:
             status, _ = self.get(path)
             self.assertEqual(status, 200)
 

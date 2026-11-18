@@ -83,7 +83,16 @@ Use ESP32-WROOM-32 boards. Disconnect power before changing wires.
 Doll and gateway pin maps differ. Don't wire both roles onto the same board.
 No Wi-Fi keys needed for these tests. Never commit `config/private.h` later.
 
-Laptop server and AI code will go in `laptop/`.
+Teacher dashboard (laptop, Python 3 only):
+
+```bash
+LUMPI_LAN_KEY=test python3 laptop/dashboard_server.py
+```
+
+Open http://localhost:8080. The page is `dashboard/v7`; the developer page is
+at http://localhost:8080/debug/. Notes and test commands:
+[T05 dashboard work log](docs/t05-dashboard-work-log.md). Screenshots:
+`docs/dashboard/screenshot`. AI code will also go in `laptop/`.
 
 Notes: [test log](docs/test-log.md).
 

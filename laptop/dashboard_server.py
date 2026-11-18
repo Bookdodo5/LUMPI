@@ -19,9 +19,10 @@ import json
 import os
 import socket
 import sys
+import threading
 import time
 from collections import deque
-from http.server import BaseHTTPRequestHandler, HTTPServer
+from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from urllib.parse import parse_qs, urlsplit
 
@@ -124,12 +125,19 @@ HINTS = [
     ("bad length", "Content-Length is missing, or the body is larger than 2048 bytes."),
 ]
 
-# Serve dashboard/v5 by default. LUMPI_DASHBOARD=v1 to v4 serves an older page.
-PAGE_DIR = Path(__file__).resolve().parent.parent / "dashboard" / os.environ.get("LUMPI_DASHBOARD", "v5")
+# Serve dashboard/v7 by default. LUMPI_DASHBOARD=v1 to v6 serves an older page.
+# The v5 developer page is also served under /debug/ (the "Advanced / debug" link).
+DASHBOARD_DIR = Path(__file__).resolve().parent.parent / "dashboard"
+PAGE_DIR = DASHBOARD_DIR / os.environ.get("LUMPI_DASHBOARD", "v7")
+DEBUG_DIR = DASHBOARD_DIR / "v5"
 PAGE_FILES = {
     "/": ("index.html", "text/html; charset=utf-8"),
+    "/doll.html": ("doll.html", "text/html; charset=utf-8"),
+    "/session.html": ("session.html", "text/html; charset=utf-8"),
     "/style.css": ("style.css", "text/css; charset=utf-8"),
     "/app.js": ("app.js", "text/javascript; charset=utf-8"),
+    "/shared.js": ("shared.js", "text/javascript; charset=utf-8"),
+    "/doll.js": ("doll.js", "text/javascript; charset=utf-8"),
     "/charts.js": ("charts.js", "text/javascript; charset=utf-8"),
 }
 
@@ -141,6 +149,9 @@ counts = {}
 errors = deque(maxlen=ERROR_SIZE)
 totals = {"rejected": 0, "error_id": 0}
 recorder = {"file": None, "last_time": None}
+# Requests run in threads (see make_server), so the state above is changed and
+# read under this one lock.
+state_lock = threading.Lock()
 
 
 def clear_state():
@@ -420,16 +431,20 @@ class DashboardHandler(BaseHTTPRequestHandler):
     def do_GET(self):
         url = urlsplit(self.path)
 
+        # shortcut: the reply is written while holding the lock; fine for small LAN replies.
         if url.path == "/api/dashboard/nodes":
-            self.send_json(200, nodes_view(time.time()))
+            with state_lock:
+                self.send_json(200, nodes_view(time.time()))
             return
 
         if url.path == "/api/dashboard/events":
-            self.send_json(200, list(recent))
+            with state_lock:
+                self.send_json(200, list(recent))
             return
 
         if url.path == "/api/dashboard/errors":
-            self.send_json(200, errors_view())
+            with state_lock:
+                self.send_json(200, errors_view())
             return
 
         if url.path == "/api/dashboard/history":
@@ -437,15 +452,26 @@ class DashboardHandler(BaseHTTPRequestHandler):
             if not text.isdigit() or int(text) not in HISTORY_MINUTES:
                 self.send_json(400, {"error": f"minutes must be one of {HISTORY_MINUTES}"})
                 return
-            self.send_json(200, history_view(time.time(), int(text)))
+            with state_lock:
+                self.send_json(200, history_view(time.time(), int(text)))
             return
 
-        if url.path not in PAGE_FILES:
+        page_dir = PAGE_DIR
+        page_path = url.path
+        if page_path.startswith("/debug/"):
+            page_dir = DEBUG_DIR
+            page_path = page_path[len("/debug"):]
+
+        if page_path not in PAGE_FILES:
             self.send_json(404, {"error": "not found"})
             return
 
-        file_name, content_type = PAGE_FILES[url.path]
-        body = (PAGE_DIR / file_name).read_bytes()
+        file_name, content_type = PAGE_FILES[page_path]
+        # Not every version has every file (v6 has no charts.js, v5 has no doll.html).
+        if not (page_dir / file_name).exists():
+            self.send_json(404, {"error": "not found"})
+            return
+        body = (page_dir / file_name).read_bytes()
         self.send_response(200)
         self.send_header("Content-Type", content_type)
         self.send_header("Content-Length", str(len(body)))
@@ -463,7 +489,8 @@ class DashboardHandler(BaseHTTPRequestHandler):
         if not hmac.compare_digest(token.encode("utf-8"), self.server.token.encode("utf-8")):
             # The body is not kept, so a stranger cannot put text on the page.
             print(f"rejected from {source}: bad token")
-            record_error(time.time(), source, "bad token", "")
+            with state_lock:
+                record_error(time.time(), source, "bad token", "")
             self.send_json(401, {"error": "bad token"})
             return
 
@@ -474,12 +501,14 @@ class DashboardHandler(BaseHTTPRequestHandler):
 
         if length < 0 or length > MAX_BODY_BYTES:
             print(f"rejected from {source}: bad length {length}")
-            record_error(time.time(), source, f"bad length: got {length}", "")
+            with state_lock:
+                record_error(time.time(), source, f"bad length: got {length}", "")
             self.send_json(400, {"error": "bad length"})
             return
 
         body_text = self.rfile.read(length).decode("utf-8", errors="replace")
-        code, message = handle_telemetry(body_text, time.time(), source)
+        with state_lock:
+            code, message = handle_telemetry(body_text, time.time(), source)
 
         if code != 200:
             print(f"rejected from {source}: {message}")
@@ -494,7 +523,9 @@ class DashboardHandler(BaseHTTPRequestHandler):
 
 
 def make_server(port, token):
-    server = HTTPServer(("0.0.0.0", port), DashboardHandler)
+    # Threading: a browser often opens a spare connection and sends nothing on it.
+    # With the plain HTTPServer that one connection blocked every other request.
+    server = ThreadingHTTPServer(("0.0.0.0", port), DashboardHandler)
     server.token = token
     return server
 

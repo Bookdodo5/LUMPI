@@ -1,0 +1,21 @@
+sequenceDiagram
+    participant D as Doll (sensor)
+    participant N as Nest (gateway)
+    participant V as Vercel API
+    participant R as Runpod AI
+    participant S as Supabase
+    participant T as Teacher
+    D->>N: book on, status
+    N->>V: event (HTTPS + key)
+    V->>S: insert once
+    D->>N: recording
+    N->>V: /v1/assess + audio
+    V->>S: session lookup
+    V->>R: grade
+    R-->>V: code, word, score
+    V->>S: insert score
+    V-->>N: code,word
+    N-->>D: act out feedback
+    T->>V: GET dashboard (password)
+    V->>S: read events
+    V-->>T: dolls, scores

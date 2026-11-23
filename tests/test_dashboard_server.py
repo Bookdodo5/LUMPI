@@ -328,7 +328,7 @@ class FirmwareFormatTest(unittest.TestCase):
             output = subprocess.run([str(program)], check=True, capture_output=True, text=True).stdout
 
         lines = output.splitlines()
-        self.assertEqual(len(lines), 3)
+        self.assertEqual(len(lines), 8)  # room x2, start, status x2, help, noise, score
         for text in lines:
             self.assertIsNone(server.check_event(json.loads(text)), text)
 

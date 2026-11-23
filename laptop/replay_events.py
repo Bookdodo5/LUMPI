@@ -21,7 +21,8 @@ import urllib.error
 import urllib.request
 
 
-SERVER = "http://localhost:8080/api/telemetry"
+# LUMPI_URL=https://<your-site>.vercel.app sends to the cloud instead of the laptop.
+SERVER = os.environ.get("LUMPI_URL", "http://localhost:8080") + "/api/telemetry"
 
 
 def send(body_text, token):

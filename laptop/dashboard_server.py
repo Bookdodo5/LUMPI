@@ -58,7 +58,7 @@ BRIGHT_LUX = 1000.0
 TEACHER_NEAR_CM = 200.0
 TEACHER_MARGIN_CM = 20.0
 # Doll pressure (FSR, 0-4095): book on the mat above FSR_ACTIVE (+/- FSR_MARGIN).
-FSR_ACTIVE = 1500
+FSR_ACTIVE = 1000  # same as doll_tuning::book_on_fsr in config/settings.h
 FSR_MARGIN = 300
 
 # 0 = nest, 1 and 2 = dolls. The gateway parser allows a third doll.

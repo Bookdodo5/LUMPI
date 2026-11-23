@@ -1,4 +1,7 @@
 #pragma once
+// THE WIRING SHEET. Every pin of every board is here and only here.
+// Every bench sketch includes this file, so moving a wire = changing ONE number below.
+// Secrets (Wi-Fi, keys, URLs) live in config/private.h, never here.
 
 #if __has_include("private.h")
 #include "private.h"
@@ -29,11 +32,25 @@
 #endif
 
 #ifndef LUMPI_ADAPTER_URL
-#define LUMPI_ADAPTER_URL ""
+#define LUMPI_ADAPTER_URL "http://10.61.117.202:8080"
 #endif
 
 #ifndef LUMPI_LAN_KEY
 #define LUMPI_LAN_KEY ""
+#endif
+
+#ifndef LUMPI_GATEWAY_URL
+#define LUMPI_GATEWAY_URL "http://10.61.117.68"   // the nest, e.g. "http://192.168.1.50" (dolls send here)
+#endif
+
+// Root certificate of the cloud site (https only). Empty = encrypted but NOT checked (bench only).
+#ifndef LUMPI_CLOUD_CA
+#define LUMPI_CLOUD_CA ""
+#endif
+
+// Which doll this board is: 1, 2 or 3. Set per board in platformio.ini (-DLUMPI_NODE_ID=2).
+#ifndef LUMPI_NODE_ID
+#define LUMPI_NODE_ID 1
 #endif
 
 // Shared gateway pin map from the LUMPI build guide.
@@ -52,13 +69,16 @@ namespace doll_pins {
 constexpr int mic_sck = 26, mic_ws = 25, mic_sd = 34;  // INMP441, I2S port 0
 constexpr int fsr = 35;                                // FSR mat, 10k to GND
 constexpr int rfid_sck = 18, rfid_miso = 19, rfid_mosi = 23, rfid_cs = 27;
-constexpr int record = 13, stop = 14;                  // INPUT_PULLUP
-constexpr int previous = 36, next = 39;                // external 10k pull-ups
+constexpr int record = 13, stop = 14;                  // INPUT_PULLUP; RECORD is the E2 interrupt
+constexpr int page_knob = 36;                          // potentiometer wiper, ADC1; ends to 3.3V and GND
 constexpr int oled_sda = 32, oled_scl = 33;            // the doll's own I2C bus
-constexpr int pir = 15;
 constexpr int speaker_bclk = 16, speaker_lrc = 17, speaker_din = 5;  // MAX98357A, I2S port 1
-constexpr int arm = 21, tongue = 22;                   // servo signals, through 1k
-constexpr int servo_power = 4;                         // D4184 PWM input, 10k pull-down
+constexpr int arm = 21, tongue = 22;                   // servo signals (orange wires)
+}
+
+// Doll calibration knobs. Measure with the pressure test (env s1b_pressure) and change here.
+namespace doll_tuning {
+constexpr int book_on_fsr = 1000;    // FSR above this = a book is on the mat. Measured 2026-11-23 (1k resistor): empty 0, book 1800-2400
 }
 
 namespace room {

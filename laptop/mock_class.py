@@ -28,7 +28,8 @@ import sys
 import time
 import urllib.request
 
-URL = "http://localhost:8080/api/telemetry"
+# LUMPI_URL=https://<your-site>.vercel.app sends to the cloud instead of the laptop.
+URL = os.environ.get("LUMPI_URL", "http://localhost:8080") + "/api/telemetry"
 CLASS_MINUTES = 50
 TODAY_STEP_S = 10
 PAST_STEP_S = 30

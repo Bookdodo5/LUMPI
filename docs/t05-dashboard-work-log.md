@@ -31,7 +31,7 @@ curl -X POST http://localhost:8080/api/telemetry -H "X-LUMPI-Token: test" \
 ```
 
 Nest firmware: fill `LUMPI_ADAPTER_URL` (the server prints it at startup) and
-`LUMPI_LAN_KEY` in `config/private.h`, then upload environment `dashboard_post`.
+`LUMPI_LAN_KEY` in `config/private.h`, then upload environment `s6_nest_to_dashboard`.
 If the ESP32 prints "cannot reach", check that the laptop firewall allows
 port 8080.
 
@@ -75,7 +75,7 @@ g++ -std=c++17 -I src/common tests/test_dashboard_event.cpp -o build/test_dashbo
   C++ for the nest. Failed sensors become null. RFID UIDs must be hex, so a
   bad UID cannot break the JSON. Event IDs include the boot time, so a
   restarted nest is not dropped as duplicates.
-- Added `src/bench/gateway_6_dashboard_post.cpp` (environment `dashboard_post`):
+- Added `src/bench/6_nest_cloud/6_nest_to_dashboard.cpp` (environment `s6_nest_to_dashboard`):
   sends one sample start packet through the real parser, then light and
   distance every 10 s, and prints the server reply.
 - A Python test compiles the C++ builder and checks its output with the server.

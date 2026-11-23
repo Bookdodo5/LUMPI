@@ -1,0 +1,7 @@
+# Vercel only needs the pages, the API and the server code the API imports.
+# Everything else (firmware, tests, docs) stays out of the website.
+/*
+!/api
+!/dashboard
+!/laptop
+!/vercel.json

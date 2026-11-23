@@ -1,0 +1,16 @@
+{
+  "regions": ["sin1"],
+  "functions": {
+    "api/index.py": { "includeFiles": "laptop/dashboard_server.py", "maxDuration": 30 }
+  },
+  "rewrites": [
+    { "source": "/api/telemetry", "destination": "/api/index?route=telemetry" },
+    { "source": "/v1/assess", "destination": "/api/index?route=assess" },
+    { "source": "/api/dashboard/:name", "destination": "/api/index?route=:name" },
+    { "source": "/debug", "destination": "/dashboard/v5/index.html" },
+    { "source": "/debug/", "destination": "/dashboard/v5/index.html" },
+    { "source": "/debug/:file", "destination": "/dashboard/v5/:file" },
+    { "source": "/", "destination": "/dashboard/v7/index.html" },
+    { "source": "/:file", "destination": "/dashboard/v7/:file" }
+  ]
+}

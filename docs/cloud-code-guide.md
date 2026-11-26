@@ -29,6 +29,16 @@ one speech model on **Runpod**. Standard library only, no frameworks.
 4. **The dashboard** (`GET /api/dashboard/nodes|history|scores`): rebuilt from the stored events on
    every request: latest state per doll (online/stale/offline, help), recent messages, scores.
 
+## The teacher dashboard (`dashboard/v7`, plain HTML + JavaScript, no build step)
+
+- `index.html` + `app.js`: Overview (doll rows, room, mode bars, activity, score trend, sounds, words).
+- `doll.html` + `doll.js`: one doll (header chips, today's timeline, meter, summary, "did practising help").
+- `session.html` + `session.js`: one doll's latest reading session, or the whole class, word by word.
+- `shared.js`: what all three use: `repeat()` polling, `watchNodes()` (nest dot, help popup),
+  `watchScores()` (Today / Past buttons), score maths (`sessionsOf`, `wordsOf`, `soundsOf`), lists and charts.
+- `style.css`: every style; the HTML only holds structure and ids that the JavaScript fills.
+- The pages only read `/api/dashboard/*`; the server works out online/stale/offline and `needs_help`.
+
 ## What the plumbing guarantees (so the logic need not)
 
 - Only the nest (LAN key) can send; only the teacher (dashboard password) can read the dashboard.

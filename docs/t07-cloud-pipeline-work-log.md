@@ -222,3 +222,37 @@ Old files kept in `.old/2026-11-26-tanakit/` (same relative paths).
 - Upload job: `systemctl --user status lumpi-upload3`, log `data/books/upload.log`. Safe to rerun.
 - Not deployed by this step.
 - 2026-11-26 after review: gzip database replies; a refused event answers 400 (not 503); silent-node query skips score rows; `.old/` git-ignored. 9 tests OK.
+
+## Live on Vercel, full path tested (2026-11-27)
+
+- https://lumpi.vercel.app, production, commit 3d879dc (same content as `main`).
+- Keys required on every API route; private files answer 404; `/v1/page`, `/v1/word_audio`, dashboard views OK.
+- One Runpod worker warm (ready after 38 s), then switched off (0-0). `/v1/assess` through Vercel -> Runpod -> Supabase:
+  1.8 s audio -> `1,0` in 3076 ms and 2451 ms; last word left out -> `2,2` + word line in 4572 ms.
+  Recordings = the test book's own computer-voice word clips, not a real reader. "three" is heard as "f ɹ iː" (word scores 67, passes).
+- Left in the database: 3 test `score` rows, node 3, book 00000000FFFF.
+- Open: `LUMPI_LAN_KEY` in Vercel is still 7 characters.
+
+## Full live retest (2026-11-27)
+
+- All PASS: access control, telemetry (stored/duplicate/refused), page + audio, `/v1/assess` (cold -> `4,0` in 9.3 s;
+  warm 1.6-3.9 s; 8 s recording 3.6 s; silence `3,0`; unknown book `4,0`; two at once), 3 dashboard pages in a browser.
+- AI switched off after (0-0). More node 3 test rows left in `events`; storage holds only test book 00000000FFFF.
+
+## Dashboard trimmed and reformatted (2026-11-27)
+
+- Same pages, cards, charts, popups and clicks; old copy in `.old/2026-11-27-dashboard-pre-trim/` (v7 + api).
+- JavaScript: one polling loop `repeat()`, `watchNodes()` and `watchScores()` in `shared.js` replace six copies;
+  `el()` / `svgPart()` build elements; one `groupBy()` behind sessions, classes, words and sounds; one band table.
+- HTML/CSS: every inline style moved into `style.css` classes; the logo is drawn once (`LOGO` in `shared.js`);
+  dead CSS (unused colours, `.tm b`, the never-working `a.btn:hover`) removed. Lines kept under 110 characters.
+- API: `nodes` sends `needs_help` (was `help_age_s`, the page repeated the 5-minute rule); `scores` no longer
+  sends `today`; history only answers `minutes=60|180`; `norm()` is English-only (only en-gb books exist).
+- Visible on purpose: "Laptop server not reachable" -> "Cloud not reachable", "Laptop connected · waiting for
+  the nest" -> "Cloud connected · waiting for the nest"; the overview header says "Connecting…" until the first
+  answer (like the doll page). Light zone at exactly 80 lx / 120 lx now matches the marker's side.
+- Proof: 145 states (8 data sets, all pages, Today/Past, 5 widths, dark scheme, cloud down, 401, hover, help OK)
+  rendered old and new with a frozen clock; pixels identical except the wording above (harness in
+  `~/.cache/lumpi-dash/`, not in the repo). `python3 -m unittest tests.test_cloud tests.test_add_book`: OK.
+- 2026-11-27 after dashboard review: missing lux/distance shows no reading (was NaN); help popup only for dolls 1 and 2 again. When deploying, reload open dashboard tabs (help field changed).
+- 2026-11-27 dashboard: light card shows no made-up reading before data; help popup keeps focus and now also on the session page; doll page never draws past scores as today (not browser-tested).

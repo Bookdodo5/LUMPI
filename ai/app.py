@@ -5,7 +5,7 @@ Grading is done by the cloud API (api/lumpi.py grade()). Same method as
 Embed/ipa_pronunciation_check.ipynb sound_to_ipa().
 
 Called by api/_plumbing.py ask_ai() with {"input": {"audio_b64": ...}} (16 kHz, 16-bit, mono PCM). Answers:
-    {"phones": ["θ", "ɹ", "iː", ...], "timing_ms": {"decode", "model", "threads", "audio_s"}}
+    {"phones": ["θ", "ɹ", "iː", ...]}
 
 Deploy:   rp login   (once)   then   rp flash deploy ai
 """
@@ -25,40 +25,29 @@ MODEL_ID = "facebook/wav2vec2-xlsr-53-espeak-cv-ft"
     dependencies=["torch @ https://download.pytorch.org/whl/cpu/torch-2.7.1%2Bcpu-cp312-cp312-manylinux_2_28_x86_64.whl",
                   "transformers", "numpy"],
 )
-def assess(audio_b64: str, uid: str = "", passage: int = 0, attempt: int = 0):
+def assess(audio_b64: str):
     """Transcribe one recording into the IPA sounds the model heard."""
     import base64
-    import time
 
     import numpy as np
     import torch
 
     # Set again here: the setting in load_model() does not reach the thread that runs requests.
     torch.set_num_threads(8)
-
-    start = time.perf_counter()
-    raw = base64.b64decode(audio_b64)
-    pcm = np.frombuffer(raw[: len(raw) // 2 * 2], dtype="<i2").astype(np.float32) / 32768.0
+    pcm = np.frombuffer(base64.b64decode(audio_b64), dtype="<i2").astype(np.float32) / 32768.0
+    if len(pcm) < 1600:  # under 0.1 s there is nothing to hear
+        return {"phones": []}
     # Zero mean, unit variance (as the notebook's processor does), so quiet and loud readings look the same.
-    pcm = (pcm - pcm.mean()) / np.sqrt(pcm.var() + 1e-7) if len(pcm) else pcm
-    decoded = time.perf_counter()
+    pcm = (pcm - pcm.mean()) / np.sqrt(pcm.var() + 1e-7)
+    with torch.inference_mode():
+        ids = MODEL(torch.from_numpy(pcm)[None]).logits[0].argmax(-1).tolist()
 
-    phones = []
-    if len(pcm) >= 1600:  # under 0.1 s there is nothing to hear
-        with torch.inference_mode():
-            ids = MODEL(torch.from_numpy(pcm)[None]).logits[0].argmax(-1).tolist()
-        previous = None
-        for i in ids:  # CTC rule: merge repeats, then drop the blank <pad> and the other <...> tokens
-            if i != previous and not TOKENS[i].startswith("<"):
-                phones.append(TOKENS[i])
-            previous = i
-    heard = time.perf_counter()
-
-    return {
-        "phones": phones,
-        "timing_ms": {"decode": round((decoded - start) * 1000), "model": round((heard - decoded) * 1000),
-                      "threads": torch.get_num_threads(), "audio_s": round(len(pcm) / 16000, 2)},
-    }
+    phones, previous = [], None
+    for i in ids:  # CTC rule: merge repeats, then drop the blank <pad> and the other <...> tokens
+        if i != previous and not TOKENS[i].startswith("<"):
+            phones.append(TOKENS[i])
+        previous = i
+    return {"phones": phones}
 
 
 @assess.init

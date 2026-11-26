@@ -1,38 +1,41 @@
-/* LUMPI theme tokens, copied from docs/dashboard/ref. Layout is inline in each page, like the wireframes. */
+/* LUMPI dashboard styles, shared by the three pages. Colours come from the theme tokens below. */
+
+/* ---- Theme tokens (from docs/dashboard/ref) ---- */
 :root {
   --jp-white: #FFFDF8;
   --jp-washi: #F6ECD9;
   --jp-line: #E4D2B0;
   --jp-white-hover: #F1E2C6;
   --jp-red: #D6342C;
-  --jp-red-dark: #A82620;
   --jp-red-tint: #FBE6E2;
-  --jp-red-ink: rgba(214, 52, 44, .12);
   --jp-black: #231A12;
   --jp-grey: #6A5846;
   --jp-grey-soft: #9A8670;
   --jp-ok: #3F7A31;
   --jp-warn: #B8780F;
-  --jp-info: #6B2FA8;
   --jp-font-display: "Fredoka", "Noto Sans Thai", system-ui, sans-serif;
   --jp-font-body: "Noto Sans JP", "Noto Sans Thai", system-ui, sans-serif;
   --jp-radius: 6px;
   --jp-border: 1px solid var(--jp-line);
   --jp-chart-1: #D6342C;
   --jp-chart-2: #231A12;
-  --jp-chart-3: #D9A15B;
-  --jp-chart-4: #9A8670;
-  --jp-chart-5: #E8C4A0;
   --lm-wood: #D9A15B;
-  --lm-wood-dark: #9C6420;
-  --lm-brown: #5A3418;
   --lm-purple: #7B2FBE;
-  --lm-purple-dark: #5C2090;
 }
 
+/* ---- Page frame: header, nav, three columns, footer, all on one screen ---- */
 body {
   margin: 0;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
   background: var(--jp-washi);
+  color: var(--jp-black);
+  font-family: var(--jp-font-body);
+  font-size: 14px;
+  line-height: 1.5;
+  letter-spacing: .02em;
 }
 
 a {
@@ -44,11 +47,982 @@ a.row:hover {
   background: var(--jp-white-hover);
 }
 
-a.btn:hover {
-  background: var(--lm-purple-dark);
+header {
+  position: relative;
+  flex: none;
+  height: 56px;
+  padding: 0 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  background: var(--jp-white);
+  border-bottom: var(--jp-border);
 }
 
-/* Session page: passage word cells. g = Good, c = Close, p = Practise. */
+/* The short wood-coloured line under the left end of the header. */
+header::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -1px;
+  width: 64px;
+  height: 3px;
+  background: var(--lm-wood);
+}
+
+/* Keep the top bar on one line on a 1280 px laptop screen. */
+header h1,
+header span,
+header button {
+  white-space: nowrap;
+}
+
+.title-group {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.title-group.shrink {
+  min-width: 0;
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.logo {
+  flex: none;
+  display: block;
+  width: 40px;
+  height: 16px;
+}
+
+.wordmark {
+  font-family: var(--jp-font-display);
+  font-weight: 700;
+  font-size: 21px;
+  letter-spacing: .03em;
+  line-height: 1;
+}
+
+h1 {
+  margin: 0;
+  font-family: var(--jp-font-display);
+  font-weight: 600;
+  font-size: 22px;
+  letter-spacing: .12em;
+}
+
+#doll-title {
+  font-size: 20px;
+  letter-spacing: .1em;
+}
+
+h1.session-title {
+  font-size: 18px;
+  letter-spacing: .06em;
+}
+
+.info {
+  font-size: 12px;
+  color: var(--jp-grey);
+}
+
+/* Header right side: Today / Past buttons and the connection dots. */
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.statuses {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  font-size: 12.5px;
+}
+
+.statuses.fixed {
+  display: flex;
+  flex: none;
+  gap: 12px;
+  font-size: 12px;
+}
+
+.status {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  border: 2px solid var(--jp-grey-soft);
+}
+
+.dot.cloud {
+  border-style: dashed;
+}
+
+.toggle {
+  display: flex;
+}
+
+.toggle button {
+  min-height: 40px;
+  padding: 6px 16px;
+  font: inherit;
+  font-weight: 500;
+  font-size: 13px;
+  letter-spacing: .1em;
+  color: var(--jp-black);
+  background: transparent;
+  border: 1px solid var(--lm-purple);
+  border-radius: var(--jp-radius) 0 0 var(--jp-radius);
+  cursor: pointer;
+}
+
+.toggle button + button {
+  border-left: 0;
+  border-radius: 0 var(--jp-radius) var(--jp-radius) 0;
+}
+
+.toggle button[aria-pressed="true"] {
+  color: var(--jp-white);
+  background: var(--lm-purple);
+}
+
+nav {
+  flex: none;
+  padding: 12px 20px 0;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+nav .toggle {
+  margin-left: auto;
+}
+
+nav .toggle button {
+  min-height: 36px;
+}
+
+.back {
+  min-height: 36px;
+  padding: 6px 14px;
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  font-weight: 500;
+  letter-spacing: .1em;
+  background: var(--jp-white);
+  border: var(--jp-border);
+  border-radius: var(--jp-radius);
+}
+
+main {
+  flex: 1;
+  min-height: 0;
+  padding: 12px 20px 20px;
+  box-sizing: border-box;
+  display: grid;
+  gap: 16px;
+}
+
+main.overview {
+  padding: 20px;
+  grid-template-columns: 400px minmax(0, 1fr) 348px;
+}
+
+main.doll {
+  grid-template-columns: 360px minmax(0, 1fr) 380px;
+}
+
+main.session {
+  grid-template-columns: 340px minmax(0, 1fr);
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-height: 0;
+}
+
+footer {
+  position: relative;
+  flex: none;
+  height: 34px;
+  padding: 6px 20px 0;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  font-size: 12px;
+  letter-spacing: .06em;
+  color: var(--jp-white);
+  background: var(--jp-black);
+}
+
+/* Wood strip with brown dots along the top of the footer. */
+footer::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 6px;
+  background: radial-gradient(circle at 10px 3px, #5A3418 2.4px, transparent 3px) 0 0 / 22px 6px, #D9A15B;
+}
+
+footer .logo {
+  width: 34px;
+  height: 13px;
+}
+
+/* ---- Cards ---- */
+.card {
+  flex: none;
+  background: var(--jp-white);
+  border: var(--jp-border);
+  border-radius: var(--jp-radius);
+}
+
+/* A card that fills its column's free height; its list scrolls inside. */
+.card.stack {
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Score cards with the wood line on top. */
+.card.kpi {
+  padding: 12px 16px;
+  border-top: 3px solid var(--lm-wood);
+}
+
+.card.kpi.slim {
+  padding: 10px 14px;
+}
+
+.card-head {
+  padding: 10px 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 8px;
+  border-bottom: var(--jp-border);
+}
+
+h2 {
+  margin: 0;
+  font-family: var(--jp-font-display);
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: .1em;
+}
+
+.note {
+  font-size: 11.5px;
+  color: var(--jp-grey);
+}
+
+.label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: .14em;
+  color: var(--jp-grey);
+}
+
+.between {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+/* A scrolling list inside a card. */
+.rows {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  padding: 2px 16px 8px;
+}
+
+#sound-rows {
+  padding: 4px 16px 10px;
+}
+
+main.session #sound-rows {
+  padding: 2px 16px 8px;
+}
+
+/* A box that centres one chart. */
+.chart-box {
+  flex: 1;
+  min-height: 0;
+  padding: 8px 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Shown where there is no real data yet, instead of sample numbers. */
+.empty-note {
+  margin: 0;
+  text-align: center;
+  font-size: 12.5px;
+  color: var(--jp-grey);
+}
+
+.waiting {
+  margin: 10px 8px;
+  color: var(--jp-grey);
+}
+
+.pill {
+  padding: 4px 10px;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: .06em;
+  white-space: nowrap;
+  color: var(--jp-white);
+  background: var(--lm-purple);
+  border-radius: var(--jp-radius);
+}
+
+.big-button {
+  min-height: 40px;
+  padding: 8px 18px;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 500;
+  letter-spacing: .1em;
+  color: var(--jp-white);
+  background: var(--lm-purple);
+  border-radius: var(--jp-radius);
+}
+
+.centre-text {
+  text-align: center;
+  font-size: 13px;
+  color: var(--jp-grey);
+}
+
+/* Chips: doll mode and state. Colour and border are set by setChip() in shared.js. */
+.chip {
+  padding: 3px 10px;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: .06em;
+  border-radius: var(--jp-radius);
+}
+
+/* ---- Help popup (shared.js) ---- */
+#help-popup {
+  position: fixed;
+  right: 20px;
+  bottom: 50px;
+  z-index: 10;
+  min-width: 280px;
+  max-width: 360px;
+  padding: 14px 16px;
+  font: 16px / normal var(--jp-font-body);
+  letter-spacing: normal;
+  background: var(--jp-white);
+  border: 2px solid var(--jp-red);
+  border-radius: var(--jp-radius);
+  box-shadow: 0 6px 24px rgba(35, 26, 18, .25);
+}
+
+.popup-title {
+  margin-bottom: 6px;
+  font-family: var(--jp-font-display);
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--jp-red);
+}
+
+#help-popup a {
+  display: block;
+  padding: 6px 4px;
+  font-size: 13px;
+  border-bottom: var(--jp-border);
+}
+
+#help-popup button {
+  width: 100%;
+  min-height: 40px;
+  margin-top: 10px;
+  font: inherit;
+  font-weight: 500;
+  letter-spacing: .06em;
+  color: var(--jp-white);
+  background: var(--jp-red);
+  border: 0;
+  border-radius: var(--jp-radius);
+  cursor: pointer;
+}
+
+/* ---- Score lists and stat cells (shared.js) ---- */
+.score-row {
+  padding: 6px 0;
+  display: grid;
+  grid-template-columns: 72px minmax(0, 1fr) 92px;
+  gap: 4px 10px;
+  align-items: center;
+  border-bottom: var(--jp-border);
+}
+
+.score-row .name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.word-name,
+.score-row .name {
+  font-family: var(--jp-font-display);
+  font-weight: 700;
+  font-size: 16px;
+}
+
+.track {
+  height: 12px;
+  overflow: hidden;
+  background: var(--jp-washi);
+  border-radius: var(--jp-radius);
+}
+
+.track div {
+  height: 100%;
+}
+
+.score-row .value {
+  font-size: 12.5px;
+  text-align: right;
+  white-space: nowrap;
+}
+
+.under {
+  grid-column: 2 / 4;
+  font-size: 11.5px;
+  color: var(--jp-grey);
+}
+
+.score-row .under {
+  margin-top: -2px;
+}
+
+.stat-label {
+  font-size: 10.5px;
+  text-transform: uppercase;
+  letter-spacing: .12em;
+  color: var(--jp-grey);
+}
+
+.stat-value {
+  font-family: var(--jp-font-display);
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.chart {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.meter {
+  width: 100%;
+  max-width: 260px;
+  display: block;
+  margin: 0 auto;
+}
+
+/* ---- Overview page (index.html, app.js) ---- */
+#doll-rows {
+  padding: 4px 16px 10px;
+}
+
+.doll-row {
+  min-height: 44px;
+  padding: 10px 8px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 92px 108px 12px;
+  gap: 10px;
+  align-items: center;
+  border-bottom: var(--jp-border);
+}
+
+.doll-row > div {
+  min-width: 0;
+}
+
+.doll-name {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 700;
+}
+
+.doll-row .logo {
+  width: 30px;
+  height: 12px;
+}
+
+.doll-what {
+  font-size: 12px;
+  color: var(--jp-grey);
+}
+
+.doll-row .chip {
+  padding: 4px 6px;
+  text-align: center;
+}
+
+.doll-row .chip.state {
+  padding: 3px 6px;
+  letter-spacing: .04em;
+}
+
+.doll-row .chevron {
+  color: var(--jp-grey);
+}
+
+.legend {
+  display: flex;
+  gap: 10px;
+  font-size: 11px;
+}
+
+.legend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.legend i {
+  width: 10px;
+  height: 8px;
+  border-radius: var(--jp-radius);
+}
+
+.legend .reading {
+  background: var(--jp-black);
+}
+
+.legend .quiet {
+  background: var(--lm-purple);
+}
+
+.legend .idle {
+  background: var(--jp-line);
+}
+
+.legend .no-data {
+  border: 1px dashed var(--jp-grey-soft);
+}
+
+#mode-rows {
+  padding: 12px 16px 10px;
+}
+
+.mode-grid {
+  display: grid;
+  grid-template-columns: 48px minmax(0, 1fr);
+  gap: 8px 10px;
+  align-items: center;
+}
+
+.mode-grid > b {
+  font-size: 13px;
+}
+
+.mode-bar {
+  height: 26px;
+  display: flex;
+  gap: 2px;
+}
+
+.mode-bar div {
+  min-width: 0;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  white-space: nowrap;
+  border-radius: var(--jp-radius);
+}
+
+.mode-bar .no-data {
+  border: 1px dashed var(--jp-grey-soft);
+}
+
+.time-axis {
+  position: relative;
+  height: 14px;
+  font-size: 10.5px;
+  color: var(--jp-grey);
+}
+
+.time-axis span {
+  position: absolute;
+}
+
+.time-axis span:first-child {
+  left: 0;
+}
+
+.time-axis span:nth-child(2) {
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.time-axis span:last-child {
+  right: 0;
+}
+
+#activity-rows {
+  padding: 2px 16px 4px;
+}
+
+#activity-rows .waiting {
+  margin: 8px 6px;
+}
+
+#activity-rows .empty-note {
+  margin: 12px 0;
+}
+
+.activity-row {
+  padding: 8px 6px;
+  display: grid;
+  grid-template-columns: 44px 1fr;
+  gap: 8px;
+  align-items: center;
+  font-size: 13px;
+  border-bottom: var(--jp-border);
+}
+
+.activity-row .time {
+  font-size: 12px;
+  color: var(--jp-grey);
+}
+
+.alert {
+  color: var(--jp-red);
+}
+
+.ok-text {
+  color: var(--jp-ok);
+}
+
+.muted {
+  color: var(--jp-grey);
+}
+
+#history-rows {
+  font-size: 13px;
+}
+
+.class-row {
+  padding: 7px 0;
+  display: grid;
+  grid-template-columns: 64px 1fr 48px 46px;
+  gap: 2px 8px;
+  align-items: baseline;
+  border-bottom: var(--jp-border);
+}
+
+.class-row .under {
+  grid-column: 2 / 5;
+}
+
+.right {
+  text-align: right;
+}
+
+.class-row .change {
+  font-size: 12px;
+}
+
+/* No clip on these two (they never overflow), so the charts' edge pixels stay as designed. */
+#trend-card,
+#sounds-card {
+  overflow: visible;
+}
+
+#trend-chart {
+  padding-bottom: 10px;
+}
+
+#sounds-card {
+  flex: 1.25;
+}
+
+.class-score {
+  padding: 10px 16px 0;
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+/* Grey dash until the first scores arrive. */
+#class-score,
+#improved {
+  color: var(--jp-grey-soft);
+}
+
+#class-score {
+  font-family: var(--jp-font-display);
+  font-size: 40px;
+  font-weight: 700;
+  letter-spacing: .06em;
+  line-height: 1.1;
+}
+
+.kpi-value {
+  font-family: var(--jp-font-display);
+  font-size: 32px;
+  font-weight: 700;
+  letter-spacing: .04em;
+  line-height: 1.2;
+}
+
+#improved-text {
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: .02em;
+  color: var(--jp-grey);
+}
+
+.room {
+  padding: 10px 16px 14px;
+}
+
+.small {
+  font-size: 11px;
+  color: var(--jp-grey);
+}
+
+.link-text {
+  font-size: 12px;
+  font-weight: 500;
+}
+
+#light-link {
+  margin-bottom: 8px;
+}
+
+.scatter {
+  width: 100%;
+  display: block;
+}
+
+.light-gauge {
+  width: 100%;
+  max-width: 210px;
+  display: block;
+  margin: 0 auto;
+}
+
+/* Thin line with a wood dot in the middle, between Light and Teacher distance. */
+.divider {
+  margin: 10px 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.divider::before,
+.divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--jp-line);
+}
+
+.divider span {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--lm-wood);
+}
+
+#teacher-cm {
+  margin: 0 0 6px;
+  font-family: var(--jp-font-display);
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: .06em;
+}
+
+/* Near zone (green) is the first half: 0 to 200 cm of a 0 to 400 cm bar. */
+.distance-bar {
+  position: relative;
+  height: 14px;
+  border-radius: var(--jp-radius);
+  background: linear-gradient(to right,
+    color-mix(in srgb, var(--jp-ok) 25%, var(--jp-white)) 50%,
+    color-mix(in srgb, var(--jp-red) 18%, var(--jp-white)) 50%);
+}
+
+#teacher-marker {
+  visibility: hidden;  /* shown by app.js once there is a reading */
+  position: absolute;
+  top: -3px;
+  left: 0;
+  width: 6px;
+  height: 20px;
+  margin-left: -3px;
+  border-radius: 3px;
+  background: var(--jp-black);
+  visibility: hidden;
+}
+
+/* ---- Doll page (doll.html, doll.js) ---- */
+#mode-changes-card {
+  flex: none;
+  max-height: 190px;
+}
+
+#mode-changes {
+  padding: 8px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 13px;
+}
+
+#latest-text {
+  margin: 2px 0 8px;
+}
+
+#timeline-card {
+  flex: 1.2;
+}
+
+#summary {
+  padding: 8px 16px 12px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px 16px;
+}
+
+.practice-row {
+  padding: 8px 0;
+  display: grid;
+  grid-template-columns: 80px 1fr auto;
+  gap: 2px 10px;
+  align-items: baseline;
+  border-bottom: var(--jp-border);
+}
+
+.practice-row .scores {
+  font-size: 14px;
+}
+
+.practice-row .change {
+  padding: 2px 8px;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--jp-white);
+  border-radius: var(--jp-radius);
+}
+
+/* ---- Session page (session.html, session.js) ---- */
+#band-bar {
+  height: 8px;
+  margin-top: 10px;
+  display: flex;
+  gap: 3px;
+}
+
+#band-bar div {
+  border-radius: var(--jp-radius);
+}
+
+#band-text {
+  margin-top: 4px;
+  display: flex;
+  justify-content: space-between;
+}
+
+#timing {
+  padding: 10px 16px 12px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+}
+
+#timing .stat-value {
+  font-size: 20px;
+  line-height: inherit;
+}
+
+#passages {
+  padding: 12px 16px;
+}
+
+/* The key under the passages: band colours and ✓ / ✗. */
+.passage-key {
+  padding: 8px 16px 12px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  font-size: 12px;
+  border-top: var(--jp-border);
+}
+
+.passage-key .w {
+  font-size: 12px;
+}
+
+.pair {
+  flex: none;
+  height: 250px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.passage-row {
+  padding: 10px 0;
+  display: grid;
+  grid-template-columns: 150px minmax(0, 1fr);
+  gap: 10px;
+  align-items: start;
+  border-bottom: var(--jp-border);
+}
+
+.passage-label {
+  padding-top: 6px;
+  font-size: 12.5px;
+  color: var(--jp-grey);
+  white-space: pre-line;
+}
+
+.passage-words {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 6px;
+}
+
+/* One word cell: the word in its band colour, its %, then each sound ✓ or ✗. */
 .cell {
   text-align: center;
 }
@@ -60,56 +1034,69 @@ a.btn:hover {
   border-radius: var(--jp-radius);
 }
 
-.g {
+.good {
   background: color-mix(in srgb, var(--jp-ok) 15%, var(--jp-white));
   color: var(--jp-ok);
 }
 
-.c {
+.close {
   background: color-mix(in srgb, var(--jp-warn) 30%, var(--jp-white));
   color: var(--jp-black);
 }
 
-.p {
+.practise {
   background: var(--jp-red);
   color: var(--jp-white);
 }
 
 .pc {
-  font-size: 12px;
   margin-top: 2px;
-  color: var(--jp-grey);
+  font-size: 12px;
   line-height: 1.3;
+  color: var(--jp-grey);
 }
 
-.pc.b {
-  color: var(--jp-red);
+.pc.low {
   font-weight: 700;
+  color: var(--jp-red);
+}
+
+.sounds {
+  margin-top: 3px;
+  display: flex;
+  justify-content: center;
+  gap: 2px;
+}
+
+.sound {
+  min-width: 22px;
+  padding: 1px 3px;
+  line-height: 1.15;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--jp-ok);
+  background: color-mix(in srgb, var(--jp-ok) 15%, var(--jp-white));
+  border-radius: 4px;
+}
+
+.sound.wrong {
+  color: var(--jp-white);
+  background: var(--jp-red);
+}
+
+.sound div + div {
+  font-size: 10.5px;
 }
 
 .tm {
   font-size: 11px;
-  color: var(--jp-grey-soft);
   line-height: 1.3;
   white-space: nowrap;
+  color: var(--jp-grey-soft);
 }
 
-.tm b {
-  color: var(--jp-red);
-  font-weight: 700;
-}
-
-/* Keep the top bar on one line on a 1280 px laptop screen. */
-header h1,
-header span,
-header button {
-  white-space: nowrap;
-}
-
-/* Shown where there is no real data yet, instead of sample numbers. */
-.empty-note {
-  margin: 0;
-  text-align: center;
-  font-size: 12.5px;
-  color: var(--jp-grey);
+/* ---- Today / Past: cards that belong to one view only (set by watchScores in shared.js) ---- */
+[data-view="today"] .past-only,
+[data-view="past"] .today-only {
+  display: none;
 }

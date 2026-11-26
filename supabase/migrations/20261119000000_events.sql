@@ -1,7 +1,6 @@
 -- LUMPI cloud storage: the single source of truth.
 -- Every event from the nest and the AI is one row, stored once by its event_id.
--- Same rules as check_event() in laptop/dashboard_server.py; the database
--- repeats them so a bug in the web code can never store a bad row.
+-- The checks below are the database's own guard: a bad row is never stored.
 --
 -- Safe to run twice (if not exists / drop ... if exists), because it may be
 -- pasted into the SQL editor first and applied again by the GitHub integration.
@@ -21,22 +20,9 @@ create index if not exists events_by_received on public.events (received_at);
 create index if not exists events_by_type_time on public.events (event_type, recorded_at);
 create index if not exists events_by_node_time on public.events (node_id, recorded_at);
 
--- Messages that failed the checks, for the developer page (/debug/).
-create table if not exists public.rejects (
-    id          bigint generated always as identity primary key,
-    received_at double precision not null default extract(epoch from now()),
-    source      text,
-    reason      text not null,
-    raw         text,
-    event_type  text
-);
-
-create index if not exists rejects_by_received on public.rejects (received_at);
-
 -- Row Level Security on, with NO policies: the publishable key can do nothing.
 -- Only the server (Vercel function, secret key) reads and writes.
 alter table public.events enable row level security;
-alter table public.rejects enable row level security;
 
-revoke all on public.events, public.rejects from anon, authenticated;
-grant select, insert on public.events, public.rejects to service_role;
+revoke all on public.events from anon, authenticated;
+grant select, insert on public.events to service_role;

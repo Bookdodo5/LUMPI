@@ -1,72 +1,82 @@
 // Laptop test for src/common/dashboard_event.h. No ESP32 needed.
 // Run from the project folder:
 //   g++ -std=c++17 -I src/common tests/test_dashboard_event.cpp -o build/test_dashboard_event && ./build/test_dashboard_event
+// It also prints one event of each kind; tests/test_dashboard_server.py checks them with the real server code.
 #include <cassert>
 #include <cmath>
-#include <cstring>
 #include <iostream>
+#include <string>
 
 #include "dashboard_event.h"
 
+using namespace dashboard_event;
+using lumpi::State;
+
+bool contains(const std::string& text, const std::string& part) {
+    return text.find(part) != std::string::npos;
+}
+
 int main() {
-    using namespace dashboard_event;
+    const Stamp stamp{"lumpi_1a2b3c4d", 1794794400, 7, 1794794410};
 
-    char event[256];
+    // The full outside, once.
+    const std::string room_event = room(stamp, 230.5f, 160.0f);
+    assert(room_event ==
+           "{\"event_id\":\"lumpi_1a2b3c4d/1794794400-7\",\"node_id\":0,\"event_type\":\"room\","
+           "\"recorded_at\":1794794410,\"activity\":null,"
+           "\"data\":{\"lux\":230.5,\"distance_cm\":160.0}}");
 
-    // Normal room event.
-    assert(format_room_event(event, sizeof(event), "lumpi_1a2b3c4d", 1794794400, 7, 1794794410, 230.5f, 160.0f));
-    assert(std::strcmp(
-        event,
-        "{\"event_id\":\"lumpi_1a2b3c4d/1794794400-7\",\"node_id\":0,\"event_type\":\"room\","
-        "\"recorded_at\":1794794410,\"activity\":null,"
-        "\"data\":{\"lux\":230.5,\"distance_cm\":160.0}}"
-    ) == 0);
+    // A failed sensor is null, never a made-up number.
+    assert(contains(room(stamp, NAN, NAN), "\"data\":{\"lux\":null,\"distance_cm\":null}"));
 
-    // Failed sensors become null, never a fake number.
-    assert(format_room_event(event, sizeof(event), "lumpi_1a2b3c4d", 1794794400, 8, 1794794420, NAN, NAN));
-    assert(std::strstr(event, "\"data\":{\"lux\":null,\"distance_cm\":null}") != nullptr);
+    // Start: the book, with activity book_on.
+    const std::string start_event = start(stamp, 2, "04D5E6F7", 3, 1, 2850);
+    assert(contains(start_event, "\"node_id\":2,\"event_type\":\"start\""));
+    assert(contains(start_event, "\"activity\":\"book_on\""));
+    assert(contains(start_event, "\"data\":{\"uid\":\"04D5E6F7\",\"passage\":3,\"attempt\":1,\"fsr\":2850}}"));
 
-    // Too small a buffer fails instead of sending cut-off JSON.
-    char tiny[40];
-    assert(!format_room_event(tiny, sizeof(tiny), "lumpi_1a2b3c4d", 1794794400, 9, 1794794430, 230.5f, 160.0f));
-
-    // A real start packet from a doll, through the existing parser.
-    gateway_start_packet::StartPacket packet;
-    gateway_start_packet::ParseResult result = gateway_start_packet::parse(
-        "node=2&attempt=1&passage=3&uid=04D5E6F7&fsr=2850",
-        packet
-    );
-    assert(result == gateway_start_packet::ParseResult::ok);
-    assert(format_start_event(event, sizeof(event), "lumpi_1a2b3c4d", 1794794400, 10, 1794794440, packet));
-    assert(std::strcmp(
-        event,
-        "{\"event_id\":\"lumpi_1a2b3c4d/1794794400-10\",\"node_id\":2,\"event_type\":\"start\","
-        "\"recorded_at\":1794794440,\"activity\":\"book_on\","
-        "\"data\":{\"uid\":\"04D5E6F7\",\"passage\":3,\"attempt\":1,\"fsr\":2850}}"
-    ) == 0);
-
-    // A UID that could break the JSON is refused.
-    result = gateway_start_packet::parse(
-        "node=1&attempt=1&passage=1&uid=04\",\"x\":\"1&fsr=3100",
-        packet
-    );
-    assert(result == gateway_start_packet::ParseResult::ok);
-    assert(!format_start_event(event, sizeof(event), "lumpi_1a2b3c4d", 1794794400, 11, 1794794450, packet));
-
-    assert(is_hex_uid("04a1b2c3"));
+    // A UID that could break the JSON, or lowercase (the cloud refuses it), makes no event.
+    assert(start(stamp, 1, "04\",\"x\":\"1", 1, 1, 0).empty());
+    assert(start(stamp, 1, "04a1b2c3", 1, 1, 0).empty());
     assert(!is_hex_uid(""));
-    assert(!is_hex_uid("04 A1"));
-    assert(!is_hex_uid("0123456789ABCDEF01234"));
+    assert(!is_hex_uid("0123456789ABCDEF01234"));  // 21 characters: too long
 
-    // Print the events so they can be checked against the Python server.
-    format_room_event(event, sizeof(event), "lumpi_1a2b3c4d", 1794794400, 7, 1794794410, 230.5f, 160.0f);
-    std::cout << event << "\n";
-    format_room_event(event, sizeof(event), "lumpi_1a2b3c4d", 1794794400, 8, 1794794420, NAN, NAN);
-    std::cout << event << "\n";
-    gateway_start_packet::parse("node=2&attempt=1&passage=3&uid=04D5E6F7&fsr=2850", packet);
-    format_start_event(event, sizeof(event), "lumpi_1a2b3c4d", 1794794400, 10, 1794794440, packet);
-    std::cout << event << "\n";
+    // Status: with a book, and with no book yet (nulls).
+    assert(contains(status(stamp, 1, "recording", "04A1B2C3", 2, 1, 3100),
+                    "\"activity\":\"recording\",\"data\":{\"uid\":\"04A1B2C3\",\"passage\":2,\"attempt\":1,\"fsr\":3100}}"));
+    assert(contains(status(stamp, 2, "idle", "", 0, 0, 40),
+                    "\"data\":{\"uid\":null,\"passage\":null,\"attempt\":null,\"fsr\":40}}"));
 
+    // Help and noise.
+    assert(contains(help(stamp, 3), "\"node_id\":3,\"event_type\":\"help\""));
+    assert(contains(help(stamp, 3), "\"data\":{}}"));
+    assert(contains(noise(stamp, 2, 68.5f), "\"data\":{\"db\":68.5}}"));
+
+    // Score (test data form: no words).
+    assert(contains(score(stamp, 1, "04A1B2C3", 2, 3, 85),
+                    "\"activity\":\"feedback\",\"data\":{\"uid\":\"04A1B2C3\",\"passage\":2,\"attempt\":3,\"score\":85,\"words\":[]}}"));
+    assert(score(stamp, 1, "04A1B2C3", 2, 3, 101).empty());
+
+    // Doll 4 does not exist.
+    assert(help(stamp, 4).empty());
+
+    // A doll's step -> what the dashboard shows.
+    assert(std::string(activity_for(State::idle, false, 0)) == "idle");
+    assert(std::string(activity_for(State::idle, true, 0)) == "book_on");
+    assert(std::string(activity_for(State::recording, true, 0)) == "recording");
+    assert(std::string(activity_for(State::assessing, true, 0)) == "waiting_ai");
+    assert(std::string(activity_for(State::result, true, 500)) == "feedback");
+    assert(std::string(activity_for(State::result, true, feedback_ms)) == "book_on");
+
+    // One of each, for the Python check.
+    std::cout << room_event << "\n"
+              << room(stamp, NAN, NAN) << "\n"
+              << start_event << "\n"
+              << status(stamp, 1, "recording", "04A1B2C3", 2, 1, 3100) << "\n"
+              << status(stamp, 2, "idle", "", 0, 0, 40) << "\n"
+              << help(stamp, 3) << "\n"
+              << noise(stamp, 2, 68.5f) << "\n"
+              << score(stamp, 1, "04A1B2C3", 2, 3, 85) << "\n";
     std::cerr << "dashboard event tests passed\n";
     return 0;
 }

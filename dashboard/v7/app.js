@@ -1,7 +1,7 @@
-// Overview page: fill every live part from the laptop server.
+// Overview page: fill every live part from the cloud server.
 // Live: nest connection, light (lux), teacher distance, doll rows, help popup,
 // mode in the last hour and recent activity.
-// Scores: score trend, sounds (IPA), words and Improved, from the laptop AI.
+// Scores: score trend, sounds (IPA), words and Improved, from the AI.
 // Today = this class, Past = every saved class (button in the header).
 // Shared helpers (chips, mode bars, score grouping, chart) are in shared.js.
 
@@ -17,7 +17,7 @@ const TEACHER_BAR_CM = 400;
 
 let view = "today";
 
-// Same values as DARK_LUX, DARK_LUX_ERROR, BRIGHT_LUX and TEACHER_NEAR_CM in laptop/dashboard_server.py.
+// Light and teacher-distance limits drawn on the gauges.
 const DARK_LUX = 100;
 const LUX_MARGIN = 20;
 const BRIGHT_LUX = 1000;

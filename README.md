@@ -48,9 +48,10 @@ the warning from repeating constantly.
 
 ### Safety and reliability
 
-- Every doll has a STOP button that cuts servo power, stops sound and cancels
-  the current reading.
-- Servo power turns off after at most 3 seconds.
+- Every doll has a STOP button that stops the servo pulses, stops sound and
+  cancels the current reading. A toggle switch on the servo charger is the
+  manual power cut.
+- Servo pulses stop after at most 3 seconds.
 - Each audio piece is numbered and acknowledged so a lost message can be retried.
 - Dolls, nest and laptop work over local Wi-Fi. Reading still works without the
   Internet; cloud events wait until the connection returns.
@@ -65,7 +66,7 @@ Open this folder in VS Code with PlatformIO installed.
 In PlatformIO > Project Tasks, pick the test name, then click Upload.
 Then click Monitor. Serial speed is 115200.
 
-Start with `hello` and just the ESP32 plugged into USB.
+Start with `s0_hello` and just the ESP32 plugged into USB.
 Then follow the groups below, one part at a time. Numbers give the order
 within each group. Run each I2C scan before its OLED or other I2C devices.
 The sensor group uses doll wiring; the gateway group uses nest wiring.
@@ -83,59 +84,37 @@ Use ESP32-WROOM-32 boards. Disconnect power before changing wires.
 Doll and gateway pin maps differ. Don't wire both roles onto the same board.
 No Wi-Fi keys needed for these tests. Never commit `config/private.h` later.
 
-Teacher dashboard (laptop, Python 3 only):
+Teacher dashboard: `dashboard/v7`, served by Vercel together with the cloud API
+(`api/lumpi.py`, read `docs/cloud-code-guide.md` first). Offline test of the cloud code:
 
 ```bash
-LUMPI_LAN_KEY=test python3 laptop/dashboard_server.py
+python3 -m unittest tests.test_cloud tests.test_add_book
 ```
 
-Open http://localhost:8080. The page is `dashboard/v7`; the developer page is
-at http://localhost:8080/debug/. Notes and test commands:
-[T05 dashboard work log](docs/t05-dashboard-work-log.md). Screenshots:
-`docs/dashboard/screenshot`. AI code will also go in `laptop/`.
+Dashboard notes: [T05 dashboard work log](docs/t05-dashboard-work-log.md). Screenshots:
+`docs/dashboard/screenshot`.
 
 Notes: [test log](docs/test-log.md).
 
-Bench files are grouped by the build guide tracks. `sensor` means the doll
-Sensor Node track, which includes its buttons and screen. Upload environment
-names are unchanged; use the environment shown beside each filename.
+Cloud (Supabase + Vercel + Runpod AI), status and next steps:
+[T07 cloud pipeline work log](docs/t07-cloud-pipeline-work-log.md).
 
-[Board setup](https://lumpi-build-guide.vercel.app/foundation/hello):
+Bench tests run in order: the folder, file and environment all start with the
+stage number. Step-by-step instructions and what "pass" looks like:
+[testing steps](docs/testing-steps.md). Every pin is in `config/settings.h`.
 
-- `setup_1_esp32_serial.cpp` → `hello`
+| Stage | Folder `src/bench/` | Environments (PlatformIO > Project Tasks) |
+|---|---|---|
+| 0 Setup | `0_setup/` | `s0_hello` |
+| 1 Doll parts | `1_doll_parts/` | `s1a_buttons`, `s1b_pressure`, `s1c_rfid`, `s1d_microphone`, `s1e_i2c_scan`, `s1f_screen`, `s1g_servos`, `s1h_speaker`, `s1i_mic_to_speaker` |
+| 2 Nest parts | `2_nest_parts/` | `s2a_i2c_scan`, `s2b_light`, `s2c_distance`, `s2d_screen`, `s2e_ack_button`, `s2f_bme280_optional` |
+| 3 Full doll | `3_full_doll/` | `s3_doll_check` |
+| 4 Full nest | `4_full_nest/` | `s4_nest_check` |
+| 5 Doll <-> nest (also 7, 8) | `5_doll_nest/` | `s5_nest`, `s5_doll`, `s5_doll_2` |
+| 6 Nest -> cloud | `6_nest_cloud/` | `s6_nest_to_dashboard` |
+| Extras | `extras/` | `x_i2c_probe` (I2C wire trouble), `x_quiet_study` (feature) |
 
-[Sensor Node — doll](https://lumpi-build-guide.vercel.app/station/):
-
-- `sensor_1_doll_buttons.cpp` → `buttons`
-- `sensor_2_fsr402_pressure.cpp` → `pressure`
-- `sensor_3_rc522_rfid.cpp` → `rfid`
-- `sensor_4_inmp441_microphone.cpp` → `microphone`
-- `sensor_5_hcsr501_motion.cpp` → `motion`
-- `sensor_6_doll_i2c_scan.cpp` → `doll_i2c`
-- `sensor_7_doll_ssd1306_oled.cpp` → `doll_oled`
-- `sensor_7_doll_sh1106_oled.cpp` → `doll_oled_sh1106` (alternative display)
-
-[Gateway — nest](https://lumpi-build-guide.vercel.app/gateway/):
-
-- `gateway_1_i2c_scan.cpp` → `gateway_i2c`
-- `gateway_2_bh1750_light.cpp` → `light`
-- `gateway_3_hcsr04_distance.cpp` → `distance`
-- `gateway_4_ssd1306_oled.cpp` → `gateway_oled`
-- `gateway_4_sh1106_oled.cpp` → `gateway_oled_sh1106` (alternative display)
-- `gateway_5_ack_button.cpp` → `ack_button`
-
-[Puppet — doll outputs](https://lumpi-build-guide.vercel.app/station/puppet):
-
-- `puppet_1_servos_power_stop.cpp` → `servos`
-- `puppet_2_max98357a_speaker.cpp` → `speaker`
-
-Optional spare (outside the main build):
-
-- `optional_1_bme280_environment.cpp` → `bme280`
-
-For SH1106 128x64 OLEDs, choose the matching `_oled_sh1106` environment.
-Gateway: SDA 21, SCL 22. Doll: SDA 32, SCL 33. Both use 3.3V, GND and
-address 0x3C. Run the matching I2C scan first to confirm the address.
+SH1106 screen instead of SSD1306: use the `_sh1106` version of `s1f`, `s2d`, `s3`, `s4`.
 
 ---
 

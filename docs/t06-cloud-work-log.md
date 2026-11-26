@@ -3,6 +3,8 @@
 Owner: Tanakit
 Task: Cloud raw sensor upload and reconnect test
 
+> 2026-11-26: the `gateway_*_logic.h` / `gateway_start_packet.h` headers, MQTT worker and their tests moved to `.old/2026-11-26-tanakit/` (folded into `src/drivers/real_io.cpp` and `src/common/query.h`; see t07 log).
+
 ## Current status
 
 Software complete. The real broker and ESP32 reconnect test is still pending.

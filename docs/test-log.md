@@ -35,3 +35,14 @@ sensor_4 NO
 sensor_5 SUCCESS
 sensor_6 SUCCESS
 sensor_7 SUCCESS
+---
+
+2026-11-19 / 2026-11-20
+
+- Speaker (MAX98357A) works on the doll pins (BCLK 16, LRC 17, DIN 5). GAIN and SD left unconnected.
+- puppet_2 speaker test now plays data/audio/song.wav (8 kHz mono 16-bit) from LittleFS on repeat. Run Upload Filesystem Image, then Upload.
+- Decision 2026-11-20: PIR removed from the doll. E2 (interrupt-driven I/O) moves to the RECORD button, GPIO 13, FALLING-edge ISR. The ISR only notifies a task; the task debounces (35 ms) and acts. sensor_5 (PIR) test is obsolete.
+- sensor_1 buttons test rewritten for the RECORD ISR. Not compiled or tested on hardware yet.
+- Decision 2026-11-20: PREVIOUS/NEXT buttons replaced by a page knob (potentiometer as a dial): wiper GPIO 36 (VP), outer legs 3.3 V and GND. GPIO 39 and 15 free. settings.h: doll_pins::page_knob = 36.
+- sensor_1 (env buttons) rewritten: RECORD ISR + STOP polled + knob dial. Compiles. doll_check, doll_check_sh1106, motion compile. Not tested on hardware.
+- Decision 2026-11-20: RESUME = hold RECORD + STOP together for 2 s (both released and held again after the stop). Guide updated, not deployed.

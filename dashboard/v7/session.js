@@ -1,7 +1,7 @@
 // Reading session page.
 //   /session.html          whole class today: every passage read, each word = class average.
 //   /session.html?doll=2   that doll's latest session today: every try, word by word.
-// Scores come from the laptop AI (see EXAMPLES["score"] in laptop/dashboard_server.py).
+// Scores come from the cloud grader (api/lumpi.py grade()), one per reading attempt.
 
 const SCORE_POLL_MS = 10000;
 const WORDS_SHOWN = 8;
@@ -218,7 +218,7 @@ async function pollScores() {
     if (!drawn) {
       document.getElementById("session-info").textContent = "No reading sessions yet today";
       document.getElementById("score-gauge").replaceChildren(scoreGauge(null));
-      document.getElementById("passages").replaceChildren(emptyNote("No reading sessions yet today. They appear once the laptop AI sends scores."));
+      document.getElementById("passages").replaceChildren(emptyNote("No reading sessions yet today. They appear once the AI sends scores."));
       document.getElementById("word-rows").replaceChildren();
       document.getElementById("sound-rows").replaceChildren();
     }

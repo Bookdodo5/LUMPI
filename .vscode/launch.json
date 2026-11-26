@@ -31,8 +31,8 @@
             "type": "platformio-debug",
             "request": "launch",
             "name": "PIO Debug",
-            "executable": "C:/Users/PC/OneDrive/Documents/Embed/lumpi-starter/.pio/build/hello/firmware.elf",
-            "projectEnvName": "hello",
+            "executable": "C:/Users/PC/OneDrive/Documents/Embed/lumpi-starter/.pio/build/s0_hello/firmware.elf",
+            "projectEnvName": "s0_hello",
             "toolchainBinDir": "C:/Users/PC/.platformio/packages/toolchain-xtensa-esp32/bin",
             "internalConsoleOptions": "openOnSessionStart",
             "preLaunchTask": {
@@ -44,8 +44,8 @@
             "type": "platformio-debug",
             "request": "launch",
             "name": "PIO Debug (skip Pre-Debug)",
-            "executable": "C:/Users/PC/OneDrive/Documents/Embed/lumpi-starter/.pio/build/hello/firmware.elf",
-            "projectEnvName": "hello",
+            "executable": "C:/Users/PC/OneDrive/Documents/Embed/lumpi-starter/.pio/build/s0_hello/firmware.elf",
+            "projectEnvName": "s0_hello",
             "toolchainBinDir": "C:/Users/PC/.platformio/packages/toolchain-xtensa-esp32/bin",
             "internalConsoleOptions": "openOnSessionStart"
         },
@@ -53,8 +53,8 @@
             "type": "platformio-debug",
             "request": "launch",
             "name": "PIO Debug (without uploading)",
-            "executable": "C:/Users/PC/OneDrive/Documents/Embed/lumpi-starter/.pio/build/hello/firmware.elf",
-            "projectEnvName": "hello",
+            "executable": "C:/Users/PC/OneDrive/Documents/Embed/lumpi-starter/.pio/build/s0_hello/firmware.elf",
+            "projectEnvName": "s0_hello",
             "toolchainBinDir": "C:/Users/PC/.platformio/packages/toolchain-xtensa-esp32/bin",
             "internalConsoleOptions": "openOnSessionStart",
             "loadMode": "manual"

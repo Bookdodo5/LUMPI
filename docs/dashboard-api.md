@@ -92,10 +92,10 @@ The bands on the page (60 / 70 dB) are placeholders until the mic is calibrated.
 
 | Route | Returns |
 |---|---|
-| `/api/dashboard/nodes` | latest state of every node: `status` (`online` under 30 s, `stale`, `offline` after 60 s, `unknown`), `activity`, `values`, `help_at`, `help_age_s`, `last_seen`, `age_s` |
-| `/api/dashboard/history?minutes=5\|15\|60\|180` | messages per node in that window (scores left out): `now`, `minutes`, `nodes` |
+| `/api/dashboard/nodes` | latest state of every node: `status` (`online` under 30 s, `stale`, `offline` after 60 s, `unknown`), `activity`, `values`, `help_at`, `needs_help` (help pressed under 5 min ago, doll not offline), `last_seen`, `age_s` |
+| `/api/dashboard/history?minutes=60\|180` | messages per node in that window (scores left out): `now`, `minutes`, `nodes` |
 | `/api/dashboard/scores?day=today` | today's score lines and room readings |
-| `/api/dashboard/scores?day=past` | the same for every day: `today`, `scores`, `room` |
+| `/api/dashboard/scores?day=past` | the same for every day: `scores`, `room` |
 
 A saved score line = the `score` data plus `node_id`, `recorded_at` and
 `session` (the `recorded_at` when that reading session began).

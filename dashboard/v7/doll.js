@@ -1,377 +1,339 @@
-// Doll page: /doll.html?doll=1 or ?doll=2. Fills the page from the cloud server.
-// Live: mode, state, help popup, book and page, mode changes.
-// Today: one timeline (mode, noise in Quiet Study, scores, help presses) and a summary.
-// Scores (meter, words, sounds, practice) come from the AI.
-// Today = this class, Past = this doll's saved classes. Shared helpers are in shared.js.
+// Doll page (doll.html?doll=1 or ?doll=2).
+// Live: mode, state, book and page, mode changes. Today: one timeline (mode, noise in Quiet Study,
+// scores, help presses) and a summary. Past: this doll's saved classes.
+// Scores (meter, words, sounds, did practising help) come from the AI.
 
-const POLL_MS = 2000;
-const HISTORY_POLL_MS = 10000;
-const SCORE_POLL_MS = 10000;
-const MODE_CHANGES_SHOWN = 8;
-const WORDS_SHOWN = 8;
-const SOUNDS_SHOWN = 10;
-const PRACTICE_SHOWN = 6;
 // Noise lane, in dB. shortcut: placeholder bands until the doll microphone is calibrated (T09).
 const NOISE_MIN_DB = 40;
 const NOISE_MAX_DB = 90;
 const NOISY_DB = 60;
 const TOO_LOUD_DB = 70;
 
-let view = "today";
-// Last data from the server; the timeline needs both history and scores.
-let lastHistory = null;
-let lastScores = null;
-
-// A missing or wrong ?doll= falls back to Doll 1.
 let dollId = Number(new URLSearchParams(location.search).get("doll"));
 if (!DOLL_IDS.includes(dollId)) {
-  dollId = 1;
+  dollId = 1;  // a missing or wrong ?doll= shows Doll 1
 }
-
 document.title = `LUMPI · Doll ${dollId}`;
-document.getElementById("doll-title").textContent = `Doll ${dollId}`;
-document.getElementById("session-link").href = `/session.html?doll=${dollId}`;
+setText("doll-title", `Doll ${dollId}`);
+byId("session-link").href = `/session.html?doll=${dollId}`;
+
+// The last replies from the cloud: the timeline needs both.
+let lastHistory = { nodes: { [dollId]: [] } };
+let lastScores = [];  // this doll's score lines, of Today or Past
+
+// ---- Live ----
 
 function drawHeader(nodes) {
-  const doll = nodes.find((node) => node.node_id === dollId);
-  const mode = document.getElementById("doll-mode");
-  const state = document.getElementById("doll-state");
-  const info = document.getElementById("doll-info");
-  drawNestStatus(nodes.find((node) => node.node_id === 0), document.getElementById("nest-dot"), document.getElementById("nest-text"));
-
-  if (doll === undefined || doll.status === "unknown") {
-    setChip(mode, "—", "var(--jp-grey-soft)", false, true);
-    setChip(state, "Waiting", "var(--jp-grey-soft)", false, true);
-    info.textContent = "No message from this doll yet";
+  const doll = nodes[dollId];
+  setModeChip(byId("doll-mode"), doll);
+  setStateChip(byId("doll-state"), doll);
+  if (doll.status === "unknown") {
+    setText("doll-info", "No message from this doll yet");
     return;
   }
-
-  setModeChip(mode, doll.activity);
-  setStateChip(state, doll);
-
   const parts = [];
-  const reason = helpReason(doll);
-  if (reason !== null) {
-    parts.push(reason);
+  if (doll.needs_help) {
+    parts.push(`Asked for help at ${clockTime(doll.help_at)}`);
   }
-  if (doll.values.uid) {
-    parts.push(`Book ${doll.values.uid}`);
-  } else {
-    parts.push("No book");
-  }
-  if (doll.values.passage !== null && doll.values.passage !== undefined) {
+  parts.push(doll.values.uid ? `Book ${doll.values.uid}` : "No book");
+  if (sent(doll.values.passage)) {
     parts.push(`page ${doll.values.passage}`);
   }
   parts.push(`last active ${clockTime(doll.last_seen)}`);
-  info.textContent = parts.join(" · ");
+  setText("doll-info", parts.join(" · "));
 }
 
-// Points of this doll from today only (history holds up to 3 hours).
+// This doll's history points from today only (the history holds up to 3 hours).
 function todayPoints() {
-  if (lastHistory === null) {
-    return [];
-  }
   const midnight = new Date().setHours(0, 0, 0, 0) / 1000;
   return sortedPoints(lastHistory, dollId).filter((point) => point.recorded_at >= midnight);
-}
-
-function todayScores() {
-  if (lastScores === null) {
-    return [];
-  }
-  return scoresOf(lastScores.scores, dollId);
 }
 
 function drawModeChanges(points) {
   const lines = [];
   let previous = null;
-  for (const point of points) {
-    if (point.event_type === "help" || point.event_type === "noise") {
-      continue;
-    }
+  for (const point of points.filter((item) => item.event_type !== "help" && item.event_type !== "noise")) {
     const mode = modeOf(point.activity);
     if (previous !== null && mode !== previous) {
-      lines.push({ time: point.recorded_at, text: ` ${MODE_NAME[previous]} → ${MODE_NAME[mode]}` });
+      const change = ` ${MODES[previous].name} → ${MODES[mode].name}`;
+      lines.push(el("span", {}, el("b", {}, clockTime(point.recorded_at)), change));
     }
     previous = mode;
   }
-  lines.reverse();
-
-  const items = lines.slice(0, MODE_CHANGES_SHOWN).map((line) => {
-    const item = document.createElement("span");
-    const clock = document.createElement("b");
-    clock.textContent = clockTime(line.time);
-    item.append(clock, line.text);
-    return item;
-  });
-  if (items.length === 0) {
-    items.push(emptyNote(previous === null ? "No messages from this doll today." : `${MODE_NAME[previous]} the whole time.`));
+  if (lines.length === 0) {
+    lines.push(emptyNote(previous === null ? "No messages from this doll today."
+      : `${MODES[previous].name} the whole time.`));
   }
-  document.getElementById("mode-changes").replaceChildren(...items);
+  byId("mode-changes").replaceChildren(...lines.reverse().slice(0, 8));
 }
 
-// One timeline for today: mode blocks, noise reports (Quiet Study only), each
-// reading try's score, and red lines where the child pressed help.
+// ---- Today: one timeline ----
+
+// Lanes from top to bottom: mode blocks, noise reports (Quiet Study only), each reading try's
+// score, and red dashed lines where the child pressed help.
 function drawTimeline() {
-  const box = document.getElementById("timeline");
+  const box = byId("timeline");
   const points = todayPoints();
-  const scores = todayScores();
   const end = Date.now() / 1000;
-  let start = end;
-  if (points.length > 0) {
-    start = Math.min(start, points[0].recorded_at);
-  }
-  for (const line of scores) {
-    start = Math.min(start, line.session);
-  }
+  const start = Math.min(end, ...points.slice(0, 1).map((point) => point.recorded_at),
+    ...lastScores.map((line) => line.session));
   if (end - start < 60) {
     box.replaceChildren(emptyNote("No messages from this doll today."));
     return;
   }
 
-  const left = 70;
-  const right = 625;
+  const [left, right] = [70, 625];
   const xOf = (time) => left + (time - start) / (end - start) * (right - left);
-  const noiseY = (db) => 146 - (Math.min(Math.max(db, NOISE_MIN_DB), NOISE_MAX_DB) - NOISE_MIN_DB) / (NOISE_MAX_DB - NOISE_MIN_DB) * 80;
+  const noiseY = (db) => {
+    const clamped = Math.min(Math.max(db, NOISE_MIN_DB), NOISE_MAX_DB);
+    return 146 - (clamped - NOISE_MIN_DB) / (NOISE_MAX_DB - NOISE_MIN_DB) * 80;
+  };
   const scoreY = (score) => 226 - score / 100 * 60;
-  const svg = svgPart("svg", { viewBox: "0 0 640 262", role: "img", "aria-label": "Today's timeline for this doll: mode, noise in Quiet Study, reading scores and help presses." });
-  svg.style.cssText = "width:100%;height:100%;display:block";
-
+  // A line or band across the whole width.
+  const across = (y, stroke, more = {}) => {
+    return svgPart("line", { x1: left, y1: y, x2: right, y2: y, stroke: stroke, ...more });
+  };
+  const bandRect = (top, bottom, fill) => {
+    return svgPart("rect", { x: left, y: top, width: right - left, height: bottom - top, fill: fill });
+  };
+  const description = "Today's timeline for this doll: mode, noise in Quiet Study, reading scores "
+    + "and help presses.";
+  const chart = svgPart("svg", { class: "chart", viewBox: "0 0 640 262", role: "img",
+                                 "aria-label": description });
   const segments = modeSegments(points, start, end);
 
   // Quiet Study shading across every lane.
-  for (const segment of segments) {
-    if (segment.mode === "quiet") {
-      svg.append(svgPart("rect", { x: xOf(segment.from), y: 16, width: xOf(segment.to) - xOf(segment.from), height: 214, fill: "var(--lm-purple)", "fill-opacity": 0.08 }));
-    }
+  for (const segment of segments.filter((item) => item.mode === "quiet")) {
+    chart.append(svgPart("rect", { x: xOf(segment.from), y: 16, width: xOf(segment.to) - xOf(segment.from),
+                                   height: 214, fill: "var(--lm-purple)", "fill-opacity": 0.08 }));
   }
 
-  // Lane labels and backgrounds.
-  svg.append(svgPart("text", { x: left - 8, y: 39, "font-size": 11, fill: "var(--jp-grey)", "text-anchor": "end" }, "Mode"));
-  svg.append(svgPart("text", { x: left - 8, y: 110, "font-size": 11, fill: "var(--jp-grey)", "text-anchor": "end" }, "Noise"));
-  svg.append(svgPart("text", { x: left - 8, y: 200, "font-size": 11, fill: "var(--jp-grey)", "text-anchor": "end" }, "Score"));
-  svg.append(svgPart("rect", { x: left, y: noiseY(NOISE_MAX_DB), width: right - left, height: noiseY(TOO_LOUD_DB) - noiseY(NOISE_MAX_DB), fill: "var(--jp-red-tint)" }));
-  svg.append(svgPart("rect", { x: left, y: noiseY(TOO_LOUD_DB), width: right - left, height: noiseY(NOISY_DB) - noiseY(TOO_LOUD_DB), fill: "color-mix(in srgb,var(--jp-warn) 14%,var(--jp-white))" }));
-  svg.append(svgPart("text", { x: left + 4, y: noiseY(NOISE_MAX_DB) + 11, "font-size": 9.5, fill: "var(--jp-red)" }, `Too loud · ${TOO_LOUD_DB}+ dB`));
-  svg.append(svgPart("text", { x: left + 4, y: noiseY(TOO_LOUD_DB) + 11, "font-size": 9.5, fill: "var(--jp-warn)" }, "A bit noisy"));
-  svg.append(svgPart("line", { x1: left, y1: noiseY(NOISE_MIN_DB), x2: right, y2: noiseY(NOISE_MIN_DB), stroke: "var(--jp-line)" }));
-  svg.append(svgPart("line", { x1: left, y1: scoreY(SCORE_PRACTISE), x2: right, y2: scoreY(SCORE_PRACTISE), stroke: "var(--jp-red)", "stroke-dasharray": "4 3" }));
-  svg.append(svgPart("text", { x: left + 4, y: scoreY(SCORE_PRACTISE) + 11, "font-size": 9.5, fill: "var(--jp-red)" }, `Practise · ${SCORE_PRACTISE}`));
-  svg.append(svgPart("line", { x1: left, y1: scoreY(0), x2: right, y2: scoreY(0), stroke: "var(--jp-grey-soft)" }));
+  // Lane names, noise bands and the Practise line.
+  const lane = { "font-size": 11, "text-anchor": "end" };
+  const red = { "font-size": 9.5, fill: "var(--jp-red)" };
+  chart.append(
+    svgText(left - 8, 39, "Mode", lane),
+    svgText(left - 8, 110, "Noise", lane),
+    svgText(left - 8, 200, "Score", lane),
+    bandRect(noiseY(NOISE_MAX_DB), noiseY(TOO_LOUD_DB), "var(--jp-red-tint)"),
+    bandRect(noiseY(TOO_LOUD_DB), noiseY(NOISY_DB), "color-mix(in srgb,var(--jp-warn) 14%,var(--jp-white))"),
+    svgText(left + 4, noiseY(NOISE_MAX_DB) + 11, `Too loud · ${TOO_LOUD_DB}+ dB`, red),
+    svgText(left + 4, noiseY(TOO_LOUD_DB) + 11, "A bit noisy", { "font-size": 9.5, fill: "var(--jp-warn)" }),
+    across(noiseY(NOISE_MIN_DB), "var(--jp-line)"),
+    across(scoreY(SCORE_PRACTISE), "var(--jp-red)", { "stroke-dasharray": "4 3" }),
+    svgText(left + 4, scoreY(SCORE_PRACTISE) + 11, `Practise · ${SCORE_PRACTISE}`, red),
+    across(scoreY(0), "var(--jp-grey-soft)"));
 
-  // Help presses: drawn first, dashed, so blocks and dots stay on top of the line.
+  // Help presses: drawn first, so blocks and dots stay on top of the line.
   for (const point of points.filter((item) => item.event_type === "help")) {
     const x = xOf(point.recorded_at);
-    svg.append(svgPart("line", { x1: x, y1: 14, x2: x, y2: 230, stroke: "var(--jp-red)", "stroke-width": 1.5, "stroke-dasharray": "4 3", "stroke-opacity": 0.8 }));
-    svg.append(svgPart("text", { x: Math.min(x, right), y: 11, "font-size": 10.5, "font-weight": 700, fill: "var(--jp-red)", "text-anchor": x > right - 60 ? "end" : "middle" }, `⚑ Help ${clockTime(point.recorded_at)}`));
+    chart.append(
+      svgPart("line", { x1: x, y1: 14, x2: x, y2: 230, stroke: "var(--jp-red)", "stroke-width": 1.5,
+                        "stroke-dasharray": "4 3", "stroke-opacity": 0.8 }),
+      svgText(Math.min(x, right), 11, `⚑ Help ${clockTime(point.recorded_at)}`, { "font-size": 10.5,
+        "font-weight": 700, fill: "var(--jp-red)", "text-anchor": x > right - 60 ? "end" : "middle" }));
   }
 
-  // Mode blocks.
-  for (const segment of segments) {
-    if (segment.mode === null) {
-      continue;
-    }
-    const width = xOf(segment.to) - xOf(segment.from);
-    const block = svgPart("rect", { x: xOf(segment.from), y: 26, width: Math.max(width - 1, 0.5), height: 20, rx: 3, fill: MODE_COLOR[segment.mode] });
-    block.append(svgPart("title", {}, `${MODE_NAME[segment.mode]} ${clockTime(segment.from)}–${clockTime(segment.to)}`));
-    svg.append(block);
+  // Mode blocks, named when wide enough.
+  for (const segment of segments.filter((item) => item.mode !== null)) {
+    const mode = MODES[segment.mode];
+    const x = xOf(segment.from);
+    const width = xOf(segment.to) - x;
+    const tooltip = `${mode.name} ${clockTime(segment.from)}–${clockTime(segment.to)}`;
+    const block = { x: x, y: 26, width: Math.max(width - 1, 0.5), height: 20, rx: 3, fill: mode.color };
+    chart.append(svgPart("rect", block, svgPart("title", {}, tooltip)));
     if (width > 50) {
-      svg.append(svgPart("text", { x: xOf(segment.from) + width / 2, y: 40, "font-size": 10.5, fill: segment.mode === "idle" ? "var(--jp-grey)" : "var(--jp-white)", "text-anchor": "middle" }, MODE_SHORT[segment.mode]));
+      const color = segment.mode === "idle" ? "var(--jp-grey)" : "var(--jp-white)";
+      chart.append(svgText(x + width / 2, 40, mode.short,
+                           { "font-size": 10.5, fill: color, "text-anchor": "middle" }));
     }
   }
 
-  // Noise reports: one stem per report.
+  // Noise reports: one stem and dot per report.
   const noise = points.filter((point) => point.event_type === "noise");
   for (const point of noise) {
     const x = xOf(point.recorded_at);
     const y = noiseY(point.data.db);
-    svg.append(svgPart("line", { x1: x, y1: noiseY(NOISE_MIN_DB), x2: x, y2: y, stroke: "var(--jp-grey-soft)" }));
-    const dot = svgPart("circle", { cx: x, cy: y, r: 4.5, fill: point.data.db >= TOO_LOUD_DB ? "var(--jp-red)" : "var(--jp-warn)", stroke: "var(--jp-white)", "stroke-width": 1.5 });
-    dot.append(svgPart("title", {}, `${clockTime(point.recorded_at)} · ${Math.round(point.data.db)} dB`));
-    svg.append(dot);
+    const color = point.data.db >= TOO_LOUD_DB ? "var(--jp-red)" : "var(--jp-warn)";
+    const tooltip = `${clockTime(point.recorded_at)} · ${Math.round(point.data.db)} dB`;
+    chart.append(
+      svgPart("line", { x1: x, y1: noiseY(NOISE_MIN_DB), x2: x, y2: y, stroke: "var(--jp-grey-soft)" }),
+      svgPart("circle", { cx: x, cy: y, r: 4.5, fill: color, stroke: "var(--jp-white)", "stroke-width": 1.5 },
+        svgPart("title", {}, tooltip)));
   }
-  svg.append(svgPart("text", { x: left, y: 61, "font-size": 10.5, fill: noise.length > 0 ? "var(--jp-red)" : "var(--jp-grey)", "font-weight": 700 }, `${noise.length} noise reports in Quiet Study`));
+  chart.append(svgText(left, 61, `${noise.length} noise reports in Quiet Study`, { "font-size": 10.5,
+    fill: noise.length > 0 ? "var(--jp-red)" : "var(--jp-grey)", "font-weight": 700 }));
 
-  // Scores: one dot per reading try, joined inside each session.
-  for (const session of sessionsOf(scores, dollId)) {
-    const coords = session.lines.map((line) => `${xOf(line.recorded_at).toFixed(1)},${scoreY(line.score).toFixed(1)}`).join(" ");
-    svg.append(svgPart("polyline", { points: coords, fill: "none", stroke: "var(--jp-grey-soft)", "stroke-width": 1.5 }));
+  // Scores: one dot per reading try, joined inside each session, session average over the last one.
+  for (const session of sessionsOf(lastScores)) {
+    const coords = session.lines.map((line) => {
+      return `${xOf(line.recorded_at).toFixed(1)},${scoreY(line.score).toFixed(1)}`;
+    });
+    chart.append(svgPart("polyline", { points: coords.join(" "), fill: "none", stroke: "var(--jp-grey-soft)",
+                                       "stroke-width": 1.5 }));
     for (const line of session.lines) {
-      const dot = svgPart("circle", { cx: xOf(line.recorded_at), cy: scoreY(line.score), r: 4, fill: bandColor(line.score) });
-      dot.append(svgPart("title", {}, `${clockTime(line.recorded_at)} · p.${line.passage} try ${line.attempt} · ${Math.round(line.score)}%`));
-      svg.append(dot);
+      const dot = { cx: xOf(line.recorded_at), cy: scoreY(line.score), r: 4, fill: band(line.score).color };
+      const tooltip = `${clockTime(line.recorded_at)} · p.${line.passage} try ${line.attempt} · `
+        + percent(line.score);
+      chart.append(svgPart("circle", dot, svgPart("title", {}, tooltip)));
     }
     const last = session.lines[session.lines.length - 1];
-    // Near the right edge the label goes left of the dot, so it stays inside the chart.
     const lastX = xOf(last.recorded_at);
-    const nearEdge = lastX > right - 20;
-    svg.append(svgPart("text", { x: nearEdge ? lastX - 8 : lastX, y: scoreY(last.score) - 7, "font-size": 10, "font-weight": 700, fill: bandColor(session.avg), "text-anchor": nearEdge ? "end" : "middle" }, `${Math.round(session.avg)}%`));
+    const nearEdge = lastX > right - 20;  // near the right edge the label goes left of the dot
+    chart.append(svgText(nearEdge ? lastX - 8 : lastX, scoreY(last.score) - 7, percent(session.avg),
+      { "font-weight": 700, fill: band(session.avg).color, "text-anchor": nearEdge ? "end" : "middle" }));
   }
 
-  // Time axis: 4 ticks, last one "now".
+  // Time axis: 4 ticks, the last one "now".
   for (let i = 0; i <= 3; i++) {
     const time = start + (end - start) * i / 3;
-    svg.append(svgPart("line", { x1: xOf(time), y1: 230, x2: xOf(time), y2: 234, stroke: "var(--jp-grey-soft)" }));
-    svg.append(svgPart("text", { x: xOf(time), y: 248, "font-size": 10, fill: "var(--jp-grey)", "text-anchor": i === 0 ? "start" : (i === 3 ? "end" : "middle") }, i === 3 ? "now" : clockTime(time)));
+    const x = xOf(time);
+    chart.append(svgPart("line", { x1: x, y1: 230, x2: x, y2: 234, stroke: "var(--jp-grey-soft)" }),
+      svgText(x, 248, i === 3 ? "now" : clockTime(time),
+              { "text-anchor": ["start", "middle", "middle", "end"][i] }));
   }
-  box.replaceChildren(svg);
+  box.replaceChildren(chart);
 }
 
-function summaryCell(label, value, color) {
-  const cell = document.createElement("div");
-  const small = document.createElement("div");
-  small.style.cssText = "font-size:10.5px;text-transform:uppercase;letter-spacing:.12em;color:var(--jp-grey)";
-  small.textContent = label;
-  const big = document.createElement("div");
-  big.style.cssText = `font-family:var(--jp-font-display);font-size:22px;font-weight:700;line-height:1.2;color:${color || "var(--jp-black)"}`;
-  big.textContent = value;
-  cell.append(small, big);
-  return cell;
-}
+// ---- Summary and scores ----
 
 function drawSummary() {
-  const cells = [];
+  const avg = average(lastScores);
+  const avgCell = avg === null ? statCell("Avg score", "—")
+    : statCell("Avg score", percent(avg), band(avg).color);
   if (view === "today") {
     const points = todayPoints();
-    const scores = todayScores();
     const end = Date.now() / 1000;
-    const start = points.length > 0 ? points[0].recorded_at : end;
-    const totals = modeTotals(modeSegments(points, start, end));
-    const avg = average(scores);
-    cells.push(summaryCell("Reading", minutesText(totals.reading)));
-    cells.push(summaryCell("Quiet Study", minutesText(totals.quiet)));
-    cells.push(summaryCell("Sessions", String(sessionsOf(scores, dollId).length)));
-    cells.push(summaryCell("Tries", String(scores.length)));
-    cells.push(summaryCell("Avg score", avg === null ? "—" : `${Math.round(avg)}%`, avg === null ? null : bandColor(avg)));
-    cells.push(summaryCell("Help presses", String(points.filter((point) => point.event_type === "help").length)));
-    document.getElementById("summary-title").textContent = "Today at a glance";
+    const segments = modeSegments(points, points.length > 0 ? points[0].recorded_at : end, end);
+    const minutes = (mode) => minutesText(segments.filter((segment) => segment.mode === mode)
+      .reduce((sum, segment) => sum + segment.to - segment.from, 0));
+    setText("summary-title", "Today at a glance");
+    byId("summary").replaceChildren(
+      statCell("Reading", minutes("reading")),
+      statCell("Quiet Study", minutes("quiet")),
+      statCell("Sessions", String(sessionsOf(lastScores).length)),
+      statCell("Tries", String(lastScores.length)),
+      avgCell,
+      statCell("Help presses", String(points.filter((point) => point.event_type === "help").length)));
   } else {
-    const scores = lastScores === null ? [] : scoresOf(lastScores.scores, dollId);
-    const classes = classesOf(scores, dollId);
-    const avg = average(scores);
-    const sounds = soundsOf(scores, dollId);
-    let change = "—";
-    if (classes.length > 1) {
-      change = changeText(classes[classes.length - 1].avg - classes[0].avg);
-    }
-    cells.push(summaryCell("Classes", String(classes.length)));
-    cells.push(summaryCell("Sessions", String(classes.reduce((sum, entry) => sum + entry.sessions, 0))));
-    cells.push(summaryCell("Tries", String(scores.length)));
-    cells.push(summaryCell("Avg score", avg === null ? "—" : `${Math.round(avg)}%`, avg === null ? null : bandColor(avg)));
-    cells.push(summaryCell("First → latest", change));
-    cells.push(summaryCell("Weakest sound", sounds.length === 0 ? "—" : `/${sounds[0].ipa}/`));
-    document.getElementById("summary-title").textContent = "All classes at a glance";
+    const classes = classesOf(lastScores);
+    const sounds = soundsOf(lastScores);
+    const change = classes.length > 1 ? changeText(classes[classes.length - 1].avg - classes[0].avg) : "—";
+    setText("summary-title", "All classes at a glance");
+    byId("summary").replaceChildren(
+      statCell("Classes", String(classes.length)),
+      statCell("Sessions", String(classes.reduce((sum, entry) => sum + entry.sessions, 0))),
+      statCell("Tries", String(lastScores.length)),
+      avgCell,
+      statCell("First → latest", change),
+      statCell("Weakest sound", sounds.length === 0 ? "—" : `/${sounds[0].ipa}/`));
   }
-  document.getElementById("summary").replaceChildren(...cells);
 }
 
-function drawScores() {
-  const scores = lastScores === null ? [] : scoresOf(lastScores.scores, dollId);
-  const label = document.getElementById("latest-label");
-  const text = document.getElementById("latest-text");
-  const gauge = document.getElementById("latest-gauge");
-
-  if (view === "today") {
-    const sessions = sessionsOf(scores, dollId);
-    document.getElementById("timeline-title").textContent = "Today: mode, noise and score";
-    document.getElementById("timeline-note").textContent = "Shaded = Quiet Study · noise is only measured there";
+// The meter shows the latest session (Today) or class (Past); the timeline card shows Today's
+// timeline or a chart of the past classes.
+function drawLatest() {
+  const today = view === "today";
+  const steps = today ? sessionsOf(lastScores) : classesOf(lastScores);
+  const latest = steps[steps.length - 1];
+  setText("timeline-title", today ? "Today: mode, noise and score" : "Past classes: score per class");
+  setText("timeline-note", today ? "Shaded = Quiet Study · noise is only measured there"
+    : `${steps.length} classes`);
+  if (today) {
     drawTimeline();
-    if (sessions.length === 0) {
-      label.textContent = "Latest session";
-      gauge.replaceChildren(scoreGauge(null));
-      text.textContent = "No reading score yet today";
-    } else {
-      const latest = sessions[sessions.length - 1];
-      const line = latest.lines[latest.lines.length - 1];
-      label.textContent = `Latest session · today ${clockTime(latest.start)} · book ${line.uid}, p.${line.passage}`;
-      gauge.replaceChildren(scoreGauge(latest.avg));
-      text.textContent = sessions.length > 1 ? `Reading score · ${changeText(latest.avg - sessions[sessions.length - 2].avg)} pts vs previous session` : `Reading score · ${latest.count} tries`;
-    }
+  } else if (steps.length === 0) {
+    byId("timeline").replaceChildren(emptyNote("No saved classes yet."));
   } else {
-    const classes = classesOf(scores, dollId);
-    document.getElementById("timeline-title").textContent = "Past classes: score per class";
-    document.getElementById("timeline-note").textContent = `${classes.length} classes`;
-    const box = document.getElementById("timeline");
-    if (classes.length === 0) {
-      box.replaceChildren(emptyNote("No saved classes yet."));
-      label.textContent = "Latest class";
-      gauge.replaceChildren(scoreGauge(null));
-      text.textContent = "No saved classes yet";
-    } else {
-      const points = classes.map((entry, index) => ({ x: index, y: entry.avg, title: `${shortDay(entry.day)} · ${Math.round(entry.avg)}% · ${entry.sessions} sessions` }));
-      const step = Math.max(1, Math.ceil(classes.length / 6));
-      const labels = classes.map((entry, index) => ({ x: index, text: shortDay(entry.day) })).filter((item, index) => index % step === 0 || index === classes.length - 1);
-      box.replaceChildren(scoreChart([{ name: `Doll ${dollId}`, color: DOLL_COLOR[dollId], points: points }], 0, classes.length - 1, labels, "Average score of each class day."));
-      const latest = classes[classes.length - 1];
-      label.textContent = `Latest class · ${shortDay(latest.day)}`;
-      gauge.replaceChildren(scoreGauge(latest.avg));
-      text.textContent = classes.length > 1 ? `Reading score · ${changeText(latest.avg - classes[0].avg)} pts since the first class` : `Reading score · ${latest.count} tries`;
-    }
+    const points = steps.map((entry, index) => ({
+      x: index,
+      y: entry.avg,
+      title: `${shortDay(entry.day)} · ${percent(entry.avg)} · ${entry.sessions} sessions`,
+    }));
+    const series = [{ name: `Doll ${dollId}`, color: DOLL_COLOR[dollId], points: points }];
+    const days = steps.map((entry) => entry.day);
+    byId("timeline").replaceChildren(dayChart(series, days, "Average score of each class day."));
   }
 
+  byId("latest-gauge").replaceChildren(scoreGauge(latest === undefined ? null : latest.avg));
+  if (latest === undefined) {
+    setText("latest-label", today ? "Latest session" : "Latest class");
+    setText("latest-text", today ? "No reading score yet today" : "No saved classes yet");
+    return;
+  }
+  if (today) {
+    const line = latest.lines[latest.lines.length - 1];
+    const book = `book ${line.uid}, p.${line.passage}`;
+    setText("latest-label", `Latest session · today ${clockTime(latest.start)} · ${book}`);
+  } else {
+    setText("latest-label", `Latest class · ${shortDay(latest.day)}`);
+  }
+  if (steps.length === 1) {
+    setText("latest-text", `Reading score · ${latest.count} tries`);
+  } else if (today) {
+    const change = changeText(latest.avg - steps[steps.length - 2].avg);
+    setText("latest-text", `Reading score · ${change} pts vs previous session`);
+  } else {
+    const change = changeText(latest.avg - steps[0].avg);
+    setText("latest-text", `Reading score · ${change} pts since the first class`);
+  }
+}
+
+// Did practising help: each word read 2+ times, first and latest read (score lines are oldest first).
+// One row per word: "three   56% → 53%   ▼ 3 pts", then the sound to work on.
+function drawPractice() {
+  const words = groupBy(lastScores.flatMap((line) => line.words), (read) => read.word.toLowerCase())
+    .filter((group) => group.items.length > 1)
+    .map((group) => ({
+      word: group.key,
+      first: group.items[0].score,
+      lastRead: group.items[group.items.length - 1],
+      count: group.items.length,
+    }))
+    .sort((a, b) => a.lastRead.score - b.lastRead.score)
+    .slice(0, 6);
+  const rows = words.map((item) => {
+    const last = item.lastRead.score;
+    const change = last - item.first;
+    const chipColor = change > 0 ? "var(--jp-ok)" : change < 0 ? "var(--jp-red)" : "var(--jp-grey-soft)";
+    const stuck = last < SCORE_PRACTISE ? "Still stuck · " : "";
+    const weak = weakSoundsText(soundsInWords([item.lastRead]));
+    return el("div", { class: "practice-row" },
+      el("span", { class: "word-name" }, item.word),
+      el("span", { class: "scores" }, el("span", { class: "muted" }, percent(item.first)), " → ",
+        el("b", { style: `color:${band(last).color}` }, percent(last))),
+      el("span", { class: "change", style: `background:${chipColor}` },
+        change === 0 ? "same" : `${changeText(change)} pts`),
+      el("span", { class: "under" }, `${stuck}${weak} · ${item.count} reads`));
+  });
+  setText("practice-note", view === "today" ? "1st try today → latest" : "1st try ever → latest");
+  byId("practice").replaceChildren(...(rows.length > 0 ? rows : [emptyNote("No word read twice yet.")]));
+}
+
+function drawScores(data) {
+  lastScores = ofDoll(data.scores, dollId);
+  drawLatest();
   drawSummary();
-  document.getElementById("sounds-note").textContent = view === "today" ? "This doll today · weakest first" : "All classes · ▲▼ = latest vs first class";
-  document.getElementById("sound-rows").replaceChildren(...soundRows(soundsOf(scores, dollId), SOUNDS_SHOWN));
-  document.getElementById("word-rows").replaceChildren(...wordRows(wordsOf(scores, dollId), WORDS_SHOWN));
-
-  const practice = practiceOf(scores).slice(0, PRACTICE_SHOWN);
-  document.getElementById("practice-note").textContent = view === "today" ? "1st try today → latest" : "1st try ever → latest";
-  document.getElementById("practice").replaceChildren(...(practice.length === 0 ? [emptyNote("No word read twice yet.")] : practiceRows(practice)));
+  setText("sounds-note", view === "today" ? "This doll today · weakest first"
+    : "All classes · ▲▼ = latest vs first class");
+  byId("sound-rows").replaceChildren(...soundRows(soundsOf(lastScores), 10));
+  byId("word-rows").replaceChildren(...wordRows(wordsOf(lastScores), 8));
+  drawPractice();
 }
 
-// Past is only read when the button is pressed; Today is read again every 10 s.
-async function loadScores() {
-  const asked = view;
-  try {
-    const data = await getJson(`/api/dashboard/scores?day=${asked}`);
-    if (asked === view) {
-      lastScores = data;
-      drawScores();
-    }
-  } catch (error) {
-    console.warn("doll score poll failed:", error);
-  }
-}
+// ---- Start ----
 
-async function pollScores() {
-  if (view === "today") {
-    await loadScores();
-  }
-  setTimeout(pollScores, SCORE_POLL_MS);
-}
-
-async function poll() {
-  try {
-    const nodes = await getJson("/api/dashboard/nodes");
-    drawHeader(nodes);
-    drawHelpPopup(nodes);
-  } catch (error) {
-    console.warn("doll poll failed:", error);
-    drawServerDown(document.getElementById("nest-dot"), document.getElementById("nest-text"));
-    setChip(document.getElementById("doll-state"), "No server", "var(--jp-grey-soft)", false, true);
-  }
-  setTimeout(poll, POLL_MS);
-}
-
-async function pollHistory() {
-  try {
-    lastHistory = await getJson("/api/dashboard/history?minutes=180");
-    drawModeChanges(todayPoints());
-    if (view === "today") {
-      drawTimeline();
-      drawSummary();
-    }
-  } catch (error) {
-    console.warn("doll history poll failed:", error);
-  }
-  setTimeout(pollHistory, HISTORY_POLL_MS);
-}
-
-setupViewButtons((chosen) => {
-  view = chosen;
-  loadScores();
+watchNodes((nodes) => drawHeader(nodes), () => {
+  setChip(byId("doll-state"), "No server", "var(--jp-grey-soft)", "dashed");
 });
 
-poll();
-pollHistory();
-pollScores();
+repeat(10000, async () => {
+  lastHistory = await getJson("/api/dashboard/history?minutes=180");
+  drawModeChanges(todayPoints());
+  // both: the Today button is pressed AND today's scores have arrived (never past scores under "Today")
+  if (view === "today" && document.body.dataset.view === "today") {
+    drawTimeline();
+    drawSummary();
+  }
+});
+
+watchScores(drawScores);

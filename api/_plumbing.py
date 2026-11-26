@@ -214,8 +214,8 @@ class Handler(BaseHTTPRequestHandler):
             now = time.time()
             if name == "nodes":
                 return self.reply(200, self.routes["nodes"](now))
-            if name == "history" and q.get("minutes", "15") in ["5", "15", "60", "180"]:
-                return self.reply(200, self.routes["history"](now, int(q.get("minutes", "15"))))
+            if name == "history" and q.get("minutes") in ["60", "180"]:
+                return self.reply(200, self.routes["history"](now, int(q["minutes"])))
             if name == "scores" and q.get("day", "today") in ["today", "past"]:
                 return self.reply(200, self.routes["scores"](now, q.get("day", "today")))
             return self.reply(404, {"error": "not found"})

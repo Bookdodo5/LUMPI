@@ -1,355 +1,292 @@
-// Overview page: fill every live part from the cloud server.
-// Live: nest connection, light (lux), teacher distance, doll rows, help popup,
-// mode in the last hour and recent activity.
-// Scores: score trend, sounds (IPA), words and Improved, from the AI.
-// Today = this class, Past = every saved class (button in the header).
-// Shared helpers (chips, mode bars, score grouping, chart) are in shared.js.
+// Overview page (index.html).
+// Live: nest, light, teacher distance, doll rows, mode in the last hour, recent activity.
+// Scores, Today = this class or Past = every saved class: trend, class score, sounds, words, improved,
+// class by class, and light / teacher distance against the score.
 
-const POLL_MS = 2000;
-// Activity reads one hour of history, which is bigger, so it is fetched less often.
-const ACTIVITY_POLL_MS = 10000;
-const ACTIVITY_ROWS_SHOWN = 5;
-const SCORE_POLL_MS = 10000;
-const SOUNDS_SHOWN = 8;
-const WORDS_SHOWN = 8;
-// Teacher distance bar: 0 to 400 cm, near zone = the left half.
-const TEACHER_BAR_CM = 400;
-
-let view = "today";
-
-// Light and teacher-distance limits drawn on the gauges.
-const DARK_LUX = 100;
-const LUX_MARGIN = 20;
-const BRIGHT_LUX = 1000;
-const TEACHER_NEAR_CM = 200;
-
-// Light gauge: lux break points and the gauge angle for each, in degrees.
-// 180 = far left (too dark), 0 = far right (too bright). Matches the coloured arcs.
-const LUX_STEPS = [0, DARK_LUX - LUX_MARGIN, DARK_LUX + LUX_MARGIN, BRIGHT_LUX - LUX_MARGIN, BRIGHT_LUX + LUX_MARGIN, 2000];
-const ANGLE_STEPS = [180, 144, 108, 72, 36, 0];
-
-// Gauge circle in the SVG: centre (130, 140), radius 102.
-const GAUGE_X = 130;
-const GAUGE_Y = 140;
-const GAUGE_R = 102;
+// Light gauge: lux break points and the zone between each two. The marker angle runs from 180°
+// (far left) to 0° (far right), 36° per zone, matching the coloured arcs in index.html.
+const LUX_STEPS = [0, 80, 120, 980, 1020, 2000];
+const LUX_ZONES = ["Too dark", "A bit dark", "Normal", "A bit bright", "Too bright"];
+const TEACHER_NEAR_CM = 200;  // the bar runs from 0 to 400 cm; near = the left half
 
 // Dolls that need help come first, then dolls with a connection problem.
 const ROW_ORDER = { help: 0, offline: 1, stale: 2, unknown: 3, online: 4 };
 
-function luxToAngle(lux) {
-  if (lux >= LUX_STEPS[LUX_STEPS.length - 1]) {
-    return 0;
+// ---- Live: room and dolls ----
+
+function lightPlace(lux) {
+  let i = 1;
+  while (i < LUX_STEPS.length - 1 && lux > LUX_STEPS[i]) {
+    i++;
   }
-  for (let i = 1; i < LUX_STEPS.length; i++) {
-    if (lux <= LUX_STEPS[i]) {
-      const part = (lux - LUX_STEPS[i - 1]) / (LUX_STEPS[i] - LUX_STEPS[i - 1]);
-      return ANGLE_STEPS[i - 1] + part * (ANGLE_STEPS[i] - ANGLE_STEPS[i - 1]);
-    }
-  }
-  return 180;
+  const part = Math.min(1, (lux - LUX_STEPS[i - 1]) / (LUX_STEPS[i] - LUX_STEPS[i - 1]));
+  return { angle: (180 - 36 * (i - 1 + part)) * Math.PI / 180, zone: LUX_ZONES[i - 1] };
 }
 
-function luxZone(lux) {
-  if (lux < DARK_LUX - LUX_MARGIN) {
-    return "Too dark";
-  }
-  if (lux < DARK_LUX + LUX_MARGIN) {
-    return "A bit dark";
-  }
-  if (lux <= BRIGHT_LUX - LUX_MARGIN) {
-    return "Normal";
-  }
-  if (lux <= BRIGHT_LUX + LUX_MARGIN) {
-    return "A bit bright";
-  }
-  return "Too bright";
-}
-
-function drawLight(lux) {
-  const marker = document.getElementById("light-marker");
-  const zone = document.getElementById("light-zone");
-  const text = document.getElementById("light-lux");
-
-  if (lux === null || lux === undefined) {
-    // Words, not a number, so a failed sensor never looks like a reading.
-    marker.setAttribute("visibility", "hidden");
-    zone.textContent = "No reading";
-    text.textContent = "— lx";
-    return;
-  }
-
-  const angle = luxToAngle(lux) * Math.PI / 180;
-  marker.setAttribute("visibility", "visible");
-  marker.setAttribute("cx", (GAUGE_X + GAUGE_R * Math.cos(angle)).toFixed(1));
-  marker.setAttribute("cy", (GAUGE_Y - GAUGE_R * Math.sin(angle)).toFixed(1));
-  zone.textContent = luxZone(lux);
-  text.textContent = `${Math.round(lux)} lx`;
-}
-
-function drawNest(nest) {
-  const seen = document.getElementById("light-seen");
-  const teacher = document.getElementById("teacher-near");
-  drawNestStatus(nest, document.getElementById("nest-dot"), document.getElementById("nest-text"));
-
-  // No message from the nest yet: show nothing that looks like a reading.
-  if (nest === undefined || nest.status === "unknown") {
-    seen.textContent = "No reading yet";
-    drawLight(null);
-    document.getElementById("light-zone").textContent = "Waiting";
-    teacher.textContent = "Teacher near nest: —";
-    document.getElementById("teacher-cm").textContent = "— cm";
-    document.getElementById("teacher-marker").style.visibility = "hidden";
-    return;
-  }
-
-  const clock = clockTime(nest.last_seen);
-  if (nest.status === "online") {
-    seen.textContent = `Updated ${clock}`;
-  } else {
-    seen.textContent = `Old · ${clock}`;
-  }
-  // Mark values that are not live, so an old reading never looks current.
+// Light and teacher distance from the nest. Old values say "(old)", missing ones say so in
+// words, so a failed sensor or a silent nest never looks like a live reading.
+function drawRoom(nest) {
+  const known = nest.status !== "unknown";
+  // a reading the nest left out counts as missing, like null
+  const lux = known && sent(nest.values.lux) ? nest.values.lux : null;
+  const distance = known && sent(nest.values.distance_cm) ? nest.values.distance_cm : null;
   const old = nest.status === "online" ? "" : " (old)";
+  const seen = `${nest.status === "online" ? "Updated" : "Old ·"} ${clockTime(nest.last_seen)}`;
+  setText("light-seen", known ? seen : "No reading yet");
 
-  drawLight(nest.values.lux);
-
-  const distance = nest.values.distance_cm;
-  const distanceText = document.getElementById("teacher-cm");
-  const marker = document.getElementById("teacher-marker");
-  if (distance === null || distance === undefined) {
-    teacher.textContent = "Teacher near nest: no reading";
-    distanceText.textContent = "No reading";
-    marker.style.visibility = "hidden";
-    return;
-  }
-  if (distance < TEACHER_NEAR_CM) {
-    teacher.textContent = `Teacher near nest: Yes${old}`;
+  const marker = byId("light-marker");
+  marker.setAttribute("visibility", lux === null ? "hidden" : "visible");
+  if (lux === null) {
+    setText("light-zone", known ? "No reading" : "Waiting");
+    setText("light-lux", "— lx");
   } else {
-    teacher.textContent = `Teacher near nest: No${old}`;
+    const place = lightPlace(lux);
+    // gauge centre (130, 140), radius 102
+    marker.setAttribute("cx", (130 + 102 * Math.cos(place.angle)).toFixed(1));
+    marker.setAttribute("cy", (140 - 102 * Math.sin(place.angle)).toFixed(1));
+    setText("light-zone", place.zone);
+    setText("light-lux", `${Math.round(lux)} lx`);
   }
-  distanceText.textContent = `${Math.round(distance)} cm${old}`;
-  marker.style.left = `${Math.min(distance, TEACHER_BAR_CM) / TEACHER_BAR_CM * 100}%`;
-  marker.style.visibility = "visible";
+
+  const bar = byId("teacher-marker");
+  bar.style.visibility = distance === null ? "hidden" : "visible";
+  if (!known) {
+    setText("teacher-near", "Teacher near nest: —");
+    setText("teacher-cm", "— cm");
+  } else if (distance === null) {
+    setText("teacher-near", "Teacher near nest: no reading");
+    setText("teacher-cm", "No reading");
+  } else {
+    setText("teacher-near", `Teacher near nest: ${distance < TEACHER_NEAR_CM ? "Yes" : "No"}${old}`);
+    setText("teacher-cm", `${Math.round(distance)} cm${old}`);
+    bar.style.left = `${Math.min(distance, 400) / 400 * 100}%`;
+  }
 }
 
-// Second line of a row: book, page and try, then what the doll is doing.
-function dollWhat(doll) {
-  const parts = [];
-  const values = doll.values;
-  if (values.uid) {
-    parts.push(`Book ${values.uid}`);
+// One doll row: name, book / page / try and activity, mode chip, state chip.
+function dollRow(doll) {
+  const mode = el("span", { class: "chip" });
+  const state = el("span", { class: "chip state" });
+  setModeChip(mode, doll);
+  setStateChip(state, doll);
+  let what = "Waiting for the first message";
+  if (doll.status !== "unknown") {
+    const attempt = sent(doll.values.attempt) ? [`try ${doll.values.attempt}`] : [];
+    const activity = ACTIVITY_TEXT[doll.activity] || "No activity yet";
+    what = [...bookParts(doll.values), ...attempt, activity].join(" · ");
   }
-  if (values.passage !== null && values.passage !== undefined) {
-    parts.push(`p.${values.passage}`);
+  const row = el("a", { class: "row doll-row", href: `/doll.html?doll=${doll.node_id}` },
+    el("div", {},
+      el("div", { class: "doll-name" }, logo(), `Doll ${doll.node_id}`),
+      el("div", { class: "doll-what" }, what)),
+    mode, state, el("span", { class: "chevron" }, "›"));
+  if (doll.needs_help || doll.status === "offline") {
+    row.style.background = "var(--jp-red-tint)";  // red row, as in the design
   }
-  if (values.attempt !== null && values.attempt !== undefined) {
-    parts.push(`try ${values.attempt}`);
-  }
-  parts.push(ACTIVITY_TEXT[doll.activity] || "No activity yet");
-  return parts.join(" · ");
-}
-
-function rowOrder(doll) {
-  if (helpReason(doll) !== null) {
-    return ROW_ORDER.help;
-  }
-  return ROW_ORDER[doll.status];
+  return row;
 }
 
 function drawDolls(nodes) {
-  const dolls = nodes.filter((node) => DOLL_IDS.includes(node.node_id));
-  dolls.sort((a, b) => rowOrder(a) - rowOrder(b) || a.node_id - b.node_id);
+  const order = (doll) => (doll.needs_help ? ROW_ORDER.help : ROW_ORDER[doll.status]);
+  const dolls = DOLL_IDS.map((id) => nodes[id]).sort((a, b) => order(a) - order(b) || a.node_id - b.node_id);
+  byId("doll-rows").replaceChildren(...dolls.map(dollRow));
+}
 
-  const template = document.getElementById("doll-row-template");
-  const rows = [];
+// ---- Live: mode bars and recent activity (last hour) ----
 
-  for (const doll of dolls) {
-    const row = template.content.firstElementChild.cloneNode(true);
-    row.href = `/doll.html?doll=${doll.node_id}`;
-    row.querySelector(".doll-name").textContent = `Doll ${doll.node_id}`;
-    setStateChip(row.querySelector(".doll-state"), doll);
-
-    if (doll.status === "unknown") {
-      row.querySelector(".doll-what").textContent = "Waiting for the first message";
-      setChip(row.querySelector(".doll-mode"), "—", "var(--jp-grey-soft)", false, true);
-      rows.push(row);
-      continue;
+// One bar of blocks per doll, like the "Mode today" wireframe; wide blocks say "Quiet 15m".
+function modeBar(segments) {
+  const total = segments.reduce((sum, segment) => sum + (segment.to - segment.from), 0);
+  return el("div", { class: "mode-bar" }, ...segments.map((segment) => {
+    const seconds = segment.to - segment.from;
+    const range = `${clockTime(segment.from)}–${clockTime(segment.to)}`;
+    if (segment.mode === null) {
+      return el("div", { class: "no-data", style: `flex:${seconds}`, title: `No data ${range}` });
     }
-
-    const reason = helpReason(doll);
-    row.querySelector(".doll-what").textContent = dollWhat(doll);
-    setModeChip(row.querySelector(".doll-mode"), doll.activity);
-
-    // Red row for "needs help" and for offline, as in the design.
-    if (reason !== null || doll.status === "offline") {
-      row.style.background = "var(--jp-red-tint)";
+    const mode = MODES[segment.mode];
+    const color = segment.mode === "idle" ? "var(--jp-grey)" : "var(--jp-white)";
+    const block = el("div", { style: `flex:${seconds};background:${mode.color};color:${color}`,
+                              title: `${mode.name} ${range}` });
+    if (seconds / total > 0.28) {
+      block.textContent = `${mode.short} ${Math.round(seconds / 60)}m`;
     }
-    rows.push(row);
-  }
-
-  document.getElementById("doll-rows").replaceChildren(...rows);
+    return block;
+  }));
 }
 
 function drawModes(history) {
   const start = history.now - history.minutes * 60;
   const end = history.now;
-  const grid = document.createElement("div");
-  grid.style.cssText = "display:grid;grid-template-columns:48px minmax(0,1fr);gap:8px 10px;align-items:center";
-
+  const grid = el("div", { class: "mode-grid" });
   for (const dollId of DOLL_IDS) {
-    const label = document.createElement("span");
-    label.style.cssText = "font-weight:700;font-size:13px";
-    label.textContent = `Doll ${dollId}`;
-    grid.append(label, modeBar(modeSegments(sortedPoints(history, dollId), start, end), 26));
+    const segments = modeSegments(sortedPoints(history, dollId), start, end);
+    grid.append(el("b", {}, `Doll ${dollId}`), modeBar(segments));
   }
-  grid.append(document.createElement("span"), timeAxis(start, end));
-  document.getElementById("mode-rows").replaceChildren(grid);
+  const axis = el("div", { class: "time-axis" },
+    el("span", {}, clockTime(start)),
+    el("span", {}, clockTime((start + end) / 2)),
+    el("span", {}, "now"));
+  grid.append(el("span"), axis);
+  byId("mode-rows").replaceChildren(grid);
 }
 
-// One activity line: time, bold doll name, then the text.
-function activityRow(change) {
-  const row = document.createElement("a");
-  row.className = "row";
-  row.href = `/doll.html?doll=${change.dollId}`;
-  row.style.cssText = "display:grid;grid-template-columns:44px 1fr;gap:8px;padding:8px 6px;border-bottom:var(--jp-border);font-size:13px;align-items:center";
-  const clock = document.createElement("span");
-  clock.style.cssText = "color:var(--jp-grey);font-size:12px";
-  clock.textContent = clockTime(change.time);
-  const body = document.createElement("span");
-  const bold = document.createElement("b");
-  bold.textContent = `Doll ${change.dollId}`;
-  body.append(bold, change.text);
-  if (change.help) {
-    body.style.color = "var(--jp-red)";
-  }
-  row.append(clock, body);
-  return row;
-}
-
-// Only changes are listed: a new activity, a book put on the mat (start event),
-// or the child pressing help. Heartbeats that repeat are skipped.
+// Only changes are listed: a book put on the mat, a new activity, or a help press.
 function drawActivity(history) {
   const changes = [];
-
   for (const dollId of DOLL_IDS) {
     let previous = null;
-
     for (const point of sortedPoints(history, dollId)) {
+      const add = (text, alert) => {
+        changes.push({ time: point.recorded_at, dollId: dollId, text: text, alert: alert });
+      };
       if (point.event_type === "help") {
-        changes.push({ time: point.recorded_at, dollId: dollId, text: " ⚑ asked for help", help: true });
+        add(" ⚑ asked for help", true);
         continue;
       }
       if (point.event_type === "noise") {
         continue;
       }
       if (point.event_type === "start") {
-        let book = "a book";
-        if (point.data.uid) {
-          book = `book ${point.data.uid}`;
-        }
-        changes.push({ time: point.recorded_at, dollId: dollId, text: ` started reading ${book}` });
+        add(` started reading ${point.data.uid ? `book ${point.data.uid}` : "a book"}`, false);
       } else if (point.activity !== previous && point.activity !== null) {
-        changes.push({ time: point.recorded_at, dollId: dollId, text: ` → ${ACTIVITY_TEXT[point.activity] || point.activity}`, help: point.activity === "stopped" });
+        add(` → ${ACTIVITY_TEXT[point.activity] || point.activity}`, point.activity === "stopped");
       }
       previous = point.activity;
     }
   }
-
   changes.sort((a, b) => b.time - a.time);
-  const rows = changes.slice(0, ACTIVITY_ROWS_SHOWN).map(activityRow);
-
+  const rows = changes.slice(0, 5).map((change) => el("a",
+    { class: "row activity-row", href: `/doll.html?doll=${change.dollId}` },
+    el("span", { class: "time" }, clockTime(change.time)),
+    el("span", { class: change.alert ? "alert" : "" }, el("b", {}, `Doll ${change.dollId}`), change.text)));
   if (rows.length === 0) {
-    const empty = document.createElement("p");
-    empty.className = "empty-note";
-    empty.style.margin = "12px 0";
-    empty.textContent = "No doll activity in the last hour.";
-    rows.push(empty);
+    rows.push(emptyNote("No doll activity in the last hour."));
   }
-  document.getElementById("activity-rows").replaceChildren(...rows);
+  byId("activity-rows").replaceChildren(...rows);
 }
 
-// Score trend: Today = one point per reading session on the class clock,
-// Past = one point per class day.
-function drawTrend(scores) {
-  const box = document.getElementById("trend-chart");
-  const series = [];
-  let xMin = Infinity;
-  let xMax = -Infinity;
-  let xLabels = [];
+// ---- Scores ----
 
+// Score trend: Today = one point per reading session on the class clock, Past = one point per class day.
+function drawTrend(scores) {
+  const box = byId("trend-chart");
   if (view === "today") {
-    for (const dollId of DOLL_IDS) {
-      const points = sessionsOf(scores, dollId).map((session) => ({
+    const series = DOLL_IDS.map((dollId) => ({
+      name: `Doll ${dollId}`,
+      color: DOLL_COLOR[dollId],
+      points: sessionsOf(ofDoll(scores, dollId)).map((session) => ({
         x: session.start,
         y: session.avg,
-        title: `Doll ${dollId} · ${clockTime(session.start)}–${clockTime(session.end)} · ${Math.round(session.avg)}% · ${session.count} tries`,
-      }));
-      for (const point of points) {
-        xMin = Math.min(xMin, point.x);
-      }
-      series.push({ name: `Doll ${dollId}`, color: DOLL_COLOR[dollId], points: points });
+        title: `Doll ${dollId} · ${clockTime(session.start)}–${clockTime(session.end)} · `
+          + `${percent(session.avg)} · ${session.count} tries`,
+      })),
+    }));
+    // The class started with the first session (Infinity when there is none).
+    const start = Math.min(...series.flatMap((line) => line.points.map((point) => point.x)));
+    if (!Number.isFinite(start)) {
+      setText("trend-note", "Session average");
+      box.replaceChildren(emptyNote("No reading scores in this class yet."));
+      return;
     }
     // The class clock runs from the first session to now.
-    xMax = Date.now() / 1000;
-    xLabels = [{ x: xMin, text: clockTime(xMin) }, { x: (xMin + xMax) / 2, text: clockTime((xMin + xMax) / 2) }, { x: xMax, text: "now" }];
-    document.getElementById("trend-note").textContent = Number.isFinite(xMin) ? `Session average · class started ${clockTime(xMin)}` : "Session average";
+    const end = Date.now() / 1000;
+    const middle = (start + end) / 2;
+    const labels = [{ x: start, text: clockTime(start) }, { x: middle, text: clockTime(middle) },
+                    { x: end, text: "now" }];
+    setText("trend-note", `Session average · class started ${clockTime(start)}`);
+    const description = "Average score of each reading session today, one line per doll.";
+    box.replaceChildren(scoreChart(series, start, end, labels, description));
   } else {
-    const days = classesOf(scores, null).map((entry) => entry.day);
-    for (const dollId of DOLL_IDS) {
-      const points = classesOf(scores, dollId).map((entry) => ({
+    const days = classesOf(scores).map((entry) => entry.day);
+    const series = DOLL_IDS.map((dollId) => ({
+      name: `Doll ${dollId}`,
+      color: DOLL_COLOR[dollId],
+      points: classesOf(ofDoll(scores, dollId)).map((entry) => ({
         x: days.indexOf(entry.day),
         y: entry.avg,
-        title: `Doll ${dollId} · ${shortDay(entry.day)} · ${Math.round(entry.avg)}% · ${entry.sessions} sessions`,
-      }));
-      series.push({ name: `Doll ${dollId}`, color: DOLL_COLOR[dollId], points: points });
-    }
-    xMin = 0;
-    xMax = days.length - 1;
-    // At most 6 date labels, so they never overlap.
-    const step = Math.max(1, Math.ceil(days.length / 6));
-    xLabels = days.map((day, index) => ({ x: index, text: shortDay(day) })).filter((item, index) => index % step === 0 || index === days.length - 1);
-    document.getElementById("trend-note").textContent = `Class average per day · ${days.length} classes`;
+        title: `Doll ${dollId} · ${shortDay(entry.day)} · ${percent(entry.avg)} · ${entry.sessions} sessions`,
+      })),
+    }));
+    setText("trend-note", `Class average per day · ${days.length} classes`);
+    box.replaceChildren(scores.length === 0 ? emptyNote("No saved classes yet.")
+      : dayChart(series, days, "Average score of each class day, one line per doll."));
   }
-
-  if (scores.length === 0 || !Number.isFinite(xMin)) {
-    box.replaceChildren(emptyNote(view === "today" ? "No reading scores in this class yet." : "No saved classes yet."));
-    return;
-  }
-  const label = view === "today" ? "Average score of each reading session today, one line per doll." : "Average score of each class day, one line per doll.";
-  box.replaceChildren(scoreChart(series, xMin, xMax, xLabels, label));
 }
 
-// Improved: latest session (or class) minus the first, averaged over dolls with two or more.
+// Improved: latest session (or class) minus the first, averaged over the dolls that have two or more.
 function drawImproved(scores) {
-  document.getElementById("improved-label").textContent = view === "today" ? "Improved today" : "Improved overall";
+  const today = view === "today";
+  setText("improved-label", today ? "Improved today" : "Improved overall");
   const changes = [];
   for (const dollId of DOLL_IDS) {
-    const steps = view === "today" ? sessionsOf(scores, dollId) : classesOf(scores, dollId);
+    const steps = today ? sessionsOf(ofDoll(scores, dollId)) : classesOf(ofDoll(scores, dollId));
     if (steps.length > 1) {
       changes.push(steps[steps.length - 1].avg - steps[0].avg);
     }
   }
-  const number = document.getElementById("improved");
-  const text = document.getElementById("improved-text");
+  const number = byId("improved");
   if (changes.length === 0) {
     number.textContent = "—";
     number.style.color = "var(--jp-grey-soft)";
-    text.textContent = view === "today" ? "needs 2 sessions on a doll" : "needs 2 saved classes";
+    setText("improved-text", today ? "needs 2 sessions on a doll" : "needs 2 saved classes");
     return;
   }
-  const change = changes.reduce((sum, value) => sum + value, 0) / changes.length;
+  const change = mean(changes, (value) => value);
   number.textContent = `${change >= 0 ? "+" : "−"}${Math.abs(Math.round(change))}`;
   number.style.color = change >= 0 ? "var(--jp-ok)" : "var(--jp-red)";
-  text.textContent = view === "today" ? "pts overall today · first → latest session" : "pts all time · first → latest class";
+  setText("improved-text", today ? "pts overall today · first → latest session"
+    : "pts all time · first → latest class");
 }
 
-// Past classes: light and teacher distance against each session's score.
+function drawClassScore(scores) {
+  const big = byId("class-score");
+  const classScore = average(scores);
+  if (classScore === null) {
+    big.textContent = "—";
+    big.style.color = "var(--jp-grey-soft)";
+    setText("class-score-text", "No scores yet");
+    return;
+  }
+  big.textContent = percent(classScore);
+  big.style.color = band(classScore).color;
+  const perDoll = DOLL_IDS.map((dollId) => {
+    const value = average(ofDoll(scores, dollId));
+    return `Doll ${dollId} · ${value === null ? "—" : percent(value)}`;
+  });
+  setText("class-score-text", `Class score · ${band(classScore).name} · ${perDoll.join(" | ")}`);
+}
+
+// Past: one row per class day, newest first: date, sessions, tries, average, change, weakest sound.
+function drawClassHistory(scores) {
+  const classes = classesOf(scores);
+  const rows = classes.map((entry, index) => {
+    const change = el("span", { class: "right change" });
+    if (index > 0) {
+      const difference = entry.avg - classes[index - 1].avg;
+      change.textContent = changeText(difference);
+      change.style.color = difference >= 0 ? "var(--jp-ok)" : "var(--jp-red)";
+    }
+    const weakest = soundsOf(entry.lines)[0];
+    const weakText = weakest === undefined ? "" : `Weakest sound /${weakest.ipa}/ ${percent(weakest.avg)}`;
+    return el("div", { class: "class-row" },
+      el("b", {}, shortDay(entry.day)),
+      el("span", { class: "muted" }, `${entry.sessions} sessions · ${entry.count} tries`),
+      el("b", { class: "right", style: `color:${band(entry.avg).color}` }, percent(entry.avg)),
+      change,
+      el("span", { class: "under" }, weakText));
+  });
+  byId("history-rows").replaceChildren(...(rows.length > 0 ? rows.reverse()
+    : [emptyNote("No saved classes yet.")]));
+}
+
+// Past: light and teacher distance against each session's score.
 function drawRoomPast(scores, room) {
   const light = [];
   const teacher = [];
   for (const dollId of DOLL_IDS) {
-    for (const session of sessionsOf(scores, dollId)) {
-      const when = `Doll ${dollId} · ${shortDay(dayOf(session.start))} ${clockTime(session.start)} · ${Math.round(session.avg)}%`;
+    for (const session of sessionsOf(ofDoll(scores, dollId))) {
+      const date = `${shortDay(dayOf(session.start))} ${clockTime(session.start)}`;
+      const when = `Doll ${dollId} · ${date} · ${percent(session.avg)}`;
       const lux = roomDuring(room, session, "lux");
       const distance = roomDuring(room, session, "distance_cm");
       if (lux !== null) {
@@ -360,138 +297,110 @@ function drawRoomPast(scores, room) {
       }
     }
   }
-  document.getElementById("light-scatter").replaceChildren(scatterChart(light, 0, 1200, " lx", "Session score against room light."));
-  document.getElementById("light-link").textContent = linkText(correlation(light), "more light", "less light");
-  document.getElementById("teacher-scatter").replaceChildren(scatterChart(teacher, 0, 400, " cm", "Session score against teacher distance from the nest."));
-  document.getElementById("teacher-link").textContent = linkText(correlation(teacher), "teacher further", "teacher nearer");
+  byId("light-scatter").replaceChildren(scatterChart(light, 1200, " lx",
+    "Session score against room light."));
+  setText("light-link", linkText(correlation(light), "more light", "less light"));
+  byId("teacher-scatter").replaceChildren(scatterChart(teacher, 400, " cm",
+    "Session score against teacher distance from the nest."));
+  setText("teacher-link", linkText(correlation(teacher), "teacher further", "teacher nearer"));
 }
 
-// Past: one row per class day, newest first: date, sessions, tries, average, change, weakest sound.
-function drawClassHistory(scores) {
-  const classes = classesOf(scores, null);
-  const rows = [];
-  classes.forEach((entry, index) => {
-    const row = document.createElement("div");
-    row.style.cssText = "display:grid;grid-template-columns:64px 1fr 48px 46px;gap:2px 8px;align-items:baseline;padding:7px 0;border-bottom:var(--jp-border)";
-    const day = document.createElement("b");
-    day.textContent = shortDay(entry.day);
-    const counts = document.createElement("span");
-    counts.style.color = "var(--jp-grey)";
-    counts.textContent = `${entry.sessions} sessions · ${entry.count} tries`;
-    const avg = document.createElement("b");
-    avg.style.cssText = `text-align:right;color:${bandColor(entry.avg)}`;
-    avg.textContent = `${Math.round(entry.avg)}%`;
-    const change = document.createElement("span");
-    change.style.cssText = "text-align:right;font-size:12px";
-    if (index > 0) {
-      const difference = entry.avg - classes[index - 1].avg;
-      change.textContent = changeText(difference);
-      change.style.color = difference >= 0 ? "var(--jp-ok)" : "var(--jp-red)";
-    }
-    const weakest = soundsOf(entry.lines, null)[0];
-    const note = document.createElement("span");
-    note.style.cssText = "grid-column:2 / 5;font-size:11.5px;color:var(--jp-grey)";
-    note.textContent = weakest === undefined ? "" : `Weakest sound /${weakest.ipa}/ ${Math.round(weakest.avg)}%`;
-    row.append(day, counts, avg, change, note);
-    rows.push(row);
+// Average of one room value during a session (null when the nest sent none then).
+function roomDuring(room, session, key) {
+  const values = room.filter((line) => line[key] !== null
+    && line.recorded_at >= session.start && line.recorded_at <= session.end + 60);
+  return values.length === 0 ? null : mean(values, (line) => line[key]);
+}
+
+// Pearson correlation of [{x, y}], or null with fewer than 3 points or no spread.
+function correlation(points) {
+  if (points.length < 3) {
+    return null;
+  }
+  const mx = mean(points, (p) => p.x);
+  const my = mean(points, (p) => p.y);
+  let top = 0;
+  let sx = 0;
+  let sy = 0;
+  for (const p of points) {
+    top += (p.x - mx) * (p.y - my);
+    sx += (p.x - mx) ** 2;
+    sy += (p.y - my) ** 2;
+  }
+  return sx === 0 || sy === 0 ? null : top / Math.sqrt(sx * sy);
+}
+
+// upWords = what a positive r means, downWords = what a negative r means.
+function linkText(r, upWords, downWords) {
+  if (r === null) {
+    return "Needs 3+ sessions to compare";
+  }
+  const size = Math.abs(r);
+  if (size < 0.2) {
+    return `r = ${r.toFixed(2)} · no clear link`;
+  }
+  const strength = size >= 0.5 ? "strong" : "weak";
+  return `r = ${r.toFixed(2)} · ${strength} link: ${r > 0 ? upWords : downWords} → higher score`;
+}
+
+// Scatter of session score (y, 0-100) against a room value (x, 0 to xMax). points = [{x, y, title}].
+function scatterChart(points, xMax, unit, description) {
+  const [left, right, top, bottom] = [30, 300, 8, 110];
+  const xOf = (x) => left + Math.min(Math.max(x, 0), xMax) / xMax * (right - left);
+  const yOf = (y) => bottom - y / 100 * (bottom - top);
+  const chart = svgPart("svg", { class: "scatter", viewBox: "0 0 310 130", role: "img",
+                                 "aria-label": description });
+  for (const value of [0, 50, 100]) {
+    chart.append(
+      svgPart("line", { x1: left, y1: yOf(value), x2: right, y2: yOf(value), stroke: "var(--jp-line)" }),
+      svgText(left - 4, yOf(value) + 4, String(value), { "font-size": 9, "text-anchor": "end" }));
+  }
+  chart.append(svgPart("line", { x1: left, y1: yOf(SCORE_PRACTISE), x2: right, y2: yOf(SCORE_PRACTISE),
+                                 stroke: "var(--jp-red)", "stroke-dasharray": "4 3" }));
+  ["start", "middle", "end"].forEach((anchor, index) => {
+    const value = xMax * index / 2;
+    const text = `${Math.round(value)}${unit}`;
+    chart.append(svgText(xOf(value), 124, text, { "font-size": 9, "text-anchor": anchor }));
   });
-  rows.reverse();
-  document.getElementById("history-rows").replaceChildren(...(rows.length === 0 ? [emptyNote("No saved classes yet.")] : rows));
+  for (const p of points) {
+    const dot = { cx: xOf(p.x), cy: yOf(p.y), r: 4, fill: band(p.y).color, "fill-opacity": 0.8 };
+    chart.append(svgPart("circle", dot, svgPart("title", {}, p.title)));
+  }
+  return chart;
 }
 
 function drawScores(data) {
   const scores = data.scores;
   drawTrend(scores);
   drawImproved(scores);
-  document.getElementById("mode-card").style.display = view === "today" ? "block" : "none";
-  document.getElementById("activity-card").style.display = view === "today" ? "block" : "none";
-  document.getElementById("history-card").style.display = view === "today" ? "none" : "flex";
+  drawClassScore(scores);
   if (view === "past") {
     drawClassHistory(scores);
-  }
-  document.getElementById("room-live").style.display = view === "today" ? "block" : "none";
-  document.getElementById("room-past").style.display = view === "today" ? "none" : "block";
-  if (view === "past") {
     drawRoomPast(scores, data.room);
   }
-
-  const classScore = average(scores);
-  const big = document.getElementById("class-score");
-  const small = document.getElementById("class-score-text");
-  if (classScore === null) {
-    big.textContent = "—";
-    big.style.color = "var(--jp-grey-soft)";
-    small.textContent = "No scores yet";
-  } else {
-    big.textContent = `${Math.round(classScore)}%`;
-    big.style.color = bandColor(classScore);
-    const perDoll = DOLL_IDS.map((dollId) => {
-      const value = average(scoresOf(scores, dollId));
-      return `Doll ${dollId} · ${value === null ? "—" : `${Math.round(value)}%`}`;
-    });
-    small.textContent = `Class score · ${bandName(classScore)} · ${perDoll.join(" | ")}`;
-  }
-
-  document.getElementById("sounds-note").textContent = view === "today" ? "Class average · weakest first" : "All classes · ▲▼ = latest vs first class";
-  document.getElementById("sound-rows").replaceChildren(...soundRows(soundsOf(scores, null), SOUNDS_SHOWN));
-  document.getElementById("word-rows").replaceChildren(...wordRows(wordsOf(scores, null), WORDS_SHOWN));
+  setText("sounds-note", view === "today" ? "Class average · weakest first"
+    : "All classes · ▲▼ = latest vs first class");
+  byId("sound-rows").replaceChildren(...soundRows(soundsOf(scores), 8));
+  byId("word-rows").replaceChildren(...wordRows(wordsOf(scores), 8));
 }
 
-// Past is only read when the button is pressed; Today is read again every 10 s.
-async function loadScores() {
-  const asked = view;
-  try {
-    const data = await getJson(`/api/dashboard/scores?day=${asked}`);
-    if (asked === view) {
-      drawScores(data);
-    }
-  } catch (error) {
-    console.warn("score poll failed:", error);
-  }
-}
+// ---- Start ----
 
-async function pollScores() {
-  if (view === "today") {
-    await loadScores();
+watchNodes((nodes) => {
+  drawRoom(nodes[0]);
+  drawDolls(nodes);
+}, () => {
+  setText("light-seen", "Not current");
+  // Without the cloud no doll's state is known, so never show OK.
+  for (const chip of document.querySelectorAll("#doll-rows .state")) {
+    setChip(chip, "No server", "var(--jp-grey-soft)", "dashed");
   }
-  setTimeout(pollScores, SCORE_POLL_MS);
-}
-
-async function poll() {
-  try {
-    const nodes = await getJson("/api/dashboard/nodes");
-    drawNest(nodes.find((node) => node.node_id === 0));
-    drawDolls(nodes);
-    drawHelpPopup(nodes);
-  } catch (error) {
-    console.warn("dashboard poll failed:", error);
-    drawServerDown(document.getElementById("nest-dot"), document.getElementById("nest-text"));
-    document.getElementById("light-seen").textContent = "Not current";
-    // Without the server we do not know any doll's state, so never show OK.
-    for (const chip of document.querySelectorAll("#doll-rows .doll-state")) {
-      setChip(chip, "No server", "var(--jp-grey-soft)", false, true);
-    }
-  }
-  setTimeout(poll, POLL_MS);
-}
-
-async function pollActivity() {
-  try {
-    const history = await getJson("/api/dashboard/history?minutes=60");
-    drawModes(history);
-    drawActivity(history);
-  } catch (error) {
-    // poll() already shows that the server is down; keep the last lists.
-    console.warn("activity poll failed:", error);
-  }
-  setTimeout(pollActivity, ACTIVITY_POLL_MS);
-}
-
-setupViewButtons((chosen) => {
-  view = chosen;
-  loadScores();
 });
 
-poll();
-pollActivity();
-pollScores();
+repeat(10000, async () => {
+  const history = await getJson("/api/dashboard/history?minutes=60");
+  drawModes(history);
+  drawActivity(history);
+});
+
+watchScores(drawScores);

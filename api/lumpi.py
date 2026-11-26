@@ -81,27 +81,25 @@ def grade(book_words, language, phones):
     return 2, worst, total, scored
 
 
-# The model writes some sounds differently from the book. These are made the same on both sides.
-# British English: no "r" after a vowel, so an American "r" is not marked wrong. Keys have no "ː".
+# Every book is British English ("en-gb"). The model writes some sounds differently from the book;
+# these are made the same on both sides. No "r" after a vowel, so an American "r" is not marked wrong.
+# Keys have no "ː": a long vowel is not a different word.
 SAME_EN = {"ɚ": "ə", "ɝ": "ɜ", "ɑɹ": "ɑ", "ɔɹ": "ɔ", "oɹ": "ɔ", "aɪɚ": "aɪ ə",
            "ɪɹ": "ɪ ə", "ɛɹ": "ɛ ə", "ʊɹ": "ʊ ə", "iə": "ɪ ə", "eə": "ɛ ə", "ʊə": "ʊ ə",  # here, there, sure
            "o": "əʊ", "oʊ": "əʊ", "e": "eɪ", "ɐ": "ʌ", "æ": "a",  # accents of "go", "take", "cup", "cat"
            "aɪə": "aɪ ə", "əl": "ə l", "l̩": "ə l", "n̩": "ə n",  # one model token = two sounds
            "ɕ": "ʃ", "tɕ": "tʃ", "kh": "k", "th": "t", "ph": "p", "əɜ": "ə"}  # Mandarin spellings it sometimes writes
-NOT_HEARD = "ˈˌ̞ᵝ̯̚˥˦˧˨˩0123456789"  # stress, fine vowel detail, tone marks
-LENGTH_DOESNT_MATTER = {"en", "es", "fr", "de"}       # here a long vowel is not a different word
+NOT_HEARD = str.maketrans("", "", "ˈˌ̞ᵝ̯̚˥˦˧˨˩0123456789ː.")  # stress, fine detail, tones, length, "." = syllable break
 
 
 def norm(phones, language):
-    """Clean a list of sounds so the book and the AI spell the same sound the same way."""
-    base = language.split("-")[0]
-    drop = NOT_HEARD + ("ː" if base in LENGTH_DOESNT_MATTER else "")
-    same = SAME_EN if base == "en" else {}
+    """Clean a list of sounds so the book and the AI spell the same sound the same way.
+    `language` is the book's; only "en-gb" books exist, so the English rules above always apply."""
     out = []
     for phone in phones:
-        phone = phone.translate(str.maketrans("", "", drop)).replace(".", "")  # "." = syllable break
+        phone = phone.translate(NOT_HEARD)
         if phone and phone != "|":  # "|" marks a word end, not a sound
-            out += same.get(phone, phone).split()
+            out += SAME_EN.get(phone, phone).split()
     return out
 
 
@@ -202,7 +200,9 @@ def nodes(now):
             age = now - node["last_seen"]
             node["age_s"] = round(age, 1)
             node["status"] = "online" if age < 30 else "stale" if age < 60 else "offline"
-            node["help_age_s"] = None if node["help_at"] is None else round(now - node["help_at"], 1)
+            # the child pressed help less than 5 minutes ago (an offline doll shows "last seen" instead)
+            node["needs_help"] = (node["status"] != "offline" and node["help_at"] is not None
+                                  and now - node["help_at"] < WINDOW_S)
         result.append(node)
     return result
 
@@ -232,7 +232,7 @@ def scores(now, day):
             room.append({"recorded_at": row["recorded_at"], **row["data"]})
     lines = [{"node_id": row["node_id"], "recorded_at": row["recorded_at"], "session": row["session"], **row["data"]}
              for row in score_rows]
-    return {"today": today, "scores": lines, "room": room}
+    return {"scores": lines, "room": room}
 
 
 class handler(Handler):

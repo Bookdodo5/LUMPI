@@ -1,0 +1,10 @@
+{
+  "uid": "04A1B2C3",
+  "title": "Sample book (replace the UID with your tag)",
+  "language": "en-gb",
+  "pages": {
+    "1": "Three green trees.",
+    "2": "Read this book.",
+    "3": "Take your time."
+  }
+}

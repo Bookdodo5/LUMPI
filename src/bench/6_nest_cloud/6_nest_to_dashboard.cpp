@@ -31,10 +31,9 @@
 #include <Wire.h>
 
 #include "dashboard_event.h"        // builds the JSON events
-#include "gateway_distance_logic.h" // echo time -> centimetres
 #include "lumpi_net.h"              // Wi-Fi + one web request
 #include "monitor.h"                // the monitor layout: title, sections, "Label ..... value"
-#include "real_io.h"                // light sensor
+#include "real_io.h"                // light + distance sensors
 #include "settings.h"               // pins and private.h
 
 constexpr uint32_t report_every_ms = 10000;
@@ -115,18 +114,6 @@ void send(const char* kind, int node, const String& what, const std::string& eve
 }
 
 // --- the nest's sensors -----------------------------------------------------------------------------
-// HC-SR04: a 10 us pulse out, then time the echo. echo_us = 0 when nothing came back.
-float read_distance_cm(unsigned long& echo_us) {
-    digitalWrite(gateway_pins::trig, HIGH);
-    delayMicroseconds(10);
-    digitalWrite(gateway_pins::trig, LOW);
-    echo_us = pulseIn(gateway_pins::echo, HIGH, gateway_distance_logic::echo_timeout_us);
-    if (!gateway_distance_logic::has_echo(echo_us)) {
-        return NAN;
-    }
-    return gateway_distance_logic::echo_us_to_cm(echo_us);
-}
-
 float read_lux() {
     float lux = NAN;
     return hardware::light_read(lux) ? lux : NAN;
@@ -135,7 +122,7 @@ float read_lux() {
 void send_room() {
     unsigned long echo_us = 0;
     const float lux = read_lux();
-    const float cm = read_distance_cm(echo_us);
+    const float cm = hardware::read_distance_cm(&echo_us);
     // "light 17.5 lux (raw 21), dist 16.0 cm (echo 933 us)"
     String what = isnan(lux) ? String("light -- (no answer)")
                              : "light " + String(lux, 1) + " lux (raw " + String(lroundf(lux * 1.2f)) + ")";
@@ -358,7 +345,7 @@ void setup() {
         monitor::fail("no light sensor", "check SDA 21, SCL 22, 3.3V and GND; the I2C scan s2a_i2c_scan should show 0x23");
     }
     unsigned long echo_us = 0;
-    const float cm = read_distance_cm(echo_us);
+    const float cm = hardware::read_distance_cm(&echo_us);
     if (isnan(cm)) {
         monitor::item("Distance (HC-SR04)", "NO ECHO (its value is sent as null)");
         monitor::fail("no echo", "check TRIG 26, ECHO 27 through the 1k/2k divider, 5V, and that nothing is closer than 2 cm");

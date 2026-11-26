@@ -205,7 +205,7 @@ void check_rfid() {
         uid += hex;
     }
     reader.PICC_HaltA();
-    pass("RC522 tag", "read UID " + uid + " (save it for config/books.json)");
+    pass("RC522 tag", "read UID " + uid + " (save it for tools/add_book.py)");
 }
 
 // ---------------------------------------------------------------------------

@@ -19,7 +19,7 @@ const MODE_NAME = { reading: "Reading", quiet: "Quiet Study", idle: "Idle" };
 const MODE_SHORT = { reading: "Reading", quiet: "Quiet", idle: "Idle" };
 const MODE_COLOR ={ reading: "var(--jp-black)", quiet: "var(--lm-purple)", idle: "var(--jp-line)" };
 
-// Same as OFFLINE_AFTER_S in laptop/dashboard_server.py. A longer gap between
+// Same as the offline time in nodes() in api/lumpi.py. A longer gap between
 // two messages is drawn as "no data", not as the mode before it.
 const NO_DATA_AFTER_S = 60;
 
@@ -164,7 +164,7 @@ function setStateChip(chip, doll) {
 function drawNestStatus(nest, dot, text) {
   let color = "var(--jp-ok)";
   let outline = false;
-  let words = "Nest and laptop connected";
+  let words = "Nest and cloud connected";
 
   if (nest === undefined || nest.status === "unknown") {
     color = "var(--jp-grey-soft)";
@@ -303,7 +303,7 @@ function timeAxis(start, end) {
   return axis;
 }
 
-// ---- Reading scores from the laptop AI ----
+// ---- Reading scores from the AI ----
 // One score line = one reading attempt:
 // {node_id, recorded_at, session, uid, passage, attempt, score, words: [{word, score, phonemes: [{ipa, score}]}]}
 // session = when the child switched the doll into reading (set by the server).
@@ -517,7 +517,7 @@ function scoreRow(label, score, right, under) {
 // Sounds list, worst first, each with its weakest words.
 function soundRows(sounds, shown) {
   if (sounds.length === 0) {
-    return [emptyNote("No sounds scored yet. They appear once the laptop AI sends scores.")];
+    return [emptyNote("No sounds scored yet. They appear once the AI sends scores.")];
   }
   return sounds.slice(0, shown).map((sound) => {
     const words = sound.words.slice(0, 3).map((item) => `${item.word} ${Math.round(item.avg)}%`).join(" · ");

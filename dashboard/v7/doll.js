@@ -1,7 +1,7 @@
-// Doll page: /doll.html?doll=1 or ?doll=2. Fills the page from the laptop server.
+// Doll page: /doll.html?doll=1 or ?doll=2. Fills the page from the cloud server.
 // Live: mode, state, help popup, book and page, mode changes.
 // Today: one timeline (mode, noise in Quiet Study, scores, help presses) and a summary.
-// Scores (meter, words, sounds, practice) come from the laptop AI.
+// Scores (meter, words, sounds, practice) come from the AI.
 // Today = this class, Past = this doll's saved classes. Shared helpers are in shared.js.
 
 const POLL_MS = 2000;

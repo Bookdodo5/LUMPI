@@ -42,7 +42,6 @@ Where the sketches are:
 | `src/bench/5_doll_nest/` | Doll <-> nest <-> cloud (`s5_nest`, `s5_doll`, `s5_doll_2`) | 5, 7, 8 |
 | `src/bench/6_nest_cloud/` | Nest sensors -> dashboard (`s6_nest_to_dashboard`) | 6 |
 | `src/bench/extras/` | I2C wire probe, Quiet Study feature | any |
-| `tests/fake_doll.py` | The laptop plays a doll, to test `s5_nest` without a doll board | 5, 7, 8 |
 
 ---
 
@@ -130,19 +129,10 @@ start -> audio pieces (each ACKed) -> finish -> result. No cloud yet: the nest a
 
 Pass: `ALL PASS: 0 failure(s)`.
 
-### 5b. Nest alone, the laptop plays the doll
+### 5b. Nest alone
 
-1. `config/private.h`: Wi-Fi, `LUMPI_LAN_KEY`, and `LUMPI_ADAPTER_URL ""` (empty = no cloud).
-2. Upload env `s5_nest` to the nest (any parts wired, or none). Open Monitor.
-3. Pass: it prints `[wifi] connected. Dolls: LUMPI_GATEWAY_URL "http://192.168.x.x"`. Note that address.
-4. On the laptop (same Wi-Fi):
-
-```bash
-LUMPI_LAN_KEY=<same key> python3 tests/fake_doll.py http://<nest address>
-```
-
-5. Pass: every line `PASS` (wrong key refused, presence, start, chunks ACKed, re-send ACKed, finish, result `result,1,0`, old attempt refused, help, noise, status) and `all passed`.
-6. Press ACK on the nest, run it again: help now says `coming`.
+Retired 2026-11-26: the laptop fake doll (`tests/fake_doll.py`) is kept in
+`.old/2026-11-26-pre-mvp/retired/tests/`. Use a real doll board (5c).
 
 ### 5c. Real doll -> real nest
 
@@ -175,31 +165,23 @@ so every dashboard card can be tested without a doll board. It speaks http and h
 1. Run the unit tests:
 
 ```bash
-python3 -m unittest tests.test_cloud_api tests.test_dashboard_server tests.test_mock_class
+python3 -m unittest tests.test_cloud tests.test_add_book
 ```
 
-2. Run the cloud API against the real Supabase database, with a fake nest, fake AI and fake teacher:
+2. Pass when it says `OK` (10 tests; Supabase, Storage and the AI are faked in memory).
 
-```bash
-set -a; source ~/.lumpi-supabase.env; set +a
-python3 tests/pipeline_check.py
-python3 tests/pipeline_check.py --cleanup
-```
-
-3. Pass when unit tests say `OK` and the pipeline check says `15/15 passed`, and cleanup leaves 0 rows.
-   (Last run 2026-11-22: 39 tests OK, 15/15.)
-
-### 6b. Real nest -> laptop dashboard (proves Wi-Fi, time and the message format on the board)
+### 6b. Real nest -> cloud API run on the laptop (proves Wi-Fi, time and the message format on the board)
 
 1. Copy `config/private.example.h` to `config/private.h`; fill in Wi-Fi name, password, and `LUMPI_LAN_KEY`.
 2. On the laptop, with the same key. Use **Windows** Python (PowerShell): under WSL2 without mirrored networking the board cannot reach a server inside WSL. This reads the key straight from `private.h`:
 
 ```powershell
 $env:LUMPI_LAN_KEY = (Select-String -Path config\private.h -Pattern '#define LUMPI_LAN_KEY "([^"]*)"').Matches[0].Groups[1].Value
-python laptop\dashboard_server.py
+# also set SUPABASE_URL and SUPABASE_SECRET_KEY (from ~/.lumpi-supabase.env) the same way
+python api\lumpi.py
 ```
 
-3. Put the address it prints into `LUMPI_ADAPTER_URL` in `config/private.h`.
+3. Put `http://<laptop IP>:8081` into `LUMPI_ADAPTER_URL` in `config/private.h` (the firewall must allow port 8081).
 4. Wire the light and distance sensors. Upload env `s6_nest_to_dashboard`. Open the monitor so you can type:
 
 ```bash
@@ -207,25 +189,11 @@ pio device monitor -b 115200 --echo --eol LF --filter send_on_enter
 ```
 
 5. Check the SETTINGS, PARTS and CONNECTION blocks. `Same network? ... NO` means the board cannot reach the laptop.
-6. Pass when every line under SENDING says `OK added` and the dashboard nest card updates every 10 s.
-7. Type `add 1`, `add 2`, `read 1 85`, `book 2 off`, `help 1`, `noise 2 65`, then `remove 1`: each must change the
+6. Pass when every line under SENDING says `OK added` and new `room` rows from node 0 appear in the Supabase `events` table.
+7. With the dashboard on Vercel (6c) open: type `add 1`, `add 2`, `read 1 85`, `book 2 off`, `help 1`, `noise 2 65`, then `remove 1`: each must change the
    dashboard (doll 1 goes stale after 30 s and offline after 60 s). A failed line prints the raw JSON, the answer, and what it means.
 
-### 6c. Real nest -> cloud API -> Supabase (proves the board's data lands in the real database)
-
-1. On the laptop run the cloud API itself (port 8081), with the Supabase secrets and the same LAN key:
-
-```bash
-set -a; source ~/.lumpi-supabase.env; set +a
-LUMPI_LAN_KEY=<same key> python3 api/index.py
-```
-
-2. Set `LUMPI_ADAPTER_URL` to `http://<laptop IP>:8081`. Upload `s6_nest_to_dashboard` again.
-   If the board cannot connect (6b too): the laptop firewall must allow the port, and under WSL2 the
-   board cannot reach WSL unless WSL networking is "mirrored" (or run the server with Windows Python).
-3. Pass when the monitor shows `200` and new `room` rows from node 0 appear in the Supabase `events` table.
-
-### 6d. Real nest -> Vercel (once the site is deployed)
+### 6c. Real nest -> Vercel (once the site is deployed)
 
 1. Set `LUMPI_ADAPTER_URL` to `https://<site>.vercel.app`. Upload `s6_nest_to_dashboard`.
 2. The monitor warns that the site is not checked until `LUMPI_CLOUD_CA` (the site's root certificate) is set in `config/private.h`. Fine on the bench; set it before a real class.
@@ -239,7 +207,7 @@ Not built yet: a flash outbox, so events survive the nest losing power or Wi-Fi 
 
 Same sketches as stage 5; the only change is where the nest sends things.
 
-1. Start a dashboard: either the laptop one (6b, port 8080) or the cloud API on the laptop (6c, port 8081), or Vercel (6d).
+1. Start the cloud: either the cloud API on the laptop (6b, port 8081) or Vercel (6c).
 2. In `config/private.h` set `LUMPI_ADAPTER_URL` to it. Upload `s5_nest` again (the doll does not change).
 3. Book on the doll. Pass: within 10 s the dashboard shows the doll `online`, mode `book_on`, with the book's UID.
 4. Wait 30 s. Pass: still `online` (the nest sends a status for each doll every 10 s).
@@ -248,44 +216,33 @@ Same sketches as stage 5; the only change is where the nest sends things.
 7. Unplug the doll. Pass: `stale` after 30 s, `offline` after 60 s.
 8. Turn the Wi-Fi router off for 30 s, then on. Pass: the nest prints `not sent ... retry`, then `200` again; the dashboard fills the gap (up to 16 events kept). Resent events show as `duplicate`, never twice.
 
-No doll board? `tests/fake_doll.py` (5b) does steps 3-6 too: use it with `--node 3`.
 
 ---
 
 ## Stage 8. Full data path (one reading, end to end)
 
-Proves: doll records -> nest -> cloud API -> AI -> score stored -> teacher page shows it -> doll gets its answer. Goal: under 4 s from end of recording.
+Proves: doll records -> nest -> cloud API -> AI writes down the sounds -> cloud API grades them against the book's sounds -> score stored -> teacher page shows it -> doll gets its answer. Goal: under 4 s from end of recording.
 
 ### 8a. Cloud half, no boards (already passes)
 
-Stage 6a's pipeline check plays a whole reading with stand-ins. Last run 2026-11-22: 15/15.
+Stage 6a's unit tests play a whole reading with stand-ins (fake database, fake AI).
 
-### 8b. Boards + cloud API on the laptop + mock AI (free)
+### 8b. Boards + cloud (real AI)
 
-1. On the laptop, two terminals:
-
-```bash
-python3 tests/mock_ai.py
-```
-
-```bash
-set -a; source ~/.lumpi-supabase.env; set +a
-LUMPI_LAN_KEY=<same key> LUMPI_DASHBOARD_PASSWORD=test LUMPI_AI_URL=http://localhost:8091/v2/mock/runsync LUMPI_AI_KEY=mockkey python3 api/index.py
-```
-
-2. `LUMPI_ADAPTER_URL "http://<laptop IP>:8081"`. Upload `s5_nest`. Doll runs `s5_doll` (or `tests/fake_doll.py`).
-3. Press RECORD and read (or speak loudly: the mock AI grades loudness).
-4. Pass:
-   - doll: `[result] 1 = accepted` (loud) or `2 = retry a word` (one quiet third), and `[time] ... < 4000 ms`;
-   - nest: `[doll 1] result ... after ... ms`;
-   - Supabase `events`: a `score` row for node 1 with the same attempt; `start`/`status` rows around it.
-5. Clean up the test rows in Supabase afterwards (node 1, today's attempts).
+The free mock AI and the books-from-a-file switch were retired on 2026-11-26 (kept in
+`.old/2026-11-26-pre-mvp/`). Books now always come from Supabase Storage: add yours with
+`tools/add_book.py` (your tag's UID), then do 8c.
 
 ### 8c. With the real AI (costs money: switch it off after)
 
 1. Turn the Runpod AI on (`docs/t07-cloud-pipeline-work-log.md`, "Switch the AI on and off").
-2. Same as 8b but `LUMPI_AI_URL` / `LUMPI_AI_KEY` = the Runpod endpoint (or use Vercel, 6d, which has them set).
+2. Run the cloud API on the laptop with `LUMPI_AI_URL` / `LUMPI_AI_KEY` = the Runpod endpoint (as in 6b, plus
+   `LUMPI_DASHBOARD_PASSWORD`), or use Vercel (6c), which has them set. `LUMPI_ADAPTER_URL` = that address;
+   upload `s5_nest`; the doll runs `s5_doll`. Use a tag whose book was added with `tools/add_book.py`.
 3. Read the passage properly. Pass: a real score with per-word and per-sound results on the dashboard, doll result under 4 s.
+   The cloud's answer: line 1 `code,word`; for code 2 also one line per wrong word,
+   `<index>,<word>,<correct sounds>,/v1/word_audio?...`. Supabase `events` gets a `score` row for that node.
+   Clean up the test rows in Supabase afterwards.
 4. Read again: `attempt` goes up by 1; the dashboard shows the improvement.
 5. Turn the AI off again.
 

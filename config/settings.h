@@ -15,22 +15,6 @@
 #define LUMPI_WIFI_PASSWORD ""
 #endif
 
-#ifndef LUMPI_MQTT_URI
-#define LUMPI_MQTT_URI ""
-#endif
-
-#ifndef LUMPI_MQTT_USER
-#define LUMPI_MQTT_USER ""
-#endif
-
-#ifndef LUMPI_MQTT_PASSWORD
-#define LUMPI_MQTT_PASSWORD ""
-#endif
-
-#ifndef LUMPI_MQTT_CA
-#define LUMPI_MQTT_CA ""
-#endif
-
 #ifndef LUMPI_ADAPTER_URL
 #define LUMPI_ADAPTER_URL "http://10.61.117.202:8080"
 #endif
@@ -82,6 +66,6 @@ constexpr int book_on_fsr = 1000;    // FSR above this = a book is on the mat. M
 }
 
 namespace room {
-constexpr float dark_lux = 100.0f;
-constexpr float teacher_margin_cm = 20.0f;
+constexpr float dark_lux = 30.0f;
+constexpr float teacher_margin_cm = 40.0f;
 }

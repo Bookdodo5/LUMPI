@@ -60,7 +60,8 @@ def main():
         return
 
     os.environ.update({"LUMPI_LAN_KEY": LAN_KEY, "LUMPI_DASHBOARD_PASSWORD": PASSWORD,
-                       "LUMPI_AI_URL": "http://localhost:8091/v2/mock/runsync", "LUMPI_AI_KEY": "mockkey"})
+                       "LUMPI_AI_URL": "http://localhost:8091/v2/mock/runsync", "LUMPI_AI_KEY": "mockkey",
+                       "LUMPI_BOOKS": str(ROOT / "tests" / "fixtures" / "books.json")})  # the mock AI's test book
     import index as cloud
     import mock_ai
 
@@ -100,9 +101,10 @@ def main():
     nest_send(1, "status", now - 35, "recording", **book)
     nest_send(2, "status", now - 30, "quiet_study", **no_book)
 
-    # 2. Readings go to the AI and back.
+    # 2. Readings go to the AI (it only transcribes) and back, graded by the cloud API.
     code, text = nest_assess(1, mock_ai.tone(3, [True, True, False]))
-    check("assess: last word read badly -> 2,2", (code, text) == (200, "2,2"), f"{code} {text}")
+    check("assess: last word read badly -> 2,2 + its correct sounds and clip",
+          (code, text) == (200, f"2,2\n2,swims,s w ɪ m z,/v1/word_audio?uid={TEST_UID}&passage=1&word=2"), f"{code} {text!r}")
     nest_send(1, "status", now - 20, "feedback", **book)
     code, text = nest_assess(2, mock_ai.tone(3, [True, True, True]))
     check("assess: all words good -> 1,0", (code, text) == (200, "1,0"), f"{code} {text}")

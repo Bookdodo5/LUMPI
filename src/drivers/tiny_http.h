@@ -17,9 +17,9 @@
 #include <WiFi.h>
 #include <string_view>
 
-// find_value and read_number read "a=1&b=2" text. They live in this file (named after its first
-// use) because it is plain C++ the laptop tests: tests/test_gateway_start_packet.cpp.
-#include "gateway_start_packet.h"
+// query::find_value and query::read_number read "a=1&b=2" text. They are plain C++ in their own
+// file so the laptop can test them: tests/test_query.cpp.
+#include "query.h"
 
 namespace tiny_http {
 
@@ -118,16 +118,16 @@ inline void reply(WiFiClient& client, int code, const String& text, const char* 
 
 // The text after "name=" in the query, or "" when it is not there.
 inline String text_arg(const Request& request, const char* name) {
-    std::string_view query(request.query.c_str(), request.query.length());
-    std::string_view value = gateway_start_packet::find_value(query, name);
+    std::string_view all(request.query.c_str(), request.query.length());
+    std::string_view value = query::find_value(all, name);
     return String(value.data(), value.size());
 }
 
 // A whole number from the query, or -1 when it is missing or not a whole number.
 inline long number_arg(const Request& request, const char* name) {
-    std::string_view query(request.query.c_str(), request.query.length());
+    std::string_view all(request.query.c_str(), request.query.length());
     uint32_t value = 0;
-    if (!gateway_start_packet::read_number(gateway_start_packet::find_value(query, name), value) || value > 2000000000) {
+    if (!query::read_number(query::find_value(all, name), value) || value > 2000000000) {
         return -1;
     }
     return static_cast<long>(value);

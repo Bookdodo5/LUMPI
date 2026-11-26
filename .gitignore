@@ -21,3 +21,9 @@ hermes-run-test/
 # Class reading scores saved by laptop/dashboard_server.py
 data/scores/
 data/room/
+
+# Text of copyrighted books (OCR): local only, never commit
+data/books/
+
+# Retired files kept on this laptop only
+.old/

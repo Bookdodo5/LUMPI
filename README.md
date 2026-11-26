@@ -84,16 +84,15 @@ Use ESP32-WROOM-32 boards. Disconnect power before changing wires.
 Doll and gateway pin maps differ. Don't wire both roles onto the same board.
 No Wi-Fi keys needed for these tests. Never commit `config/private.h` later.
 
-Teacher dashboard (laptop, Python 3 only):
+Teacher dashboard: `dashboard/v7`, served by Vercel together with the cloud API
+(`api/lumpi.py`, read `docs/cloud-code-guide.md` first). Offline test of the cloud code:
 
 ```bash
-LUMPI_LAN_KEY=test python3 laptop/dashboard_server.py
+python3 -m unittest tests.test_cloud tests.test_add_book
 ```
 
-Open http://localhost:8080. The page is `dashboard/v7`; the developer page is
-at http://localhost:8080/debug/. Notes and test commands:
-[T05 dashboard work log](docs/t05-dashboard-work-log.md). Screenshots:
-`docs/dashboard/screenshot`. AI code will also go in `laptop/`.
+Dashboard notes: [T05 dashboard work log](docs/t05-dashboard-work-log.md). Screenshots:
+`docs/dashboard/screenshot`.
 
 Notes: [test log](docs/test-log.md).
 

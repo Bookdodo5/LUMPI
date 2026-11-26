@@ -1,7 +1,7 @@
-# Vercel only needs the pages, the API and the server code the API imports.
-# Everything else (firmware, tests, docs) stays out of the website.
+# Vercel only needs the dashboard pages and the API (api/lumpi.py and api/_plumbing.py).
+# Everything else (firmware, tools, tests, docs, config/ with its secrets, data/) stays out.
 /*
 !/api
 !/dashboard
-!/laptop
 !/vercel.json
+/api/__pycache__

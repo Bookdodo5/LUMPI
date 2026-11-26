@@ -22,15 +22,3 @@
 // Make a random one:  python -c "import secrets; print(secrets.token_hex(16))"
 // The laptop needs the same value:  $env:LUMPI_LAN_KEY = '...'
 #define LUMPI_LAN_KEY "PASTE_A_RANDOM_32_CHARACTER_KEY"
-
-// Cloud (MQTT over TLS), e.g. a free HiveMQ Cloud broker. Optional for local tests.
-#define LUMPI_MQTT_URI "mqtts://YOUR_BROKER_HOST:8883"
-#define LUMPI_MQTT_USER "YOUR_GATEWAY_USERNAME"
-#define LUMPI_MQTT_PASSWORD "YOUR_GATEWAY_PASSWORD"
-// The broker's CA certificate: lets the gateway check it talks to the REAL broker.
-// (A text constant, not a #define: a #define must fit on one line, a certificate cannot.)
-static const char lumpi_mqtt_ca_text[] = R"CERT(-----BEGIN CERTIFICATE-----
-PASTE_YOUR_BROKER_CA_CERTIFICATE_HERE
------END CERTIFICATE-----
-)CERT";
-#define LUMPI_MQTT_CA lumpi_mqtt_ca_text

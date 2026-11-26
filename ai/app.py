@@ -1,13 +1,11 @@
-"""LUMPI reading AI as a Runpod serverless endpoint (Runpod SDK 2.0, `rp flash`).
+"""LUMPI pronunciation AI as a Runpod serverless endpoint (Runpod SDK 2.0, `rp flash`).
 
-Called by api/index.py ask_ai() with the Runpod "runsync" body:
-    {"input": {"audio_b64": ..., "uid": ..., "passage": ..., "attempt": ...}}
-Answers the same shape as tests/mock_ai.py: {"code", "word", "score", "words", "timing_ms"}.
+It only TRANSCRIBES: it writes down the IPA sounds it hears, with no hint of the text.
+Grading is done by the cloud API (api/lumpi.py grade()). Same method as
+Embed/ipa_pronunciation_check.ipynb sound_to_ipa().
 
-STATUS: timing build. The model and its cost are real (load once per worker, full
-forward pass on every recording). The per-word score is a placeholder from the
-model's confidence; the real forced alignment against the passage IPA comes from
-reading_buddy_live_reading_v2.ipynb next.
+Called by api/_plumbing.py ask_ai() with {"input": {"audio_b64": ...}} (16 kHz, 16-bit, mono PCM). Answers:
+    {"phones": ["θ", "ɹ", "iː", ...], "timing_ms": {"decode", "model", "threads", "audio_s"}}
 
 Deploy:   rp login   (once)   then   rp flash deploy ai
 """
@@ -18,74 +16,67 @@ MODEL_ID = "facebook/wav2vec2-xlsr-53-espeak-cv-ft"
 
 
 @app.queue(
-    cpu="cpu3c-8-16",  # 8 vCPU compute-optimized: measured on a laptop as ~30-40% faster than 4 vCPU
-    # Japan is closest to Thailand / Vercel Singapore, but its CPU stock comes and goes
-    # (none on 2026-11-19). California is the backup, so a worker can always start.
-    datacenter=["AP-JP-1", "US-CA-2"],
+    cpu="cpu3c-8-16",  # 8 vCPU compute-optimised: ~30-40% faster than 4 vCPU (measured)
+    datacenter=["AP-JP-1", "US-CA-2"],  # Japan is closest to Thailand; California when Japan has no stock
     workers=(0, 1),  # 0 = costs nothing while idle; 1 = one reading at a time
     idle_timeout=30,
-    # ponytail: the model (1.3 GB) downloads at each cold start (billed start time).
-    # Runpod's model cache (model=runpod.Model) is GPU-only: on this CPU endpoint the
-    # files never appeared (tested 2026-11-19). Upgrade: a network volume holding the model.
-    # CPU build of torch (~180 MB). Plain "torch" pulls the GPU build + ~2 GB of CUDA libraries.
+    # ponytail: the model (1.3 GB) downloads at each cold start; a network volume would keep it.
+    # CPU build of torch (~180 MB); plain "torch" pulls ~2 GB of GPU libraries.
     dependencies=["torch @ https://download.pytorch.org/whl/cpu/torch-2.7.1%2Bcpu-cp312-cp312-manylinux_2_28_x86_64.whl",
                   "transformers", "numpy"],
 )
-# float32 by default: on Runpod with 8 threads it graded a 3 s reading in 454-483 ms,
-# steadier than int8 (298-2368 ms) and with no accuracy risk (measured 2026-11-19).
-def assess(audio_b64: str, uid: str, passage: int, attempt: int, precision: str = "float32"):
+def assess(audio_b64: str, uid: str = "", passage: int = 0, attempt: int = 0):
+    """Transcribe one recording into the IPA sounds the model heard."""
     import base64
     import time
 
     import numpy as np
     import torch
 
-    # Again here: the setting in load_model() did not reach the thread that runs
-    # requests (it reported 128 threads on Runpod). 8 = the worker's vCPUs.
+    # Set again here: the setting in load_model() does not reach the thread that runs requests.
     torch.set_num_threads(8)
 
     start = time.perf_counter()
-    pcm = np.frombuffer(base64.b64decode(audio_b64), dtype="<i2").astype(np.float32) / 32768.0
-    audio = torch.from_numpy(pcm)[None]
+    raw = base64.b64decode(audio_b64)
+    pcm = np.frombuffer(raw[: len(raw) // 2 * 2], dtype="<i2").astype(np.float32) / 32768.0
+    # Zero mean, unit variance (as the notebook's processor does), so quiet and loud readings look the same.
+    pcm = (pcm - pcm.mean()) / np.sqrt(pcm.var() + 1e-7) if len(pcm) else pcm
     decoded = time.perf_counter()
 
-    model = MODELS[precision]
-    with torch.inference_mode():
-        probabilities = model(audio).logits.softmax(-1)[0]
-    graded = time.perf_counter()
-
-    # Placeholder scoring: split the recording into 3 words, score = model confidence.
-    words = []
-    for i, part in enumerate(probabilities.chunk(3)):
-        score = round(float(part.max(-1).values.mean()) * 100)
-        words.append({"word": f"word{i}", "score": score, "phonemes": []})
-    failing = [i for i, w in enumerate(words) if w["score"] < 60]
-    code, word = (1, 0) if not failing else (2, min(failing, key=lambda i: words[i]["score"]))
+    phones = []
+    if len(pcm) >= 1600:  # under 0.1 s there is nothing to hear
+        with torch.inference_mode():
+            ids = MODEL(torch.from_numpy(pcm)[None]).logits[0].argmax(-1).tolist()
+        previous = None
+        for i in ids:  # CTC rule: merge repeats, then drop the blank <pad> and the other <...> tokens
+            if i != previous and not TOKENS[i].startswith("<"):
+                phones.append(TOKENS[i])
+            previous = i
+    heard = time.perf_counter()
 
     return {
-        "code": code,
-        "word": word,
-        "score": round(sum(w["score"] for w in words) / 3),
-        "words": words,
-        "timing_ms": {"decode": round((decoded - start) * 1000), "model": round((graded - decoded) * 1000),
-                      "threads": torch.get_num_threads(), "precision": precision, "audio_s": round(len(pcm) / 16000, 2)},
+        "phones": phones,
+        "timing_ms": {"decode": round((decoded - start) * 1000), "model": round((heard - decoded) * 1000),
+                      "threads": torch.get_num_threads(), "audio_s": round(len(pcm) / 16000, 2)},
     }
 
 
 @assess.init
 def load_model():
-    """Once per worker, before it takes readings: load the model and make the int8 copy."""
-    global MODELS
+    """Once per worker, before it takes readings: load the model and its list of sounds."""
+    global MODEL, TOKENS
+    import json
+
     import torch
+    from huggingface_hub import hf_hub_download
     from transformers import Wav2Vec2ForCTC
 
-    # Same number as cpu="cpu3c-8-16". NOT os.cpu_count(): on Runpod that is the whole
-    # host (256 cores, measured), and 256 threads on 8 vCPUs made grading ~2x slower.
+    # 8 = the worker's vCPUs. Not os.cpu_count(): on Runpod that is the whole host (256), ~2x slower.
     torch.set_num_threads(8)
-    model = Wav2Vec2ForCTC.from_pretrained("facebook/wav2vec2-xlsr-53-espeak-cv-ft").eval()
-    MODELS = {"float32": model, "int8": torch.quantization.quantize_dynamic(model, {torch.nn.Linear}, dtype=torch.qint8)}
-    # Practice run: torch's first call is ~4 s slower (measured locally). Pay it here,
-    # once per worker, not on a child's first reading.
+    MODEL = Wav2Vec2ForCTC.from_pretrained(MODEL_ID).eval()
+    # vocab.json = {sound: id}, read directly (the notebook's processor would need espeak-ng installed).
+    vocab = json.loads(open(hf_hub_download(MODEL_ID, "vocab.json"), encoding="utf-8").read())
+    TOKENS = {i: sound for sound, i in vocab.items()}
+    # Practice run: torch's first call is ~4 s slower. Pay it here, not on a child's first reading.
     with torch.inference_mode():
-        for warm in MODELS.values():
-            warm(torch.zeros(1, 16000))
+        MODEL(torch.zeros(1, 16000))

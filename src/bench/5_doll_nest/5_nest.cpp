@@ -53,11 +53,10 @@
 #include <deque>
 
 #include "dashboard_event.h"        // builds the dashboard's JSON events
-#include "gateway_distance_logic.h" // echo time -> centimetres
 #include "lumpi_net.h"              // Wi-Fi + sending one request to the cloud
 #include "monitor.h"                // the monitor layout: title, sections, "Label ..... value"
 #include "messages.h"               // route names (/v1/start ...) and grade numbers (accepted = 1 ...)
-#include "real_io.h"                // light sensor
+#include "real_io.h"                // light + distance sensors
 #include "session.h"                // Session: the rules for one doll's reading
 #include "settings.h"               // pins and private.h
 #include "tiny_http.h"              // reads one request from a doll
@@ -406,17 +405,6 @@ void grade_waiting_recording() {
 }
 
 // --- the nest's own parts ---------------------------------------------------------------------
-float read_distance_cm() {  // HC-SR04: a 10 us pulse out, then time the echo
-    digitalWrite(gateway_pins::trig, HIGH);
-    delayMicroseconds(10);
-    digitalWrite(gateway_pins::trig, LOW);
-    const unsigned long echo_us = pulseIn(gateway_pins::echo, HIGH, gateway_distance_logic::echo_timeout_us);
-    if (!gateway_distance_logic::has_echo(echo_us)) {
-        return NAN;  // no sensor, or nothing in front of it
-    }
-    return gateway_distance_logic::echo_us_to_cm(echo_us);
-}
-
 float read_lux() {
     float lux = NAN;
     return hardware::light_read(lux) ? lux : NAN;
@@ -428,7 +416,7 @@ void report_to_dashboard() {
         return;
     }
     last_ms = millis();
-    queue_event(dashboard_event::room(next_stamp(), read_lux(), read_distance_cm()));
+    queue_event(dashboard_event::room(next_stamp(), read_lux(), hardware::read_distance_cm()));
     for (int node = 1; node <= int(max_dolls); ++node) {
         const Doll& d = doll(node);
         if (d.last_heard_ms == 0 || millis() - d.last_heard_ms > doll_quiet_after_ms) {

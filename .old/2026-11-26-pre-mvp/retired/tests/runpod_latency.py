@@ -34,9 +34,9 @@ def stop_workers(endpoint):
     subprocess.run(["rp", "endpoint", "update", endpoint, "--max-workers", "0"], check=True, timeout=60)
 
 
-def runsync(endpoint, seconds, precision):
+def runsync(endpoint, seconds):
     body = {"input": {"audio_b64": base64.b64encode(tone(seconds, [True, True, True])).decode(), "uid": "FFFFFFFF",
-                      "passage": 1, "attempt": 1, "precision": precision}}
+                      "passage": 1, "attempt": 1}}
     request = urllib.request.Request(f"https://api.runpod.ai/v2/{endpoint}/runsync?wait=120000",
                                      data=json.dumps(body).encode(), method="POST",
                                      headers={"Authorization": "Bearer " + KEY, "Content-Type": "application/json"})
@@ -71,15 +71,15 @@ def runsync(endpoint, seconds, precision):
 
 def main():
     endpoint = sys.argv[1]
-    cold = runsync(endpoint, 3, "int8")
+    cold = runsync(endpoint, 3)
     print(f"COLD first call: total {cold['total']:.0f} ms (queue+start {cold['queue']} ms, run {cold['run']} ms, "
           f"model {cold['model']} ms, {cold['threads']} threads)")
-    for seconds, precision, repeats in [(3, "int8", 10), (8, "int8", 10), (3, "float32", 5), (8, "float32", 5)]:
-        rows = [runsync(endpoint, seconds, precision) for _ in range(repeats)]
+    for seconds, repeats in [(3, 10), (8, 10)]:
+        rows = [runsync(endpoint, seconds) for _ in range(repeats)]
         def stat(key):
             values = [row[key] for row in rows]
             return f"{statistics.mean(values):5.0f} ({min(values):.0f}-{max(values):.0f})"
-        print(f"WARM {seconds} s {precision:7s}: total {stat('total')}  queue {stat('queue')}  run {stat('run')}  model {stat('model')}  ms")
+        print(f"WARM {seconds} s: total {stat('total')}  queue {stat('queue')}  run {stat('run')}  model {stat('model')}  ms")
 
 
 if __name__ == "__main__":

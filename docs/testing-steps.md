@@ -286,3 +286,72 @@ Phrase WAV files (16 kHz, 16-bit mono, Piper `en_GB-jenny_dioco-medium`) go in `
 Keep large book files out of `data/` before running **Upload Filesystem Image** so the image fits the 1.2 MB LittleFS partition.
 
 
+
+---
+
+## Stage 10. Real nest firmware (`src/app/gateway/nest.cpp`)
+
+Wiring: full nest wiring from `config/settings.h` (`gateway_pins`). Every part is optional.
+Upload env: `nest` (or `nest_sh1106`). Monitor: `115200`.
+`config/private.h`: Wi-Fi, `LUMPI_LAN_KEY`, `LUMPI_ADAPTER_URL "https://lumpi.vercel.app"`, `LUMPI_CLOUD_CA`.
+
+### 10a. Laptop logic tests (no boards)
+
+```bash
+g++ -std=c++17 -Wall -Wextra -Werror -I src/common tests/test_nest_logic.cpp -o build/test_nest_logic && ./build/test_nest_logic
+```
+
+Pass: `0 failure(s)`. It also feeds the nest's reply into the doll's own parser.
+
+### 10b. Boot
+
+| # | Do | Pass when |
+|---|---|---|
+| 10.1 | Upload, open Monitor | `CA set yes`, `Free flash` over 920 KB, `CSV,boot,0,...`, then `Nest address http://<ip>` |
+| 10.2 | Read `Flash write speed` | 64 KB/s or more. Under 64 = two dolls at once may lose chunks: tell Tanakit |
+| 10.3 | Read `Largest free RAM block` | over 45000 |
+| 10.4 | Wait 60 s | `CSV,beat,0,...` every 60 s; dashboard shows the nest's room data |
+
+### 10c. Laptop plays a doll (no doll needed)
+
+On a laptop on the same Wi-Fi. `NEST` = the nest address, `KEY` = the LAN key (type it, never paste it in chat).
+
+```bash
+read -rs KEY && export KEY NEST=http://<nest ip>
+```
+
+```bash
+head -c 8192 /dev/zero > /tmp/chunk.bin
+```
+
+| # | Command (add `-H "Authorization: Bearer $KEY"` to each) | Pass when |
+|---|---|---|
+| 10.5 | `curl $NEST/v1/status` | JSON with 2 dolls |
+| 10.6 | same, with `-H "Authorization: Bearer nope"` | 401 |
+| 10.7 | `curl -X POST "$NEST/v1/start?node=1&attempt=1&passage=1&uid=04A1B2C3&fsr=2000"` | `ok` |
+| 10.8 | `curl -X PUT --data-binary @/tmp/chunk.bin "$NEST/v1/chunk?node=1&attempt=1&index=0"` | `0` |
+| 10.9 | the same chunk again | `0` again (resend: not stored twice) |
+| 10.10 | same with `index=2` | 409 (piece 1 missing) |
+| 10.11 | `curl -X POST "$NEST/v1/finish?node=1&attempt=1&chunks=1&bytes=8192"` | `assessing` |
+| 10.12 | `curl "$NEST/v1/attempt?node=1&attempt=1"` every second | `pending`, then `result,3,0` or `result,4,0` (silence); monitor shows `GRADE` and `CSV,reading` |
+| 10.13 | `curl "$NEST/v1/help?node=1"` | `waiting`; monitor `HELP`; Discord + dashboard popup |
+| 10.14 | stand in front of the distance sensor | OLED shows `Doll 1: HELP n s` and `Press ACK = coming` |
+| 10.15 | press ACK, ask 10.13 again | `coming`; monitor `CSV,ack,1,<s>` |
+| 10.16 | cover the light sensor 4 s, then `curl -X POST "$NEST/v1/presence?node=1&present=1&fsr=2000&mode=read"` | `dark`; 10.7 with `attempt=2` -> 409 `dark: ...` |
+| 10.17 | uncover 4 s, ask 10.16 again | `ok`; `CSV,dark,0,0,...` |
+| 10.18 | unplug the light sensor, reboot | nothing is ever `dark` |
+| 10.19 | `curl -X POST "$NEST/v1/presence?node=1&present=0&fsr=0&mode=quiet"`, then `curl -X POST "$NEST/v1/noise?node=1&db=80&peak=20000"` twice | `command,5`, then `ok` (30 s cooldown) |
+
+### 10d. With real dolls
+
+| # | Do | Pass when |
+|---|---|---|
+| 10.20 | doll 1 reads 2 s, 6 s, 12 s | each gets a grade; 12 s is cut at 10 s (`320000` bytes in `CSV,reading`) |
+| 10.21 | both dolls read at the same moment | both graded, no mix-up; `CSV,reading` chunks refused = 0 |
+| 10.22 | a wrong word (code 2) | doll shows the word and plays its clip; `CSV,reading` clips > 0 |
+| 10.23 | turn off the hotspot's internet 5 min, then on | every event arrives once (`CSV,event` age column), dashboard fills the gap |
+| 10.24 | pull the nest's power mid-reading | doll says try again; nest boots, `CSV,boot,0,poweron,...`, old events still sent |
+| 10.25 | router off 6 min | nest restarts itself after 5 min; dolls recover |
+| 10.26 | wrong `LUMPI_CLOUD_CA` | grades come back 4; monitor shows the cloud error. Put the right CA back |
+
+Known limits: the cloud must take 320000 bytes (today 256000: readings over 8 s get 4) and send S/W/P lines (today: code 2 shows no word on the doll).

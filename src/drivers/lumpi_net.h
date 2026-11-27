@@ -47,14 +47,10 @@ inline uint64_t unix_time() {
     return now > 1700000000 ? now : 0;
 }
 
-// Sends one request and waits for the answer. Returns the HTTP code (200, 409 ...) or a negative
-// number when there was no connection; answer gets the reply text (or what went wrong).
-inline int request(const char* method, const String& url, const uint8_t* body, size_t length,
-                   const char* content_type, String& answer, uint32_t timeout_ms = 5000) {
-    static WiFiClient plain;
-    static WiFiClientSecure secure;
-
-    HTTPClient http;
+// Opens one request: picks plain or encrypted, adds the LAN key. false = the address is broken.
+// Call it from ONE task only: the connections passed in are reused from request to request.
+inline bool open(HTTPClient& http, WiFiClient& plain, WiFiClientSecure& secure, const String& url,
+                 const char* content_type, uint32_t timeout_ms) {
     bool ok;
     if (url.startsWith("https://")) {
         if (LUMPI_CLOUD_CA[0] != '\0') {
@@ -73,8 +69,7 @@ inline int request(const char* method, const String& url, const uint8_t* body, s
         ok = http.begin(plain, url);
     }
     if (!ok) {
-        answer = "bad url";
-        return -1;
+        return false;
     }
     http.setReuse(false);  // a fresh connection every time: no half-dead connection left over
     http.setTimeout(timeout_ms);
@@ -84,7 +79,37 @@ inline int request(const char* method, const String& url, const uint8_t* body, s
     if (content_type != nullptr) {
         http.addHeader("Content-Type", content_type);
     }
+    return true;
+}
+
+// Sends one request and waits for the answer. Returns the HTTP code (200, 409 ...) or a negative
+// number when there was no connection; answer gets the reply text (or what went wrong).
+inline int request(const char* method, const String& url, const uint8_t* body, size_t length,
+                   const char* content_type, String& answer, uint32_t timeout_ms = 5000) {
+    static WiFiClient plain;
+    static WiFiClientSecure secure;
+    HTTPClient http;
+    if (!open(http, plain, secure, url, content_type, timeout_ms)) {
+        answer = "bad url";
+        return -1;
+    }
     const int code = http.sendRequest(method, const_cast<uint8_t*>(body), length);
+    answer = code > 0 ? http.getString() : HTTPClient::errorToString(code);
+    http.end();
+    return code;
+}
+
+// The same, but the body is read from a Stream (a recording file in flash), so it never sits in RAM.
+inline int request(const char* method, const String& url, Stream& body, size_t length,
+                   const char* content_type, String& answer, uint32_t timeout_ms) {
+    static WiFiClient plain;
+    static WiFiClientSecure secure;
+    HTTPClient http;
+    if (!open(http, plain, secure, url, content_type, timeout_ms)) {
+        answer = "bad url";
+        return -1;
+    }
+    const int code = http.sendRequest(method, &body, length);
     answer = code > 0 ? http.getString() : HTTPClient::errorToString(code);
     http.end();
     return code;

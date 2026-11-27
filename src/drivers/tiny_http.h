@@ -110,9 +110,14 @@ inline bool read_request(WiFiClient& client, Request& request) {
     return false;  // too many headers
 }
 
-inline void reply(WiFiClient& client, int code, const String& text, const char* type = "text/plain") {
+// The status line and headers. The caller then writes exactly `length` bytes of body.
+inline void reply_head(WiFiClient& client, int code, const char* type, size_t length) {
     client.printf("HTTP/1.1 %d %s\r\nContent-Type: %s\r\nContent-Length: %u\r\nConnection: close\r\n\r\n",
-                  code, code == 200 ? "OK" : "Error", type, static_cast<unsigned>(text.length()));
+                  code, code == 200 ? "OK" : "Error", type, static_cast<unsigned>(length));
+}
+
+inline void reply(WiFiClient& client, int code, const String& text, const char* type = "text/plain") {
+    reply_head(client, code, type, text.length());
     client.print(text);
 }
 

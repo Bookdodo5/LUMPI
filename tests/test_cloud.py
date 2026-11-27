@@ -4,6 +4,8 @@ faked in memory, so it needs no network and no account.
     python3 -m unittest tests.test_cloud
 """
 import base64
+import contextlib
+import io
 import json
 import os
 import sys
@@ -12,8 +14,9 @@ import time
 import unittest
 import urllib.error
 import urllib.request
-from http.server import HTTPServer
+from http.server import BaseHTTPRequestHandler, HTTPServer
 from pathlib import Path
+from unittest import mock
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "api"))
 import _plumbing  # noqa: E402
@@ -86,6 +89,31 @@ class CloudTest(unittest.TestCase):
         self.assertEqual(call("POST", "/api/telemetry", b"x" * 9000, LAN_KEY)[0], 400)
         self.assertEqual(len(ROWS), 1)
 
+    def test_help_alert_only_for_new_fresh_help(self):
+        now = int(time.time())
+        help_call = event(10, 1, "help", now)
+        with mock.patch.object(lumpi, "send_discord") as send:
+            call("POST", "/api/telemetry", help_call, LAN_KEY)
+            call("POST", "/api/telemetry", help_call, LAN_KEY)
+            call("POST", "/api/telemetry", event(11, 2, "help", now - 400), LAN_KEY)
+            call("POST", "/api/telemetry", event(12, 1, "noise", now, db=70), LAN_KEY)
+            call("POST", "/api/telemetry", event(13, 1, "status", now, "idle"), LAN_KEY)
+            call("POST", "/api/telemetry", event(14, 0, "room", now, lux=100, distance_cm=None), LAN_KEY)
+        self.assertEqual(send.call_count, 1)
+        self.assertRegex(send.call_args.args[0], r"^Doll 1 needs help \(\d\d:\d\d\) https://lumpi.vercel.app/$")
+
+    def test_help_alert_boundary_and_other_doll(self):
+        now = int(time.time())
+        with mock.patch.object(lumpi, "send_discord") as send:
+            call("POST", "/api/telemetry", event(20, 2, "help", now - 290), LAN_KEY)
+            call("POST", "/api/telemetry", event(21, 1, "help", now - 310), LAN_KEY)
+        self.assertEqual(send.call_count, 1)
+        self.assertTrue(send.call_args.args[0].startswith("Doll 2 needs help"))
+
+    def test_help_alert_time_is_bangkok(self):
+        self.assertEqual(lumpi.clock_time(1795000000 - 1795000000 % 86400 + 7 * 3600), "14:00")
+
+
     def test_session_rule(self):
         for number, (at, activity) in enumerate([(5, "book_on"), (10, "idle"), (20, "book_on"), (30, "recording")]):
             ROWS.append({"event_id": f"n/{number}", "node_id": 1, "event_type": "status", "recorded_at": at,
@@ -138,6 +166,104 @@ class CloudTest(unittest.TestCase):
         self.assertEqual(len(history["nodes"]["1"]), 4)  # scores are not history points
         scores = json.loads(call("GET", "/api/dashboard/scores?day=today", None, PASSWORD)[1])["scores"]
         self.assertEqual(scores[0]["session"], now - 60)  # began at book_on, not at the idle status
+
+
+class DiscordTest(unittest.TestCase):
+    SECRET = "SECRET-TOKEN-123"
+
+    @classmethod
+    def setUpClass(cls):
+        cls.requests = []
+        cls.mode = {"status": 204, "delay": 0}
+        requests, mode = cls.requests, cls.mode
+
+        class FakeDiscord(BaseHTTPRequestHandler):
+            def do_POST(self):
+                body = self.rfile.read(int(self.headers["Content-Length"]))
+                requests.append({"path": self.path, "headers": dict(self.headers), "json": json.loads(body)})
+                time.sleep(mode["delay"])
+                self.send_response(mode["status"])
+                self.send_header("Content-Length", "0")
+                self.end_headers()
+
+            def log_message(self, *args):
+                pass
+
+        cls.server = HTTPServer(("127.0.0.1", 0), FakeDiscord)
+        threading.Thread(target=cls.server.serve_forever, daemon=True).start()
+        cls.url = f"http://127.0.0.1:{cls.server.server_address[1]}/api/webhooks/1/{cls.SECRET}"
+
+    @classmethod
+    def tearDownClass(cls):
+        cls.server.shutdown()
+
+    def setUp(self):
+        ROWS.clear()
+        self.requests.clear()
+        self.mode.update(status=204, delay=0)
+        os.environ["LUMPI_DISCORD_WEBHOOK"] = self.url
+
+    def tearDown(self):
+        os.environ.pop("LUMPI_DISCORD_WEBHOOK", None)
+
+    def send_help(self, number=1, node=1, age_s=0):
+        return call("POST", "/api/telemetry", event(number, node, "help", int(time.time()) - age_s), LAN_KEY)
+
+    def test_message_reaches_discord_with_right_text_and_no_mentions(self):
+        self.send_help()
+        self.assertEqual(len(self.requests), 1)
+        sent = self.requests[0]
+        self.assertEqual(sent["path"], f"/api/webhooks/1/{self.SECRET}")
+        self.assertEqual(sent["headers"]["Content-Type"], "application/json")
+        self.assertEqual(sent["json"]["allowed_mentions"], {"parse": []})
+        self.assertRegex(sent["json"]["content"], r"^Doll 1 needs help \(\d\d:\d\d\) https://lumpi.vercel.app/$")
+        self.assertEqual(set(sent["json"]), {"content", "allowed_mentions"})
+
+    def test_resend_and_old_help_send_nothing(self):
+        self.send_help(number=1)
+        self.send_help(number=1)
+        self.send_help(number=2, age_s=600)
+        self.assertEqual(len(self.requests), 1)
+
+    def test_no_webhook_set_still_stores_and_replies(self):
+        del os.environ["LUMPI_DISCORD_WEBHOOK"]
+        self.assertEqual(self.send_help(), (200, '{"result": "added"}'))
+        self.assertEqual(self.requests, [])
+        self.assertEqual(len(ROWS), 1)
+
+    def test_discord_error_still_stores_and_replies_and_hides_url(self):
+        self.mode["status"] = 500
+        log = io.StringIO()
+        with contextlib.redirect_stdout(log):
+            reply = self.send_help()
+        self.assertEqual(reply, (200, '{"result": "added"}'))
+        self.assertEqual(len(ROWS), 1)
+        self.assertIn("discord alert not sent", log.getvalue())
+        self.assertIn("500", log.getvalue())
+        self.assertNotIn(self.SECRET, log.getvalue())
+
+    def test_unreachable_discord_hides_url(self):
+        os.environ["LUMPI_DISCORD_WEBHOOK"] = f"http://127.0.0.1:1/api/webhooks/1/{self.SECRET}"
+        log = io.StringIO()
+        with contextlib.redirect_stdout(log):
+            reply = self.send_help()
+        self.assertEqual(reply, (200, '{"result": "added"}'))
+        self.assertIn("discord alert not sent", log.getvalue())
+        self.assertNotIn(self.SECRET, log.getvalue())
+
+    def test_slow_discord_gives_up_after_about_3_seconds(self):
+        self.mode["delay"] = 6
+        log = io.StringIO()
+        started = time.monotonic()
+        with contextlib.redirect_stdout(log):
+            reply = self.send_help()
+        took = time.monotonic() - started
+        self.assertEqual(reply, (200, '{"result": "added"}'))
+        self.assertEqual(len(ROWS), 1)
+        self.assertGreater(took, 2.5)
+        self.assertLess(took, 4.5)
+        self.assertIn("discord alert not sent", log.getvalue())
+        self.assertNotIn(self.SECRET, log.getvalue())
 
 
 if __name__ == "__main__":

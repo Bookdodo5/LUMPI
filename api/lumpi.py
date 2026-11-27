@@ -13,8 +13,10 @@ import sys
 import time
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))  # so Vercel finds _plumbing.py next to this file
-from _plumbing import Handler, ask_ai, db_get, db_insert, load_book, load_clip  # noqa: E402
+from _plumbing import Handler, ask_ai, db_get, db_insert, load_book, load_clip, send_discord  # noqa: E402
 
+DASHBOARD_URL = "https://lumpi.vercel.app/"
+HELP_ALERT_MAX_AGE_S = 300  # a help call older than 5 minutes is history, not an alert
 READING = ["book_on", "recording", "waiting_ai", "feedback"]  # a doll in these is in a reading session
 PASS_SCORE = 60  # a word passes at 60 or more
 
@@ -25,7 +27,20 @@ def telemetry(event):
     """Returns "added", or "duplicate" if this event_id was stored before (the nest resends)."""
     if event["event_type"] == "score":
         event["session"] = session_start(event["node_id"], event["recorded_at"])
-    return db_insert(event)
+    result = db_insert(event)
+    if is_new_fresh_help(event, result):
+        send_discord(f"Doll {event['node_id']} needs help ({clock_time(event['recorded_at'])}) {DASHBOARD_URL}")
+    return result
+
+
+def is_new_fresh_help(event, result):
+    """Tell the teacher only about a help call that is new (not a resend) and recent (not an old one after an outage)."""
+    age_s = time.time() - event["recorded_at"]
+    return event["event_type"] == "help" and result == "added" and age_s < HELP_ALERT_MAX_AGE_S
+
+
+def clock_time(unix_seconds):
+    return time.strftime("%H:%M", time.localtime(unix_seconds))  # Asia/Bangkok, set in _plumbing.py
 
 
 def session_start(node, score_time):

@@ -118,6 +118,23 @@ def ask_ai(audio):
     return phones
 
 
+def send_discord(text):
+    """Post one message to the teacher's Discord channel. Never raises: an alert must not fail the request.
+    The webhook URL is a secret: it comes from LUMPI_DISCORD_WEBHOOK and is never printed."""
+    webhook = os.environ.get("LUMPI_DISCORD_WEBHOOK")
+    if not webhook:
+        return
+    body = json.dumps({"content": text, "allowed_mentions": {"parse": []}}).encode()
+    request = urllib.request.Request(webhook, data=body, method="POST",
+                                     headers={"Content-Type": "application/json", "User-Agent": "LUMPI-cloud"})  # Discord refuses urllib's default
+    try:
+        urllib.request.urlopen(request, timeout=3).close()
+    except Exception as error:
+        if isinstance(error, urllib.error.HTTPError):
+            error.close()
+        print(f"discord alert not sent:{type(error).__name__}: {str(error).replace(webhook, '<webhook>')}")
+
+
 def event_ok(event):
     """Only what stops one bad event from breaking storage or the dashboard."""
     return (isinstance(event, dict) and all(key in event for key in FIELDS)

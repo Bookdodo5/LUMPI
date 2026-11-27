@@ -246,3 +246,43 @@ The free mock AI and the books-from-a-file switch were retired on 2026-11-26 (ke
 4. Read again: `attempt` goes up by 1; the dashboard shows the improvement.
 5. Turn the AI off again.
 
+---
+
+## Stage 9. Real doll firmware (`src/app/station/doll.cpp`)
+
+Wiring: full doll wiring from `config/settings.h` (`doll_pins`). Every part is optional at start-up (missing mic sends silence; missing RFID uses `04A1B2C3`; speaker playback awaits the replacement MAX98357A amps).
+Upload env: `doll` (doll 1), `doll_2` (doll 2), or `doll_sh1106` (SH1106 screen). Monitor: `115200`.
+
+### 9a. Laptop logic tests (no boards)
+
+```powershell
+g++ -std=c++17 -Wall -Wextra -Werror -I src/common src/test/test_round_trip.cpp -o build/test_round_trip.exe
+.\build\test_round_trip.exe
+g++ -std=c++17 -Wall -Wextra -Werror -I src/common tests/test_dashboard_event.cpp -o build/test_dashboard_event.exe
+.\build\test_dashboard_event.exe
+g++ -std=c++17 -Wall -Wextra -Werror -I src/common tests/test_doll_logic.cpp -o build/test_doll_logic.exe
+.\build\test_doll_logic.exe
+```
+
+Pass: every binary prints `PASS` / `0 failure(s)`.
+
+### 9b. Doll hardware checks (with real nest running the updated contract)
+
+| # | Feature | Do | Pass when |
+|---|---|---|---|
+| 9.1 | Boot + CSV (D1, D11) | Power doll 1; watch Monitor | Servos stay limp at boot; prints `CSV,boot,1,...` with free heap and `Audio pool ... 10 x 8192 B` (or fallback); `CSV,beat,1,...` prints every 60 s |
+| 9.2 | RFID book tag (D3) | Present every book tag | OLED shows new book UID/title and resets page to 1 (matches `s1c_rfid`) |
+| 9.3 | Buttons by interrupt (D2, E2) | Press RECORD and STOP 50 times cleanly | 50 debounced events, no double-triggers |
+| 9.4 | Reading session (D3) | Put book on mat; turn knob; lift for 10 s, then lift for 35 s | OLED shows title/UID + page 1..999; 10 s lift keeps session and counts; 35 s lift logs `session ended, counts cleared` |
+| 9.5 | Hold-to-record (D5, D1) | Hold RECORD 0.3 s, then 2 s, 6 s, 12 s | 0.3 s cancels; 2 s / 6 s stream 8192 B chunks with timer on OLED; 12 s cuts cleanly at 10 s (`320000` bytes); `CSV,reading,...` printed |
+| 9.6 | Feedback + IPA + safety (D6, D7, D11) | Trigger grades 1, 2 (with wrong words), 3, 4 | Each command shows OLED text (IPA glyphs, never `?`), moves arm/tongue and stops pulses within 3 s; flipping servo 5 V toggle switch makes servos limp at once |
+| 9.7 | Mistakes + teacher call (D8, D9) | Miss the same word/sound 5 times; hold STOP 2 s while proposal shows; press ACK on nest | `CSV,count` counts 1..5 (absent words unchanged); at 5 OLED shows `Call your teacher? Hold STOP`; 2 s hold sends `/v1/help` -> command 7 -> ACK -> command 8 + wave |
+| 9.8 | Quiet mode (D10) | Short STOP press (< 2 s); stay quiet, then talk loudly 1 s; repeat within 30 s | OLED shows `Quiet mode`; quiet = nothing; 1 s loud = command 5 (`Shh` + gesture); second loud within 30 s = nothing |
+| 9.9 | Dark room (D11b) | Cover nest BH1750 (< 10 lx for 3 s), also mid-recording; uncover (>= 15 lx for 3 s); unplug BH1750 | Within ~4 s OLED shows `Too dark: please turn on the light`, `CSV,dark,1,1`, inputs blocked, mid-recording cancelled; uncover restores within ~6 s; unplugged sensor never blocks |
+| 9.10 | Recovery + 2 dolls (D12, D13) | Pull nest power mid-reading; kill Wi-Fi 2 min; power-cycle doll; read on `doll` and `doll_2` together | Recovers without hands; both dolls get independent grades and appear separately on dashboard |
+
+Phrase WAV files (16 kHz, 16-bit mono, Piper `en_GB-jenny_dioco-medium`) go in `data/phrases/`:
+`well_done.wav`, `try_word.wav`, `move_closer.wav`, `try_again.wav`, `shh.wav`, `too_dark.wav`, `told_teacher.wav`, `teacher_coming.wav`.
+Keep large book files out of `data/` before running **Upload Filesystem Image** so the image fits the 1.2 MB LittleFS partition.
+
+

@@ -34,9 +34,9 @@ struct Stamp {
 };
 
 // The RFID tag's ID goes inside the JSON, so only 0-9 and A-F are allowed: anything else
-// could break the JSON. Uppercase only, because the cloud accepts only uppercase.
+// could break the JSON. Uppercase only, 8-20 characters, because the cloud refuses others.
 inline bool is_hex_uid(std::string_view uid) {
-    if (uid.empty() || uid.size() > 20) {
+    if (uid.size() < 8 || uid.size() > 20) {
         return false;
     }
     for (char c : uid) {
@@ -136,11 +136,12 @@ inline std::string noise(const Stamp& stamp, uint32_t node, float db) {
     return event(stamp, node, "noise", nullptr, "\"db\":" + number_or_null(db));
 }
 
-// What the dashboard shows a doll doing, from its reading's step.
-// "feedback" lasts 10 s after the grade; then the doll is back to book_on (or idle).
+// What the dashboard shows a doll doing, from its reading's step and mode.
+// "feedback" lasts 10 s after the grade; quiet mode reports "quiet_study".
 constexpr uint32_t feedback_ms = 10000;
 
-inline const char* activity_for(lumpi::State step, bool book_on, uint32_t ms_since_grade) {
+inline const char* activity_for(lumpi::State step, bool book_on, uint32_t ms_since_grade,
+                                bool quiet_mode = false) {
     if (step == lumpi::State::recording) {
         return "recording";
     }
@@ -149,6 +150,9 @@ inline const char* activity_for(lumpi::State step, bool book_on, uint32_t ms_sin
     }
     if (step == lumpi::State::result && ms_since_grade < feedback_ms) {
         return "feedback";
+    }
+    if (quiet_mode) {
+        return "quiet_study";
     }
     return book_on ? "book_on" : "idle";
 }

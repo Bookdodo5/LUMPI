@@ -12,7 +12,7 @@
 //   <2048 bytes of audio>                                <- body (only /v1/chunk has one)
 //
 // Anyone on the Wi-Fi can connect, so there are limits: 5 s for the first lines, 3 s more for
-// the body, 512 characters per line, 32 header lines, 2048 bytes of body. Over a limit = hang up.
+// the body, 512 characters per line, 32 header lines, 8192 bytes of body. Over a limit = hang up.
 #include <Arduino.h>
 #include <WiFi.h>
 #include <string_view>
@@ -23,7 +23,7 @@
 
 namespace tiny_http {
 
-constexpr size_t max_body = 2048;
+constexpr size_t max_body = 8192;
 constexpr size_t max_line = 512;
 constexpr int max_headers = 32;
 constexpr uint32_t time_limit_ms = 5000;

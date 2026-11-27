@@ -1,6 +1,6 @@
 // Laptop test for src/common/dashboard_event.h. No ESP32 needed.
 // Run from the project folder:
-//   g++ -std=c++17 -I src/common tests/test_dashboard_event.cpp -o build/test_dashboard_event && ./build/test_dashboard_event
+//   g++ -std=c++17 -Wall -Wextra -I src/common tests/test_dashboard_event.cpp -o build/test_dashboard_event.exe && ./build/test_dashboard_event.exe
 // It also prints one event of each kind; tests/test_dashboard_server.py checks them with the real server code.
 #include <cassert>
 #include <cmath>
@@ -35,11 +35,13 @@ int main() {
     assert(contains(start_event, "\"activity\":\"book_on\""));
     assert(contains(start_event, "\"data\":{\"uid\":\"04D5E6F7\",\"passage\":3,\"attempt\":1,\"fsr\":2850}}"));
 
-    // A UID that could break the JSON, or lowercase (the cloud refuses it), makes no event.
+    // UID must be 8-20 uppercase hex characters (the cloud refuses shorter, longer or lowercase).
     assert(start(stamp, 1, "04\",\"x\":\"1", 1, 1, 0).empty());
     assert(start(stamp, 1, "04a1b2c3", 1, 1, 0).empty());
     assert(!is_hex_uid(""));
-    assert(!is_hex_uid("0123456789ABCDEF01234"));  // 21 characters: too long
+    assert(!is_hex_uid("04A1B2C"));                 // 7 characters: too short
+    assert(is_hex_uid("04A1B2C3"));                 // 8 characters: ok
+    assert(!is_hex_uid("0123456789ABCDEF01234"));   // 21 characters: too long
 
     // Status: with a book, and with no book yet (nulls).
     assert(contains(status(stamp, 1, "recording", "04A1B2C3", 2, 1, 3100),
@@ -47,9 +49,9 @@ int main() {
     assert(contains(status(stamp, 2, "idle", "", 0, 0, 40),
                     "\"data\":{\"uid\":null,\"passage\":null,\"attempt\":null,\"fsr\":40}}"));
 
-    // Help and noise.
-    assert(contains(help(stamp, 3), "\"node_id\":3,\"event_type\":\"help\""));
-    assert(contains(help(stamp, 3), "\"data\":{}}"));
+    // Help and noise (nodes 1..2).
+    assert(contains(help(stamp, 1), "\"node_id\":1,\"event_type\":\"help\""));
+    assert(contains(help(stamp, 1), "\"data\":{}}"));
     assert(contains(noise(stamp, 2, 68.5f), "\"data\":{\"db\":68.5}}"));
 
     // Score (test data form: no words).
@@ -57,12 +59,15 @@ int main() {
                     "\"activity\":\"feedback\",\"data\":{\"uid\":\"04A1B2C3\",\"passage\":2,\"attempt\":3,\"score\":85,\"words\":[]}}"));
     assert(score(stamp, 1, "04A1B2C3", 2, 3, 101).empty());
 
-    // Doll 4 does not exist.
+    // Only dolls 1 and 2 exist (max_dolls = 2).
+    assert(help(stamp, 3).empty());
     assert(help(stamp, 4).empty());
 
-    // A doll's step -> what the dashboard shows.
+    // A doll's step + mode -> what the dashboard shows.
     assert(std::string(activity_for(State::idle, false, 0)) == "idle");
     assert(std::string(activity_for(State::idle, true, 0)) == "book_on");
+    assert(std::string(activity_for(State::idle, false, 0, true)) == "quiet_study");
+    assert(std::string(activity_for(State::idle, true, 0, true)) == "quiet_study");
     assert(std::string(activity_for(State::recording, true, 0)) == "recording");
     assert(std::string(activity_for(State::assessing, true, 0)) == "waiting_ai");
     assert(std::string(activity_for(State::result, true, 500)) == "feedback");
@@ -74,7 +79,7 @@ int main() {
               << start_event << "\n"
               << status(stamp, 1, "recording", "04A1B2C3", 2, 1, 3100) << "\n"
               << status(stamp, 2, "idle", "", 0, 0, 40) << "\n"
-              << help(stamp, 3) << "\n"
+              << help(stamp, 1) << "\n"
               << noise(stamp, 2, 68.5f) << "\n"
               << score(stamp, 1, "04A1B2C3", 2, 3, 85) << "\n";
     std::cerr << "dashboard event tests passed\n";

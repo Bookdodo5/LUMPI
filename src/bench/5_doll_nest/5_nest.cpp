@@ -209,7 +209,7 @@ Reply on_chunk(int node, Doll& d) {
         return refuse("too long: the bench nest keeps 3 s");
     }
     const size_t write_at = s.bytes;
-    switch (s.add_chunk(node, attempt, index, size)) {
+    switch (s.add_chunk(node, attempt, index, size, millis())) {
     case ChunkResult::stored:
         memcpy(audio + write_at, request.body, size);
         return ok(String(index));

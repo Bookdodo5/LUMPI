@@ -163,7 +163,7 @@ so every dashboard card can be tested without a doll board. It speaks http and h
 python3 -m unittest tests.test_cloud tests.test_add_book
 ```
 
-2. Pass when it says `OK` (10 tests; Supabase, Storage and the AI are faked in memory).
+2. Pass when it says `OK` (20 tests: 17 cloud, 3 book tool; Supabase, Storage and the AI are faked in memory).
 
 ### 6b. Real nest -> cloud API run on the laptop (proves Wi-Fi, time and the message format on the board)
 

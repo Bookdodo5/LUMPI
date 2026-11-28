@@ -37,6 +37,17 @@ inline std::string_view find_value(std::string_view text, std::string_view wante
     return {};
 }
 
+// The next line of a reply, without its "\r\n"; rest moves on past it.
+inline std::string_view next_line(std::string_view& rest) {
+    const size_t end = rest.find('\n');
+    std::string_view line = rest.substr(0, end);
+    rest = end == std::string_view::npos ? std::string_view() : rest.substr(end + 1);
+    if (!line.empty() && line.back() == '\r') {
+        line.remove_suffix(1);
+    }
+    return line;
+}
+
 // Digits only -> number. False for "", a non-digit, or a number too big for 32 bits.
 inline bool read_number(std::string_view text, uint32_t& number) {
     if (text.empty()) {

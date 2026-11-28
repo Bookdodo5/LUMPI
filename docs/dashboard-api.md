@@ -60,7 +60,7 @@ works this out from these messages. No sender has to send a session id.
 ```json
 {"event_id":"laptop_ai/17","node_id":1,"event_type":"score","recorded_at":1794794410,
  "activity":null,
- "data":{"uid":"04A1B2C3","passage":2,"attempt":1,"score":72,
+ "data":{"uid":"04A1B2C3","passage":2,"attempt":1,"score":72,"first_word":14,
   "words":[
    {"word":"think","score":55,"phonemes":[{"ipa":"θ","score":30},{"ipa":"ɪ","score":80},{"ipa":"ŋ","score":60},{"ipa":"k","score":50}]},
    {"word":"fish","score":90,"phonemes":[{"ipa":"f","score":95},{"ipa":"ɪ","score":85},{"ipa":"ʃ","score":90}]}
@@ -68,7 +68,9 @@ works this out from these messages. No sender has to send a session id.
 ```
 - `node_id` = the doll that recorded it. `uid`, `passage`, `attempt` = same values as the nest's `/v1/assess`.
 - `score`, every word `score` and every phoneme `score`: numbers 0-100.
-- `words`: every word of the passage, in reading order, at most 500 (`MAX_WORDS`).
+- `words`: the words the child read, in page order (a reading may be any part of the page, at most 10 s).
+  `first_word` = the page word number of the first one, so `words[i]` is page word `first_word + i`.
+  Scores stored before 2026-11-28 have no `first_word`: they always start at page word 0.
 - `ipa`: one IPA sound of that word, as text (e.g. `θ`, `iː`). Send the JSON as UTF-8.
 - The grader also adds `heard` to each phoneme (what the AI wrote, `null` = missed) and `extra` to each word
   (sounds heard that are not in the book). Stored in Supabase `events`. The dashboard groups these by sound and by word, and uses the weak sounds to show why a word was wrong.

@@ -10,6 +10,7 @@ config/private*
 *.wav
 !data/audio/*.wav
 !data/word_audio/**/*.wav
+!data_doll/phrases/*.wav
 *.partial
 *.sqlite*
 
@@ -18,7 +19,7 @@ config/private*
 docs/dashboard/
 hermes-run-test/
 
-# Class reading scores saved by laptop/dashboard_server.py
+# Local reading and room data
 data/scores/
 data/room/
 

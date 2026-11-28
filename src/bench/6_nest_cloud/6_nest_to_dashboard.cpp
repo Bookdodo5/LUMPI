@@ -15,7 +15,6 @@
 //
 // HOW TO RUN
 //   config/private.h: LUMPI_WIFI_SSID, LUMPI_WIFI_PASSWORD, LUMPI_LAN_KEY, and LUMPI_ADAPTER_URL:
-//     the laptop:  LUMPI_LAN_KEY=<same key> python laptop/dashboard_server.py  (it prints the URL)
 //     the cloud:   "https://<site>.vercel.app"
 //   Monitor so commands can be typed:
 //     pio device monitor -b 115200 --echo --eol LF --filter send_on_enter

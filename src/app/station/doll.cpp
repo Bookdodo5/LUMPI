@@ -17,6 +17,8 @@
 //   feedback_task  core 1, prio 1 (lowest): OLED, servos, speaker only act on finished jobs
 #include <Arduino.h>
 
+#include <atomic>
+
 #include "doll_logic.h"
 #include "doll_parts.h"
 #include "messages.h"
@@ -42,6 +44,9 @@ QueueHandle_t free_slots, audio_queue, net_queue, evt_queue, fb_queue, clip_queu
 volatile Mode mode = M_IDLE;
 volatile bool capture_active = false, rec_cancel = false, rec_pool_hit = false, help_polling = false;
 volatile uint32_t last_held_ms = 0, last_release_ms = 0;
+// Command jobs queued or being acted. RECORD waits for 0: the mic would record the doll's own voice,
+// and a new reading would overwrite latest_reply while the feedback task still reads it.
+std::atomic<int> feedback_pending{0};
 
 char cur_uid[21] = "04A1B2C3", cur_title[24] = "";
 uint32_t cur_attempt = 0, cur_passage = 1, cur_fsr = 0;
@@ -68,7 +73,10 @@ void run_cmd(uint32_t cmd, bool log_csv = false) {
     FbJob j = {};
     j.command = cmd;
     j.log_csv = log_csv;
-    xQueueSend(fb_queue, &j, pdMS_TO_TICKS(100));
+    feedback_pending += 1;
+    if (xQueueSend(fb_queue, &j, pdMS_TO_TICKS(100)) != pdTRUE) {
+        feedback_pending -= 1;
+    }
 }
 
 // ---- Command table (commands 1..8, spec 5-6) ---------------------------------------------
@@ -87,14 +95,18 @@ const CmdAction actions[] = {
     {"Your teacher",       "is coming",      "/phrases/teacher_coming.wav"},
 };
 
+constexpr int max_words_acted = 3;  // like the nest's 3 clips: feedback stays short, RECORD soon free
+
 void act_command(const FbJob& job) {
     doll_parts::first_servo_pulse_ms = 0;
     if (job.command == retry_word && latest_reply.words_n > 0) {
-        for (int i = 0; i < latest_reply.words_n; ++i) {
+        int acted = 0;
+        for (int i = 0; i < latest_reply.words_n && acted < max_words_acted; ++i) {
             const doll_logic::WordLine& w = latest_reply.words[i];
             if (w.right) {
                 continue;
             }
+            acted += 1;
             doll_parts::oled_show_word(w.word, w.ipa, w.heard);
             doll_parts::run_gesture(retry_word);
             doll_parts::play_wav_file(actions[retry_word].wav);
@@ -307,13 +319,27 @@ void net_task(void*) {
         }
     };
 
+    uint32_t book_again_ms = 0;
+    int book_tries = 0;
+    // The nest answers "pending" while it asks the cloud: ask again 2 s later (5 times at most).
+    // No Wi-Fi or no Internet yet: keep asking every 2 s.
+    auto do_book = [&]() {
+        const String uid = cur_uid;
+        String ans;
+        const int code = doll_parts::tell_nest("GET", route::book, "&uid=" + uid + "&passage=" + String(cur_passage), ans,
+                                               nullptr, 0, 3000);
+        const bool again = code < 0 || ans == "offline" || (ans == "pending" && ++book_tries < 5);
+        book_again_ms = again ? millis() + 2000 : 0;
+        if (code == 200 && ans.startsWith("ok,") && uid == cur_uid) {  // still the same book on the mat
+            doll_logic::store(cur_title, sizeof(cur_title), ans.substring(3).c_str());
+            post_evt(EVT_BOOK);
+        }
+    };
+
     for (;;) {
         esp_task_wdt_reset();
+        // No Wi-Fi: jobs still run and fail at once, so a reading gets "try again" instead of hanging.
         doll_parts::wifi_maintain(mode != M_RECORDING && mode != M_CHECKING);
-        if (!lumpi_net::connected()) {
-            vTaskDelay(pdMS_TO_TICKS(200));
-            continue;
-        }
         NetJob job = {};
         if (xQueueReceive(net_queue, &job, pdMS_TO_TICKS(50)) == pdTRUE) {
             String ans;
@@ -324,12 +350,8 @@ void net_task(void*) {
             } else if (job.kind == NET_HELP) {
                 do_help();
             } else if (job.kind == NET_BOOK) {
-                const String q = "&uid=" + String(cur_uid) + "&passage=" + String(cur_passage);
-                if (doll_parts::tell_nest("GET", route::book, q, ans, nullptr, 0, 3000) == 200 &&
-                    ans.startsWith("ok,")) {
-                    doll_logic::store(cur_title, sizeof(cur_title), ans.substring(3).c_str());
-                    post_evt(EVT_BOOK);
-                }
+                book_tries = 0;
+                do_book();
             } else if (job.kind == NET_NOISE) {
                 const String q = "&db=" + String(job.db, 1) + "&peak=" + String(job.arg);
                 if (doll_parts::tell_nest("POST", route::noise, q, ans, nullptr, 0, 2000) == 200) {
@@ -349,6 +371,9 @@ void net_task(void*) {
         if (help_polling && millis() - last_help_ms >= 3000) {
             do_help();
         }
+        if (book_again_ms != 0 && int32_t(millis() - book_again_ms) >= 0) {
+            do_book();
+        }
     }
 }
 
@@ -365,6 +390,7 @@ void feedback_task(void*) {
                 doll_parts::oled_show(j.l1, j.l2, j.l3);
             } else {
                 act_command(j);
+                feedback_pending -= 1;
             }
         }
     }
@@ -374,7 +400,7 @@ void feedback_task(void*) {
 
 void control_task(void*) {
     esp_task_wdt_add(nullptr);
-    doll_logic::MistakeCounts mistakes;
+    static doll_logic::MistakeCounts mistakes;  // 4 kB: kept off the task's stack
     doll_logic::PageKnob knob;
     knob.reset(doll_parts::read_adc(doll_pins::page_knob));
     doll_parts::Debouncer rec_btn, stop_btn;
@@ -431,7 +457,7 @@ void control_task(void*) {
                     proposal = false;
                     mistakes.reset_reached();  // reading on restarts the 5-miss count
                 }
-                if (mode == M_READY) {
+                if (mode == M_READY && feedback_pending == 0) {
                     cur_attempt += 1;
                     cur_passage = knob.page;
                     cur_fsr = doll_parts::read_adc(doll_pins::fsr);
@@ -532,7 +558,7 @@ void control_task(void*) {
                 if (ask && mode != M_DARK) {
                     proposal = true;
                     prop_ms = millis();
-                    show_screen("Call your teacher?", "Hold STOP (2 s)", "or press RECORD");
+                    draw_mode();
                 }
             } else if (ev == EVT_SHH && mode == M_QUIET) {
                 run_cmd(too_noisy);
@@ -638,9 +664,10 @@ void setup() {
 
     esp_task_wdt_init(30, true);
     xTaskCreatePinnedToCore(capture_task, "capture", 4096, nullptr, 3, nullptr, 1);
-    xTaskCreatePinnedToCore(control_task, "control", 6144, nullptr, 2, nullptr, 1);
-    xTaskCreatePinnedToCore(net_task, "net", 8192, nullptr, 2, nullptr, 0);
-    xTaskCreatePinnedToCore(feedback_task, "feedback", 4096, nullptr, 1, nullptr, 1);
+    // Stacks: net holds a parsed grade reply (about 5 kB) under an HTTP request; feedback plays audio.
+    xTaskCreatePinnedToCore(control_task, "control", 8192, nullptr, 2, nullptr, 1);
+    xTaskCreatePinnedToCore(net_task, "net", 16384, nullptr, 2, nullptr, 0);
+    xTaskCreatePinnedToCore(feedback_task, "feedback", 6144, nullptr, 1, nullptr, 1);
     doll_parts::buttons_init();  // attach CHANGE ISRs last, after queues exist
 }
 

@@ -1,0 +1,308 @@
+LUMPI DOLL FIRMWARE: PROMPT FOR THE CODING AGENT (paste whole, in the lumpi-starter folder)
+Owner's request (verbatim): "Give prompts for doll and nest actual code, with full feature needed
+for the full score. Include the coding style there too."
+
+1. ROLE AND GOAL
+You are the embedded developer for the DOLL (sensor node). Write the real doll firmware in
+src/app/station/ (empty now), reusing the working bench code. Target: every designed feature
+works, and the doll earns its part of the full score in the course spec.
+The system in 5 lines:
+- A child puts a book on the doll's pressure mat; RFID says which book; a knob picks the page.
+- The child holds RECORD and reads any stretch of the page (max 10 s); the doll streams the
+  audio to the nest, which sends it to the cloud (https://lumpi.vercel.app): the cloud finds
+  which words were read, grades each word and sound; the nest adds its checks and answers.
+- The doll corrects each wrong word (OLED word + IPA + what was heard, LUMPI phrase, arm and
+  tongue, word clip), counts mistakes, and after 5 in a row proposes calling the teacher.
+- Quiet mode (STOP press): the doll reports noise; the nest says when to ask for quiet.
+- A dark room (nest light sensor) blocks everything; the doll's OLED says it is too dark.
+Board: ESP32-WROOM-32 (platformio.ini: board = esp32dev, no PSRAM; GPIO16/17 are the speaker).
+520 kB SRAM in total; with Wi-Fi far less is free (measure it at boot): no 256 kB recording buffer.
+Read first (do not skip): .omc/specs/deep-interview-doll-workflow.md (THE behaviour spec),
+config/settings.h, config/private.example.h (NEVER open private.h),
+platformio.ini, partitions.csv, src/common/messages.h, session.h, quiet_study_logic.h,
+src/drivers/lumpi_net.h, monitor.h, src/bench/5_doll_nest/5_doll.cpp (the reference doll),
+src/bench/1_doll_parts/1a_buttons.cpp (ISR + deferred task + knob), 1c_rfid.cpp, 1d_microphone.cpp,
+1f_screen_ssd1306.cpp, 1g_servos.cpp, 1h_speaker.cpp, 1i_mic_to_speaker.cpp,
+src/bench/3_full_doll/3_doll_check.cpp, README.md,
+docs/testing-steps.md, docs/t07-cloud-pipeline-work-log.md ("Lessons", stage 5/7 notes),
+docs/prompts/nest-firmware-prompt.txt (the other half), the course spec
+"../Embedded System (CEDT) - Final Project 2026.md" and "../LUMPI_Project_Proposal_2026.pdf".
+
+2. HARDWARE (pins: config/settings.h, namespace doll_pins; never type a number in app code)
+Part                         Pins                              Notes
+INMP441 microphone           SCK 26, WS 25, SD 34 (I2S port 0) L/R to GND; use I2S_CHANNEL_FMT_ONLY_RIGHT
+                                                               + the timing fix from 5_doll.cpp
+FSR pressure mat             35 (ADC1), 10k to GND            book/child on above doll_tuning::book_on_fsr
+RC522 RFID (3.3 V only)      SCK 18, MISO 19, MOSI 23, CS 27  library miguelbalboa/MFRC522@1.4.12
+RECORD / STOP buttons        13 / 14, INPUT_PULLUP             pressed = LOW; ISRs (E2); no safety role
+Page knob (potentiometer)    36 (ADC1)                         relative steps, as in 1a_buttons.cpp
+OLED SSD1306 (or SH1106)     SDA 32, SCL 33, address 0x3C     the doll's own I2C bus
+MAX98357A speaker amp        BCLK 16, LRC 17, DIN 5 (I2S 1)   BOTH AMPS DAMAGED; replacements ordered
+Arm / tongue servos          21 / 22 (LEDC 50 Hz, 16-bit)      own 5 V charger + toggle switch = manual stop
+No PIR (removed; presence = the mat). Every part optional at start-up as in the bench (no mic =
+silence, no RFID = uid 04A1B2C3); every spoken phrase also has a servo + OLED form (amps pending).
+M1 sensors on the doll: microphone, RFID, FSR (3 types; the nest has 2). All three must work.
+
+3. CONTRACTS (local part and cloud changes are shared; keep them identical with the other prompt)
+=== SHARED CONTRACT (word for word the same in the doll and the nest prompt) ===
+Behaviour source: .omc/specs/deep-interview-doll-workflow.md (owner-approved; it wins).
+Local link: HTTP on the classroom Wi-Fi, nest = LUMPI_GATEWAY_URL port 80, header
+"Authorization: Bearer <LUMPI_LAN_KEY>" (wrong key -> 401). Every route except /v1/status carries
+node=1..2 (exactly 2 dolls). A wrong or out-of-order message -> 409 + the reason in words. Unknown route -> 404.
+Route (messages.h)  Query                                    Reply
+POST /v1/start     node attempt passage uid fsr               "ok" | 409 dark | 409
+PUT  /v1/chunk     node attempt index, body = audio           "<index>" (the ACK) | 409
+POST /v1/finish    node attempt chunks bytes                  "assessing" | 409 totals differ
+GET  /v1/attempt   node attempt                               "pending" | "result,<code>,<word>"
+                   + for codes 1 and 2 the cloud's S/W/P lines  | 409 unknown attempt
+GET  /v1/word_clip node attempt word                          200 audio/wav | 409 no clip
+POST /v1/cancel    node attempt                               "cancelled"
+POST /v1/presence  node present=0|1 fsr mode=read|quiet       "ok" | "dark"
+GET  /v1/help      node                                       "waiting" | "coming" | "dark"
+POST /v1/noise     node db peak                               "ok" | "command,5" | "dark"
+GET  /v1/book      node uid passage                           "ok,<title>" | "unknown" | "offline"
+GET  /v1/status    (no node)                                  JSON, for people
+CHANGED/NEW against the bench (both boards follow these):
+- Hold-to-record: /v1/start when RECORD is pressed; chunks stream WHILE it is held; release or
+  10 s = /v1/finish. At most 10 s = 320000 bytes (was 8 s / 256000).
+- passage 1..999 (was 1..3). uid = uppercase hex, 8-20 characters (the cloud refuses others).
+- chunk body 2..8192 bytes, even (was 2048) = 256 ms of audio. Indexes 0,1,2... in order.
+  A chunk with no "<index>" ACK within 1500 ms is sent again, at most 5 tries.
+- The nest drops a recording after 10 s with no NEW chunk (timer restarts per stored chunk),
+  and an assessing reading after 45 s (was 30). A RESULT never times out.
+- /v1/attempt: the nest answers at once (grading runs in another task). Doll asks every 300 ms,
+  5 s timeout per ask, gives up after 50 s and acts command 4. 409 = the nest restarted: act 4.
+  For codes 1 and 2 the reply goes on with the cloud's S, W and P lines (CLOUD CHANGES), as sent,
+  except that each W line's last field becomes "1" (the nest holds that word's clip) or "0".
+  Whole reply <= 4096 bytes.
+- /v1/word_clip: word = a page word index from a W line marked "1". The nest fetches at most 3
+  wrong-word clips (worst first) BEFORE it publishes the result. 16 kHz 16-bit mono WAV, 44-byte
+  header, sent with Content-Length. 409 = no clip (OLED only).
+- DARK ROOM BLOCKS EVERYTHING (owner). The NEST decides from its BH1750: dark after lux stays
+  below room::dark_lux for 3 s; bright again after lux stays at or above room::bright_lux (NEW,
+  15 lx; dark_lux is 10 lx: the gap is the hysteresis) for 3 s. No light reading (sensor missing, NAN) = NOT
+  dark, never blocks. The doll learns it from the "dark" replies above (presence is its fast
+  poll) and goes back to normal on the next "ok". While dark the doll starts no reading, quiet
+  mode or teacher call, quiet mode pauses (no noise reports), and the OLED says "Too dark: please
+  turn on the light". The nest refuses /v1/start with 409 dark, answers "dark" to /v1/noise and
+  to a NEW teacher call (a call already waiting still gets "coming" after ACK). Mid-recording:
+  the doll stops at once and sends /v1/cancel. A reading graded while dark gets command 6 with
+  no S/W/P lines (counts unchanged).
+- /v1/presence: on every change and every 3 s (the heartbeat and the doll's dark poll).
+  present = the doll's reading
+  session (book on the mat; lift-offs under 30 s are ignored). mode=quiet: quiet mode is on
+  (the nest then treats the child as present for noise). fsr = raw mat reading.
+- /v1/help = the TEACHER CALL, sent only when the child holds STOP 2 s while the doll shows its
+  "call your teacher?" proposal (not while dark). First ask = the call (the nest sends a help event); then every
+  3 s until "coming". "coming" lasts until that doll's next /v1/start.
+- /v1/noise: quiet mode only, not while dark, every 1 s. peak NEW = the quietest of four 250 ms peaks (high only
+  when loud for the whole second), measured as the peak of
+  (32-bit sample >> 8). db = 20*log10(peak), uncalibrated.
+- /v1/book NEW (optional feature): nest asks the cloud's /v1/page. title <= 20 characters,
+  commas removed. "offline" = cloud not reachable; the doll still lets the child read.
+Commands (lumpi::Command): 1 accepted, 2 retry_word, 3 improve_audio, 4 uncertain (AI grades);
+5 too_noisy, 6 too_dark (nest decides; also the doll's own dark screen); 7 told_teacher (the
+doll, right after its own teacher
+call); 8 teacher_coming (teacher's ACK). Mistake counts live on the doll; the nest never sends 7.
+Audio: 16 kHz 16-bit signed little-endian mono PCM.
+Shared header edits: made ONCE by whichever prompt runs first; the other only checks them.
+ a) src/common/session.h: max_dolls 3 -> 2 (nodes 1..2), max_bytes 320000, max_chunk_bytes 8192,
+    assessing_timeout_ms 45000,
+    new max_passage = 999 used by start(); add_chunk() restarts the timer per stored chunk; new
+    pure DarkState (the 3 s + hysteresis rule above, NAN = not dark) and decide_command(ai_code,
+    dark): 6 if dark, else ai_code. HelpState: "stuck" is set by the teacher call; on_grade()
+    is unused.
+ b) src/drivers/tiny_http.h: max_body 8192.
+ c) src/common/messages.h: comments match this table; add route::book = "/v1/book" and
+    laptop_route::page = "/v1/page"; command 7 now comes from the doll.
+ d) src/common/dashboard_event.h: activity_for() also takes the doll's mode -> "quiet_study";
+    is_hex_uid() needs 8-20 characters.
+ e) config/settings.h: NEW tuning constants only (marked NEW, e.g. room::bright_lux). No pin
+    changes.
+ Then update src/test/test_round_trip.cpp and tests/test_dashboard_event.cpp and run them.
+=== END SHARED CONTRACT ===
+
+=== CLOUD CHANGES NEEDED (separate task, do first; same text in both prompts) ===
+Not firmware: api/lumpi.py, api/_plumbing.py, tests/test_cloud.py, docs/dashboard-api.md.
+The boards can be built before it, but not tested end to end until it is deployed.
+1. Length and time: MAX_RECORDING_BYTES 256000 -> 320000 (10 s). NEST_WAITS_S 11 -> 14 (the AI
+   keeps getting that budget minus 2 s; upload time counts). Nest timeout 18 s; Session
+   assessing 45 s; doll gives up at 50 s; vercel.json maxDuration 30 stays. Measured warm: 8 s
+   recording 3.6 s total; 10 s is an ESTIMATE of about 4-4.5 s: measure it.
+2. Fragment, no sentence splitting: any stretch of the page works (part of a sentence or across
+   sentences, max 10 s). Fitting (semi-global) alignment of the normed heard sounds against ALL
+   the page's normed sounds: skipping page sounds before and after the stretch costs nothing;
+   lowest cost wins, a tie keeps the longest stretch. Widen the stretch to whole words and run
+   the existing score_words() on only those words with the heard sounds. Word indices stay
+   page-level (the clip address is unchanged). Working prototype (~20 lines, 500-word page
+   0.13 s on the laptop): ~/.cache/lumpi-fit/fit.py (find_span + fragment).
+   Known limits, each with an acceptance test in tests/test_cloud.py: a word skipped inside the
+   fragment can make the match start at the wrong word; 1-2 word fragments can match elsewhere
+   on the page; a repeated phrase matches one of its occurrences. The doll test plan repeats them.
+3. Reply, plain UTF-8 text, one record per line, fields split by "," (no field holds a comma;
+   sounds inside a field are split by spaces). Line 1 stays "<code>,<word>": code from the
+   matched words (3 nothing heard and 4 failure unchanged, then no more lines); <word> = PAGE
+   word index of the worst word. For codes 1 and 2 only, then:
+   S,<first page word index>,<word count>,<score 0-100 of the matched words>
+   W,<page word index>,<r|w>,<word>,<book sounds>,<heard>,<clip>     one per word, reading order
+     r = word score >= 60 (PASS_SCORE). heard = for each book sound the sound heard, "-" =
+     missed, then extra sounds as "+<sound>". clip = /v1/word_audio?uid=..&passage=..&word=<i>
+     for w, empty for r. At most 40 W lines.
+   P,<sound>,<r|w>      one per distinct book sound of the matched words; w if ANY of its occurrences
+     was wrong (several misses in one recording count once). Not listed = absent.
+   The old code-2 extra line "<index>,<word>,<sounds>,<clip>" is replaced. Firmware that reads
+   only line 1 keeps working.
+4. The stored score event: data.words = the matched words only, plus "first_word": the page
+   index of the first one. Check that dashboard/v7's word and sound views still make sense; update
+   docs/dashboard-api.md.
+5. For the nest and src/common: the session.h edits above, forward S/W/P to the doll, fetch up to
+   3 clips, 18 s timeout. M6: the cloud should send a Discord alert on each help event.
+=== END CLOUD CHANGES ===
+The doll never talks to the cloud or the dashboard: only to the nest, with the routes above.
+
+4. FEATURES (build in this order; each: acceptance test -> what it earns). Spec acceptance
+   criteria (.omc/specs/deep-interview-doll-workflow.md) are part of these tests.
+D1 Tasks and queues (E1). At least: capture task (mic, highest app priority, core 1: a late I2S
+   read loses audio), control task (deferred button work, session, counts, state machine),
+   network task (chunks, polls, heartbeat; core 0 beside Wi-Fi), feedback task (servos, speaker,
+   OLED; lowest, it only acts). Queues: button events (ISR side), audio blocks (capture ->
+   network), feedback jobs (control -> feedback). Priority reasons as comments.
+   Test: a 10 s reading with the OLED timer running loses no audio (bytes = 32000 per s held).
+   -> E1 (2 pts).
+D2 Buttons by interrupt (E2). RECORD and STOP on CHANGE (press AND release): IRAM_ATTR ISR does
+   only vTaskNotifyGiveFromISR / xQueueSendFromISR; debounce (35 ms), press length and meaning
+   in the task, as 1a_buttons.cpp. No polling of button pins. Test: 50 presses = 50 events. -> E2.
+D3 Reading session (spec 1-2). Mat above book_on_fsr + RC522 uid = reading mode; OLED shows the
+   book (title via /v1/book, optional) and page; the knob steps pages 1..999 (new book = page 1).
+   Lift-offs under 30 s are ignored; lifted 30 s or more ends the session and clears the counts.
+   Test: lift for 10 s (session and counts kept), lift for 35 s (ended). -> M1, functionality.
+D4 RFID book tag: the MFRC522 library (miguelbalboa/MFRC522@1.4.12). E8 is claimed by the
+   nest's BH1750 driver (src/drivers/real_io.cpp). Test: same uid as s1c_rfid for every tag.
+D5 Hold-to-record (spec 3). RECORD press -> /v1/start; the capture task fills 8192-byte blocks
+   from a fixed pool allocated once at boot (about 10 blocks = 80 kB, 2.5 s of slack; measure free
+   heap first); the network task PUTs them with ACK/resend; OLED shows "3.2 / 10 s". Release or
+   10 s -> /v1/finish, then poll /v1/attempt. Under 0.5 s held = cancel. Pool empty (Wi-Fi stall)
+   = end at the last whole block. RECORD does nothing in quiet mode.
+   Test: hold 2 s, 6 s, 12 s (cut at 10 s); a page fragment across two sentences is graded on
+   those words (cloud change). -> M3, E4.
+D6 Feedback (closed loop M4 + M2, spec 5-6). One table in the story file, command -> actions:
+   1 arm up + "Well done!"; for 2, EACH W line marked w, in reading order: LUMPI attention phrase
+   while tongue and arm move, OLED shows the word, its correct IPA and what was heard, then the
+   word clip if marked "1"; 3 "Please move closer and read again"; 4 "Let us try again";
+   5 arm + tongue, OLED "Shh"; 6 "Please turn on the light"; 7 "I have told your teacher";
+   8 "Your teacher is coming" + wave. Reading again is only a suggestion: nothing blocks.
+   Servo pulse widths: NEW doll_tuning constants, calibrated with s1g_servos. Phrases: WAV files
+   (16 kHz 16-bit mono) on the doll's LittleFS. Every phrase also shown as OLED text.
+   Test: each command gives its moves + text; clips stream to I2S port 1 as they arrive (no
+   whole-file buffer); the speaker part waits for the new amps. -> M2, M4, UX.
+D7 IPA on the OLED. VERIFIED: the Adafruit GFX built-in font (glcdfont.c, 5x7, CP437) and its
+   Fonts/*7b files (7-bit ASCII) in .pio/libdeps have NO IPA symbols (ɹ ə ʃ ɪ ...). Plan: a
+   custom GFXfont with only the IPA symbols the cloud can send (book sounds after norm() in
+   api/lumpi.py), made with Adafruit's fontconvert from a TTF that covers IPA, and a small
+   UTF-8 -> glyph map in the plumbing file. Which TTF covers IPA, and its licence: UNVERIFIED.
+   U8g2 is not in this project (its IPA coverage is UNVERIFIED). Test: every sound in a P line
+   draws as a glyph, never as "?". -> UX.
+D8 Mistake counts (spec 7, pure logic in src/common/doll_logic.h, laptop-tested). Per word text
+   and per sound, for the session: listed w -> +1, listed r -> 0, not listed (absent) -> no
+   change; codes 3 and 4 change nothing; several misses in one recording count once. Fixed-size
+   tables (about 64 words, 48 sounds; reuse an entry that is 0). Test: the spec's cases,
+   including "4 misses, then a recording without that word: stays 4". -> functionality.
+D9 Teacher proposal and call (spec 8). A count reaching 5 -> OLED "Call your teacher? Hold STOP"
+   until the next RECORD press or 30 s (NEW setting). Holding STOP 2 s while it shows ->
+   GET /v1/help (the call) -> act 7 -> ask every 3 s until "coming" -> act 8. The count restarts
+   after a call; reading on without calling also restarts it. A shorter press never calls.
+   Test: 5 misses -> proposal; hold STOP -> dashboard help popup, ACK on the nest -> 8. -> M6
+   input (cloud alert), UX.
+D10 Quiet mode (spec 9-10). A short STOP press (released before 2 s, not dark) toggles it; OLED
+   "Quiet mode"; presence mode=quiet; POST /v1/noise every 1 s; "command,5" -> act 5 (the nest
+   sends the dashboard noise event and keeps the 30 s cooldown). Test: quiet room = nothing; 1 s
+   of loud talking = one "Shh" + dashboard point; again within 30 s = nothing. -> feature.
+D11 Safety (M7, course rule 4.3 "a way to stop safely"). NO software safety stop (owner): the
+   manual stop is the physical toggle switch on the servos' own 5 V charger (already wired, see
+   s1g_servos.cpp). Software keeps a timeout: every servo move ends by itself, pulses off (duty
+   0) after at most 3 s; boot = servos limp. STOP is only the quiet-mode press and the teacher-
+   call hold; it is ignored while recording. Test: flip the switch mid-gesture (servos limp at
+   once); a gesture always ends within 3 s. -> M7.
+D11b Dark room (shared contract "DARK ROOM"). Test: cover the nest's light sensor: within 3-4 s
+   every doll shows "Too dark"; RECORD, STOP press and STOP hold do nothing; a recording in
+   progress stops and is cancelled; uncover: normal again within about 6 s; unplug the light
+   sensor: nothing is blocked. -> designed feature, nest real-time control.
+D12 Self-recovery (robustness 3/3). Wi-Fi: auto-reconnect; down 60 s while idle = restart. Nest
+   gone mid-reading (chunk fails 5 tries, or 409) = cancel and act 4. Task watchdog on every task.
+   After power loss: idle, page 1, heartbeat resumes. Test: pull the nest's power mid-reading;
+   hotspot off 2 min; pull the doll's power; each recovers with no hands. -> Robustness.
+D13 Exactly two dolls (scalability 3 pts): only LUMPI_NODE_ID 1 or 2 differs (env doll_2). Test: both
+   read at the same moment; each gets its own result; nest and dashboard show both. -> II.
+D14 Optional E6: ArduinoOTA, password LUMPI_LAN_KEY (partitions.csv has two app slots).
+Earned only by hardware testing (code just makes them possible): M1-M4, M7, scalability,
+robustness, functionality, build quality, field testing, metrics. M6 (Discord) = CLOUD task.
+
+5. MEASUREMENT HOOKS (serial lines starting "CSV," so the tester can paste them into a sheet)
+CSV,boot,<node>,<reset reason>,<free heap>
+CSV,beat,<node>,<uptime s>,<rssi>,<wifi drops>,<free heap>,<min free heap>   (every 60 s)
+CSV,reading,<node>,<attempt>,<held ms>,<chunks>,<chunk tries>,<release -> finish ACK ms>,
+    <grade wait ms>,<code>,<wrong words>,<release -> first servo pulse ms>
+CSV,count,<node>,<word or sound>,<new count>       CSV,dark,<node>,<0|1>
+Delivery rate = chunks / chunk tries. Latency = last reading column. Uptime = beats + boots.
+
+6. CODING STYLE (the owner's rule, verbatim: "every line of code is like, important logic that
+   is needed for LUMPI to function")
+- The owner is new to embedded work and must explain EVERY line to a teacher (Q&A can give 0 for
+  code nobody can explain). Write for that reader. British English in comments and messages.
+- One obvious STORY file (what LUMPI does, in the order it happens, readable top to bottom) and
+  one PLUMBING file (set-up, drivers, formatting, retries) that the story calls by plain names.
+- Only the checks LUMPI needs, written concisely (a missing part, a refused message, a full
+  buffer). No defensive code for things that cannot happen. No speculative options or layers,
+  no dead code, no commented-out code, no "TODO". Readable, not code-golfed.
+- Short plain comments that say WHY, above the line they explain. A glossary at the top of the
+  story file (node, attempt, passage, uid, chunk, command...) like src/bench/5_doll_nest/*.cpp.
+- Reuse what exists: src/common/*.h, src/drivers/* (lumpi_net, tiny_http, monitor, real_io),
+  every pin and threshold from config/settings.h. Never write a pin number in app code.
+- Pure logic (no Arduino) goes in src/common headers so the laptop can test it.
+- Serial output: one readable line per event plus the CSV lines of section 5. Never print
+  config/private.h values (print the key length only, as the bench does). Never open private.h.
+- Libraries only if the bench already uses them (the RFID reader uses MFRC522).
+Doll files (create only these; line counts are my ESTIMATES, not limits):
+- src/app/station/doll.cpp     THE STORY: glossary, tasks, reading state machine, command table
+                               (~350 lines)
+- src/app/station/doll_parts.h PLUMBING: mic/speaker I2S set-up, WAV streaming, servo pulses,
+                               OLED text, ISR attach, Wi-Fi watchdog, CSV printing (~220 lines)
+- src/common/doll_logic.h      pure: mistake counts, S/W/P line reader, knob steps, peak -> dB
+                               (~90 lines),
+                               tested by NEW tests/test_doll_logic.cpp
+Env "doll": build_src_filter = +<app/station/doll.cpp>; lib_deps = adafruit/Adafruit SSD1306@2.5.13
+(SH1106 screen: Adafruit SH110X@2.1.15 + -DUSE_SH1106, as s3_doll_check_sh1106). Plus miguelbalboa/MFRC522@1.4.12.
+Use the APIs the bench already compiles with (ledcSetup/ledcAttachPin, driver/i2s.h, LittleFS).
+
+7. WORKING METHOD
+- Step 0: read the files in section 1, then write a PLAN (tasks, queues, files, line estimates,
+  shared-header edits, open questions from section 8) and WAIT for the owner's approval.
+- Then build in stages, core loop first; after EVERY stage compile and fix all warnings:
+    pio run -e doll      pio run -e doll_2      pio run -e nest
+  (VS Code: PlatformIO > Project Tasks > <env> > Build). These envs do not exist yet: add them
+  to platformio.ini next to the bench ones (doll_2 = doll + build_flags ${env.build_flags}
+  -DLUMPI_NODE_ID=2). Keep every bench env compiling (spot-check s5_nest and s5_doll).
+- Laptop tests for every pure function (no board): the command in docs/testing-steps.md 5a, or
+    g++ -std=c++17 -Wall -Wextra -I src/common src/test/test_round_trip.cpp -o build/t && build/t
+- For each stage, give the human hardware test steps (what to wire, upload, press, and what the
+  monitor must show), in the style of docs/testing-steps.md. Add them to that file as stage 9.
+- Never claim hardware behaviour you have not seen: say "compiles; not run on hardware".
+- A choice that changes what the child, teacher or marker sees is the owner's: ask, briefly,
+  with 2-3 options and your recommendation. Do not commit, push, deploy or call live services.
+- If the other board's prompt (docs/prompts/) disagrees with yours, stop and ask.
+
+8. OPEN DECISIONS FOR THE OWNER (ask in the plan; the spec settles the rest, do not reopen it)
+Settled, do not ask: no software safety stop (switch + 3 s timeout), dark room blocks everything,
+exactly 2 dolls, help only through the 5-miss proposal and STOP hold.
+1. IPA font (D7): which TTF to convert (coverage and licence unverified), or ASCII fallback.
+2. Clips per reading: at most 3 (nest flash and time). More wrong words = OLED only. Confirm.
+3. Proposal display time: until the next RECORD press or 30 s (my default). Confirm.
+4. Phrase files: who records them (Piper en-GB voice as in tools/add_book.py?). "Upload
+   Filesystem Image" packs the whole data/ folder, which holds 14 MB of git-ignored books: the
+   doll's 1.2 MB LittleFS needs its own small folder. Check how this platformio.ini can do that.
+5. Settled: dark below 10 lx, bright from 15 lx, 3 s delay. Check in the classroom with s2b_light.
+6. Fragment matching limits (cloud): a skipped word, 1-2 word fragments, repeated phrases. Test
+   them with the class's real books before the demo.
+Report notes (no choice needed): code 7 is now "5 in a row on the doll, then a STOP-hold call"
+(proposal: nest, after three failed attempts); the PIR and the GPIO4 servo-power cut are gone.
+The proposal document is being updated separately.

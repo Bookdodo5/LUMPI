@@ -1,0 +1,307 @@
+LUMPI NEST FIRMWARE: PROMPT FOR THE CODING AGENT (paste whole, in the lumpi-starter folder)
+Owner's request (verbatim): "Give prompts for doll and nest actual code, with full feature needed
+for the full score. Include the coding style there too."
+
+1. ROLE AND GOAL
+You are the embedded developer for the NEST (the gateway, one per classroom). Write the real nest
+firmware in src/app/gateway/ (empty now), reusing the working bench nest. Target: every designed
+feature works, and the nest earns its part of the full score in the course spec.
+The system in 5 lines:
+- Each child's doll (sensor node, exactly 2, both physical) streams a held-RECORD reading here.
+- The nest keeps one session per doll, sends each recording to the cloud (https://lumpi.vercel.app)
+  where an AI hears the sounds; the cloud finds which stretch of the page was read and grades it.
+- The nest decides in real time (dark room blocks all dolls, too noisy, ACK), forwards the grade lines
+  and word clips to the doll, and passes the doll's teacher call to the dashboard.
+- Its own sensors: BH1750 light and HC-SR04 teacher distance; OLED + ACK button for the teacher.
+- It sends room/doll events to the dashboard (cloud), keeping them in flash while offline.
+Board: ESP32-WROOM-32 (platformio.ini: board = esp32dev, no PSRAM). 520 kB SRAM in total, much
+less free with Wi-Fi + TLS (measure at boot): recordings live in FLASH, not RAM (feature N2).
+Read first (do not skip): .omc/specs/deep-interview-doll-workflow.md (THE behaviour spec),
+config/settings.h, config/private.example.h (NEVER open private.h),
+platformio.ini, partitions.csv, vercel.json, src/common/*.h, src/drivers/* (tiny_http.h,
+lumpi_net.h, real_io.cpp, monitor.h), src/bench/5_doll_nest/5_nest.cpp (the reference nest),
+src/bench/6_nest_cloud/6_nest_to_dashboard.cpp, src/bench/4_full_nest/4_nest_check.cpp,
+src/bench/2_nest_parts/2e_ack_button.cpp, src/bench/1_doll_parts/1a_buttons.cpp (ISR pattern),
+src/test/test_round_trip.cpp, tests/test_*.cpp, api/lumpi.py, api/_plumbing.py,
+docs/dashboard-api.md, dashboard/v7/shared.js (ACTIVITY_TEXT), docs/testing-steps.md,
+docs/t07-cloud-pipeline-work-log.md, docs/prompts/doll-firmware-prompt.txt (the other half),
+"../Embedded System (CEDT) - Final Project 2026.md", "../LUMPI_Project_Proposal_2026.pdf".
+
+2. HARDWARE (pins: config/settings.h, namespace gateway_pins; never type a number in app code)
+Part                        Pins                             Notes
+BH1750 light                SDA 21, SCL 22, I2C 0x23         hardware::light_read() in real_io.cpp
+HC-SR04 distance            TRIG 26, ECHO 27 (1k/2k divider) hardware::read_distance_cm(), NAN = no echo
+OLED SSD1306 (or SH1106)    same I2C bus, 0x3C               teacher's private screen
+ACK button                  32, INPUT_PULLUP, pressed = LOW  ISR (E2)
+Thresholds: room::dark_lux (10 lx), room::teacher_margin_cm (40 cm). BME280 (s2f): spare, unused.
+Every part optional at start-up (missing sensor = null, never 0). M1 sensors on the nest: light
++ distance (2 types; the doll has 3). Both must work.
+
+3. CONTRACTS (local part and cloud changes are shared; keep them identical with the other prompt)
+=== SHARED CONTRACT (word for word the same in the doll and the nest prompt) ===
+Behaviour source: .omc/specs/deep-interview-doll-workflow.md (owner-approved; it wins).
+Local link: HTTP on the classroom Wi-Fi, nest = LUMPI_GATEWAY_URL port 80, header
+"Authorization: Bearer <LUMPI_LAN_KEY>" (wrong key -> 401). Every route except /v1/status carries
+node=1..2 (exactly 2 dolls). A wrong or out-of-order message -> 409 + the reason in words. Unknown route -> 404.
+Route (messages.h)  Query                                    Reply
+POST /v1/start     node attempt passage uid fsr               "ok" | 409 dark | 409
+PUT  /v1/chunk     node attempt index, body = audio           "<index>" (the ACK) | 409
+POST /v1/finish    node attempt chunks bytes                  "assessing" | 409 totals differ
+GET  /v1/attempt   node attempt                               "pending" | "result,<code>,<word>"
+                   + for codes 1 and 2 the cloud's S/W/P lines  | 409 unknown attempt
+GET  /v1/word_clip node attempt word                          200 audio/wav | 409 no clip
+POST /v1/cancel    node attempt                               "cancelled"
+POST /v1/presence  node present=0|1 fsr mode=read|quiet       "ok" | "dark"
+GET  /v1/help      node                                       "waiting" | "coming" | "dark"
+POST /v1/noise     node db peak                               "ok" | "command,5" | "dark"
+GET  /v1/book      node uid passage                           "ok,<title>" | "unknown" | "offline"
+GET  /v1/status    (no node)                                  JSON, for people
+CHANGED/NEW against the bench (both boards follow these):
+- Hold-to-record: /v1/start when RECORD is pressed; chunks stream WHILE it is held; release or
+  10 s = /v1/finish. At most 10 s = 320000 bytes (was 8 s / 256000).
+- passage 1..999 (was 1..3). uid = uppercase hex, 8-20 characters (the cloud refuses others).
+- chunk body 2..8192 bytes, even (was 2048) = 256 ms of audio. Indexes 0,1,2... in order.
+  A chunk with no "<index>" ACK within 1500 ms is sent again, at most 5 tries.
+- The nest drops a recording after 10 s with no NEW chunk (timer restarts per stored chunk),
+  and an assessing reading after 45 s (was 30). A RESULT never times out.
+- /v1/attempt: the nest answers at once (grading runs in another task). Doll asks every 300 ms,
+  5 s timeout per ask, gives up after 50 s and acts command 4. 409 = the nest restarted: act 4.
+  For codes 1 and 2 the reply goes on with the cloud's S, W and P lines (CLOUD CHANGES), as sent,
+  except that each W line's last field becomes "1" (the nest holds that word's clip) or "0".
+  Whole reply <= 4096 bytes.
+- /v1/word_clip: word = a page word index from a W line marked "1". The nest fetches at most 3
+  wrong-word clips (worst first) BEFORE it publishes the result. 16 kHz 16-bit mono WAV, 44-byte
+  header, sent with Content-Length. 409 = no clip (OLED only).
+- DARK ROOM BLOCKS EVERYTHING (owner). The NEST decides from its BH1750: dark after lux stays
+  below room::dark_lux for 3 s; bright again after lux stays at or above room::bright_lux (NEW,
+  15 lx: the gap is the hysteresis) for 3 s. No light reading (sensor missing, NAN) = NOT
+  dark, never blocks. The doll learns it from the "dark" replies above (presence is its fast
+  poll) and goes back to normal on the next "ok". While dark the doll starts no reading, quiet
+  mode or teacher call, quiet mode pauses (no noise reports), and the OLED says "Too dark: please
+  turn on the light". The nest refuses /v1/start with 409 dark, answers "dark" to /v1/noise and
+  to a NEW teacher call (a call already waiting still gets "coming" after ACK). Mid-recording:
+  the doll stops at once and sends /v1/cancel. A reading graded while dark gets command 6 with
+  no S/W/P lines (counts unchanged).
+- /v1/presence: on every change and every 3 s (the heartbeat and the doll's dark poll).
+  present = the doll's reading
+  session (book on the mat; lift-offs under 30 s are ignored). mode=quiet: quiet mode is on
+  (the nest then treats the child as present for noise). fsr = raw mat reading.
+- /v1/help = the TEACHER CALL, sent only when the child holds STOP 2 s while the doll shows its
+  "call your teacher?" proposal (not while dark). First ask = the call (the nest sends a help event); then every
+  3 s until "coming". "coming" lasts until that doll's next /v1/start.
+- /v1/noise: quiet mode only, not while dark, every 1 s. peak NEW = the quietest of four 250 ms peaks (high only
+  when loud for the whole second), measured as the peak of
+  (32-bit sample >> 8). db = 20*log10(peak), uncalibrated.
+- /v1/book NEW (optional feature): nest asks the cloud's /v1/page. title <= 20 characters,
+  commas removed. "offline" = cloud not reachable; the doll still lets the child read.
+Commands (lumpi::Command): 1 accepted, 2 retry_word, 3 improve_audio, 4 uncertain (AI grades);
+5 too_noisy, 6 too_dark (nest decides; also the doll's own dark screen); 7 told_teacher (the
+doll, right after its own teacher
+call); 8 teacher_coming (teacher's ACK). Mistake counts live on the doll; the nest never sends 7.
+Audio: 16 kHz 16-bit signed little-endian mono PCM.
+Shared header edits: made ONCE by whichever prompt runs first; the other only checks them.
+ a) src/common/session.h: max_dolls 3 -> 2 (nodes 1..2), max_bytes 320000, max_chunk_bytes 8192,
+    assessing_timeout_ms 45000,
+    new max_passage = 999 used by start(); add_chunk() restarts the timer per stored chunk; new
+    pure DarkState (the 3 s + hysteresis rule above, NAN = not dark) and decide_command(ai_code,
+    dark): 6 if dark, else ai_code. HelpState: "stuck" is set by the teacher call; on_grade()
+    is unused.
+ b) src/drivers/tiny_http.h: max_body 8192.
+ c) src/common/messages.h: comments match this table; add route::book = "/v1/book" and
+    laptop_route::page = "/v1/page"; command 7 now comes from the doll.
+ d) src/common/dashboard_event.h: activity_for() also takes the doll's mode -> "quiet_study";
+    is_hex_uid() needs 8-20 characters.
+ e) config/settings.h: NEW tuning constants only (marked NEW, e.g. room::bright_lux). No pin
+    changes.
+ Then update src/test/test_round_trip.cpp and tests/test_dashboard_event.cpp and run them.
+=== END SHARED CONTRACT ===
+
+=== CLOUD CHANGES NEEDED (separate task, do first; same text in both prompts) ===
+Not firmware: api/lumpi.py, api/_plumbing.py, tests/test_cloud.py, docs/dashboard-api.md.
+The boards can be built before it, but not tested end to end until it is deployed.
+1. Length and time: MAX_RECORDING_BYTES 256000 -> 320000 (10 s). NEST_WAITS_S 11 -> 14 (the AI
+   keeps getting that budget minus 2 s; upload time counts). Nest timeout 18 s; Session
+   assessing 45 s; doll gives up at 50 s; vercel.json maxDuration 30 stays. Measured warm: 8 s
+   recording 3.6 s total; 10 s is an ESTIMATE of about 4-4.5 s: measure it.
+2. Fragment, no sentence splitting: any stretch of the page works (part of a sentence or across
+   sentences, max 10 s). Fitting (semi-global) alignment of the normed heard sounds against ALL
+   the page's normed sounds: skipping page sounds before and after the stretch costs nothing;
+   lowest cost wins, a tie keeps the longest stretch. Widen the stretch to whole words and run
+   the existing score_words() on only those words with the heard sounds. Word indices stay
+   page-level (the clip address is unchanged). Working prototype (~20 lines, 500-word page
+   0.13 s on the laptop): ~/.cache/lumpi-fit/fit.py (find_span + fragment).
+   Known limits, each with an acceptance test in tests/test_cloud.py: a word skipped inside the
+   fragment can make the match start at the wrong word; 1-2 word fragments can match elsewhere
+   on the page; a repeated phrase matches one of its occurrences. The doll test plan repeats them.
+3. Reply, plain UTF-8 text, one record per line, fields split by "," (no field holds a comma;
+   sounds inside a field are split by spaces). Line 1 stays "<code>,<word>": code from the
+   matched words (3 nothing heard and 4 failure unchanged, then no more lines); <word> = PAGE
+   word index of the worst word. For codes 1 and 2 only, then:
+   S,<first page word index>,<word count>,<score 0-100 of the matched words>
+   W,<page word index>,<r|w>,<word>,<book sounds>,<heard>,<clip>     one per word, reading order
+     r = word score >= 60 (PASS_SCORE). heard = for each book sound the sound heard, "-" =
+     missed, then extra sounds as "+<sound>". clip = /v1/word_audio?uid=..&passage=..&word=<i>
+     for w, empty for r. At most 40 W lines.
+   P,<sound>,<r|w>      one per distinct book sound of the matched words; w if ANY of its occurrences
+     was wrong (several misses in one recording count once). Not listed = absent.
+   The old code-2 extra line "<index>,<word>,<sounds>,<clip>" is replaced. Firmware that reads
+   only line 1 keeps working.
+4. The stored score event: data.words = the matched words only, plus "first_word": the page
+   index of the first one. Check that dashboard/v7's word and sound views still make sense; update
+   docs/dashboard-api.md.
+5. For the nest and src/common: the session.h edits above, forward S/W/P to the doll, fetch up to
+   3 clips, 18 s timeout. M6: the cloud should send a Discord alert on each help event.
+=== END CLOUD CHANGES ===
+
+CLOUD CONTRACT (nest only; source of truth = api/lumpi.py, api/_plumbing.py, vercel.json)
+Base URL = LUMPI_ADAPTER_URL = "https://lumpi.vercel.app". Every request: "Authorization: Bearer
+<LUMPI_LAN_KEY>" (lumpi_net::request adds it). Wrong key -> 401.
+POST /api/telemetry  JSON body <= 8192 bytes (MAX_EVENT_BYTES). 200 {"result":"added"|"duplicate"}
+  (same event_id again = duplicate, safe). 400 = refused for good: drop + log raw JSON.
+  401 = key differs: drop + log. 503 / 408 / 429 / no answer = keep and resend later.
+  Six fields, always: event_id (text, < 96 chars, "<gateway_id>/<boot unix time>-<n>" from
+  dashboard_event::event()), node_id (0 = nest, 1-2 = doll; the cloud also allows 3),
+  event_type (room|start|status|help|
+  noise; "score" is made by the cloud itself, never by the nest), recorded_at (int Unix s, NTP),
+  activity (idle|book_on|recording|waiting_ai|feedback|quiet_study|stopped or null;
+  the nest no longer sends stopped), data (object).
+  room   node 0, every 10 s, activity null, {"lux":x.x|null,"distance_cm":x.x|null}
+  start  on /v1/start, activity "book_on", {"uid","passage","attempt","fsr"}
+  status every 10 s per doll heard in the last 60 s, activity from activity_for(), same data
+         (uid/passage/attempt null before a book)
+  help   {} on a doll's teacher call (its first /v1/help)
+  noise  {"db":x.x} on every "command,5" warning, else at most one per doll per 10 s
+  Build them with src/common/dashboard_event.h. Dashboard (api/lumpi.py nodes()): online < 30 s,
+  stale < 60 s, then offline; help popup 5 min; shows nodes 0-2 only (SHOWN_NODES): dolls 1 and 2.
+POST /v1/assess?node&attempt&passage&uid  body = the raw PCM, Content-Type
+  application/octet-stream. TODAY: 1..256000 bytes, 11 s budget; AFTER the cloud change:
+  320000 bytes, 14 s. 400 = bad query (node 1-3 allowed, we use 1-2; uid [0-9A-F]{8,20},
+  digits). 200 text reply.
+  Line 1 "<code>,<word>": 1 all words >= 60, 2 practise word index <word>, 3 nothing heard,
+  4 try again (ANY failure: unknown book or page, AI down, AI cold, too slow). Further lines:
+  today one per word under 60 (code 2), after the change the S/W/P lines of CLOUD CHANGES.
+  Parse line 1 only for the decision; forward the rest. The cloud stores the score event.
+  Measured: warm 1.6-3.9 s, 8 s recording 3.6 s; AI cold start 34-45 s -> "4,0" after ~9-11 s
+  (warm the AI before class: an ops task). Nest timeout 18 s. One /v1/assess at a time (TLS
+  RAM); the other dolls wait in the queue.
+GET /v1/word_audio?uid&passage&word -> audio/wav (16 kHz mono 16-bit) | 404 no clip.
+GET /v1/page?uid&page (the parameter is "page", not "passage") -> JSON {uid, page, title,
+  language, text, words[]} | 404 no such book/page. Used only for /v1/book.
+Books: up to ~268 pages, <= 500 words a page; firmware passage limit moves from 3 to 999.
+
+4. FEATURES (build in this order; each: acceptance test -> what it earns)
+N1 Tasks and queues (E1). At least: http task (answers dolls; must never wait for the cloud),
+   room task (sensors every 1 s, ACK, OLED, real-time decisions), cloud task (grading queue,
+   then outbox; lowest, it blocks for seconds). Queue: "node to grade" (http -> cloud). One
+   mutex around the dolls' state, never held during network or flash I/O. Reasoned priorities
+   as comments. Test: while the cloud task waits 11 s, /v1/attempt still answers "pending" in
+   under 200 ms. -> E1 (2 pts), architecture.
+N2 Exactly two dolls at once (scalability 3 pts). Each doll's recording is appended chunk by
+   chunk to its own LittleFS file (/rec/<node>.pcm; 2 x 320000 bytes + 2 x 3 clips + 64-event
+   outbox in the 1.2 MB partition, about 0.75 MB: check free space at boot), sent to the
+   cloud by streaming the File (HTTPClient::sendRequest(type, Stream*, size); add that overload
+   to lumpi_net.h). No per-doll RAM buffer. Measure flash write speed (the proposal's risk).
+   Test: two dolls record 10 s at the same moment; both graded, no mix-up (CSV). -> II, Q10.
+N3 Sessions and routes (M3, scalability 1 pt): every route of the shared contract, Session per
+   doll, resent chunks ACKed and not stored twice, 409 with reasons as 5_nest.cpp. Keep each
+   doll's result text (<= 4096 bytes) until its next /v1/start.
+N4 Real-time dark-room control (architecture "immediate control actions", M4 closed loop):
+   the room task updates DarkState every 1 s (rule in the shared contract, laptop-tested); the
+   http task answers "dark" / 409 dark from it; decide_command() gives 6 to a reading graded
+   while dark (no S/W/P lines). OLED shows "DARK". Test: as the doll's D11b, plus light sensor
+   unplugged -> nothing blocked, CSV dark lines show each change.
+N5 Word clips: for code 2, fetch up to 3 wrong words' clips (worst first, addresses from the
+   W lines) into /clip/<node>-<index>.wav BEFORE publishing the result (3 s each; a failure
+   marks that W line "0"); serve them with a binary file reply (tiny_http::reply is text only).
+N6 Teacher call + ACK (E2, UX). /v1/help first ask = call (not while dark): HelpState stuck,
+   help event, OLED.
+   ACK: IRAM_ATTR ISR -> task notification; debounce 30 ms in the room task. One press answers
+   every waiting doll (HelpState::ack). Test: calls from 2 dolls, one press, both get "coming";
+   CSV ack shows the wait. -> E2, UX, M6 trigger.
+N7 Quiet mode (designed feature): NoiseState per doll (quiet_study_logic.h, threshold
+   NoiseState::default_threshold, 30 s cooldown); child_present = presence mode=quiet,
+   session_active from Session. "command,5" reply + noise event. Test: as the doll's D10.
+N8 Room and teacher screen (M1 gateway sensors, UX): lux and distance every 1 s; room event
+   every 10 s; OLED on only while distance < room::teacher_margin_cm (stuck-child alerts stay
+   private), else dark; shows dark warning, dolls online, teacher calls. Test: walk up / away.
+N9 Store-and-forward (E4): every event goes to a LittleFS outbox (one file per event, max 64,
+   oldest dropped with a log line), sent oldest-first, deleted on 200/400/401. Survives Wi-Fi,
+   cloud and power loss; the event_id makes resends duplicates, never twice. No clock yet (no NTP)
+   = no events. Test: hotspot internet off 5 min, back on: all events arrive once, in order.
+N10 TLS (E5): LUMPI_CLOUD_CA set in private.h = the site's root certificate (get it with
+   "openssl s_client -showcerts -connect lumpi.vercel.app:443"; print only "CA set: yes").
+   No secret in Git (.gitignore has config/private*). Test: a wrong CA refuses the connection.
+N11 Self-recovery (robustness 3/3): Wi-Fi watchdog (reconnect; restart if down 5 min and no
+   reading in flight), task watchdog on every task, reset reason in CSV, outbox and nothing else
+   kept over a reboot (dolls get 409 and recover). Test: pull power, router off/on, cloud off.
+N12 Optional: /v1/book proxy (doll D3). N13 Optional E6: ArduinoOTA, password LUMPI_LAN_KEY.
+E8 = the nest's BH1750 driver (src/drivers/real_io.cpp); the doll uses the MFRC522 library.
+Earned by hardware testing, not by code alone: M1-M5, scalability, robustness, functionality,
+field testing (24 h run), metrics, demo. M6 notification (Discord on each help event) is a
+CLOUD task (api/lumpi.py has none yet), not firmware.
+
+5. MEASUREMENT HOOKS (serial lines starting "CSV," so the tester can paste them into a sheet)
+CSV,boot,0,<reset reason>,<free heap>,<outbox pending>
+CSV,beat,0,<uptime s>,<rssi>,<wifi drops>,<free heap>,<min free heap>,<outbox pending>  (60 s)
+CSV,reading,<node>,<attempt>,<bytes>,<chunks stored>,<chunks resent>,<chunks refused>,
+    <queue wait ms>,<cloud ms>,<http code>,<ai code>,<final code>,<clips>,<flash write ms>
+CSV,event,<type>,<node>,<http code>,<tries>,<age s at delivery>
+CSV,ack,<node>,<waited s>   CSV,noise,<node>,<peak>,<db>,<command 5: 0|1>   CSV,dark,0,<0|1>,<lux>
+Delivery = stored / (stored + resent + refused). Store-and-forward delay = event age.
+
+6. CODING STYLE (the owner's rule, verbatim: "every line of code is like, important logic that
+   is needed for LUMPI to function")
+- The owner is new to embedded work and must explain EVERY line to a teacher (Q&A can give 0 for
+  code nobody can explain). Write for that reader. British English in comments and messages.
+- One obvious STORY file (what LUMPI does, in the order it happens, readable top to bottom) and
+  one PLUMBING file (set-up, drivers, formatting, retries) that the story calls by plain names.
+- Only the checks LUMPI needs, written concisely (a missing part, a refused message, a full
+  buffer). No defensive code for things that cannot happen. No speculative options or layers,
+  no dead code, no commented-out code, no "TODO". Readable, not code-golfed.
+- Short plain comments that say WHY, above the line they explain. A glossary at the top of the
+  story file (node, attempt, passage, uid, chunk, command...) like src/bench/5_doll_nest/*.cpp.
+- Reuse what exists: src/common/*.h, src/drivers/* (lumpi_net, tiny_http, monitor, real_io),
+  every pin and threshold from config/settings.h. Never write a pin number in app code.
+- Pure logic (no Arduino) goes in src/common headers so the laptop can test it.
+- Serial output: one readable line per event plus the CSV lines of section 5. Never print
+  config/private.h values (print the key length only, as the bench does). Never open private.h.
+- No library for the RFID reader (E8). Other libraries only if the bench already uses them.
+Nest files (create only these; line counts are my ESTIMATES, not limits):
+- src/app/gateway/nest.cpp     THE STORY: glossary, tasks, one function per route, grading,
+                               decisions, room loop (~420 lines)
+- src/app/gateway/nest_parts.h PLUMBING: LittleFS recordings/outbox/clips, binary reply, OLED,
+                               ACK ISR attach, Wi-Fi watchdog, CSV printing (~220 lines)
+- plus the shared-header edits of section 3 and the Stream overload in lumpi_net.h (~15 lines)
+Env "nest": build_src_filter = ${bench.build_src_filter} +<app/gateway/nest.cpp>;
+lib_deps = adafruit/Adafruit SSD1306@2.5.13 (SH1106: Adafruit SH110X@2.1.15 + -DUSE_SH1106).
+Use the APIs the bench already compiles with (HTTPClient, WiFiClientSecure, LittleFS, Wire).
+
+7. WORKING METHOD
+- Step 0: read the files in section 1, then write a PLAN (tasks, queues, files, line estimates,
+  shared-header edits, open questions from section 8) and WAIT for the owner's approval.
+- Then build in stages, core loop first; after EVERY stage compile and fix all warnings:
+    pio run -e doll      pio run -e doll_2      pio run -e nest
+  (VS Code: PlatformIO > Project Tasks > <env> > Build). These envs do not exist yet: add them
+  to platformio.ini next to the bench ones (doll_2 = doll + build_flags ${env.build_flags}
+  -DLUMPI_NODE_ID=2). Keep every bench env compiling (spot-check s5_nest and s5_doll).
+- Laptop tests for every pure function (no board): the command in docs/testing-steps.md 5a, or
+    g++ -std=c++17 -Wall -Wextra -I src/common src/test/test_round_trip.cpp -o build/t && build/t
+- For each stage, give the human hardware test steps (what to wire, upload, press, and what the
+  monitor must show), in the style of docs/testing-steps.md. Add them to that file as stage 9.
+- Never claim hardware behaviour you have not seen: say "compiles; not run on hardware".
+- A choice that changes what the child, teacher or marker sees is the owner's: ask, briefly,
+  with 2-3 options and your recommendation. Do not commit, push, deploy or call live services.
+- If the other board's prompt (docs/prompts/) disagrees with yours, stop and ask.
+
+8. OPEN DECISIONS FOR THE OWNER (ask in the plan; the spec settles the rest, do not reopen it)
+Settled, do not ask: dark room blocks everything (nest decides), exactly 2 dolls, no software
+safety stop on the dolls, the doll counts mistakes and sends the teacher call.
+1. Teacher presence: the proposal said it is "never uploaded", but room events upload
+   distance_cm and the dashboard charts it. Keep uploading / send null / send only near-far?
+2. room::teacher_margin_cm (40): read as "teacher nearer than 40 cm". Confirm the meaning.
+3. Settled: dark below 10 lx, bright from 15 lx, 3 s delay (config/settings.h).
+4. Vercel's LUMPI_LAN_KEY is 7 characters (work log): replace with a long random key before E5.
+5. AI cold start (34-45 s) answers "4,0": warm the Runpod worker before class (ops, not firmware).
+Report notes (no choice needed): HTTPS replaced MQTT (E5 wording); audio goes to the cloud AI;
+the nest keeps real-time control (dark blocks all, 5 too noisy, ACK -> 8, queueing) although
+code 7 moved to the doll. The proposal document is being updated separately.

@@ -5,9 +5,7 @@
 //   lumpi_net::request("GET", url, answer);               // returns 200, 409 ... (negative = no connection)
 //   lumpi_net::request("POST", url, data, size, "application/json", answer);
 //
-// Every request carries the LAN key twice, so every receiver finds it where it looks:
-//   Authorization: Bearer <key>   the nest and the cloud
-//   X-LUMPI-Token: <key>          the laptop dashboard
+// Every request carries the LAN key as "Authorization: Bearer <key>" (the nest and the cloud check it).
 //
 // https:// addresses are encrypted. With LUMPI_CLOUD_CA set in private.h the site's certificate is
 // also checked. Without it a fake site could pose as the cloud and collect the key: fine on the
@@ -75,7 +73,6 @@ inline bool open(HTTPClient& http, WiFiClient& plain, WiFiClientSecure& secure, 
     http.setTimeout(timeout_ms);
     http.setConnectTimeout(timeout_ms);
     http.addHeader("Authorization", String("Bearer ") + LUMPI_LAN_KEY);
-    http.addHeader("X-LUMPI-Token", LUMPI_LAN_KEY);
     if (content_type != nullptr) {
         http.addHeader("Content-Type", content_type);
     }
@@ -84,8 +81,9 @@ inline bool open(HTTPClient& http, WiFiClient& plain, WiFiClientSecure& secure, 
 
 // Sends one request and waits for the answer. Returns the HTTP code (200, 409 ...) or a negative
 // number when there was no connection; answer gets the reply text (or what went wrong).
+// The body is either bytes in RAM or, when stream is given, read from it as it is sent.
 inline int request(const char* method, const String& url, const uint8_t* body, size_t length,
-                   const char* content_type, String& answer, uint32_t timeout_ms = 5000) {
+                   const char* content_type, String& answer, uint32_t timeout_ms = 5000, Stream* stream = nullptr) {
     static WiFiClient plain;
     static WiFiClientSecure secure;
     HTTPClient http;
@@ -93,7 +91,8 @@ inline int request(const char* method, const String& url, const uint8_t* body, s
         answer = "bad url";
         return -1;
     }
-    const int code = http.sendRequest(method, const_cast<uint8_t*>(body), length);
+    const int code = stream != nullptr ? http.sendRequest(method, stream, length)
+                                       : http.sendRequest(method, const_cast<uint8_t*>(body), length);
     answer = code > 0 ? http.getString() : HTTPClient::errorToString(code);
     http.end();
     return code;
@@ -102,17 +101,7 @@ inline int request(const char* method, const String& url, const uint8_t* body, s
 // The same, but the body is read from a Stream (a recording file in flash), so it never sits in RAM.
 inline int request(const char* method, const String& url, Stream& body, size_t length,
                    const char* content_type, String& answer, uint32_t timeout_ms) {
-    static WiFiClient plain;
-    static WiFiClientSecure secure;
-    HTTPClient http;
-    if (!open(http, plain, secure, url, content_type, timeout_ms)) {
-        answer = "bad url";
-        return -1;
-    }
-    const int code = http.sendRequest(method, &body, length);
-    answer = code > 0 ? http.getString() : HTTPClient::errorToString(code);
-    http.end();
-    return code;
+    return request(method, url, nullptr, length, content_type, answer, timeout_ms, &body);
 }
 
 // The same, with no body.

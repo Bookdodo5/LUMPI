@@ -69,8 +69,7 @@ Wire only the part being tested. Files are in `src/bench/1_doll_parts/`, named `
 | 1.8 | `s1h_speaker` | MAX98357A (BCLK 16, LRC 17, DIN 5) | First **Upload Filesystem Image**, then Upload | `data/audio/song.wav` plays on repeat |
 | 1.9 | `s1i_mic_to_speaker` | mic + speaker together (as 1.4 and 1.8) | Upload, press RECORD (or type `r`), speak 3 s | you hear your own voice back, clear |
 
-If an I2C part is missing, run `x_i2c_probe` (`src/bench/extras/i2c_wire_probe.cpp`):
-unplug and re-plug one wire at a time and watch whether SDA/SCL show short, floating or connected.
+If an I2C part is missing, check that module's SDA, SCL, power and ground wires one at a time, then scan again.
 
 ---
 
@@ -98,10 +97,6 @@ Proves the parts do not fight each other (shared power, I2C, SPI, I2S).
 3. Open the interactive monitor (command above).
 4. Follow the prompts, about 2 minutes: press each button, turn the knob, put the book down, show a tag, clap, answer y/n for screen, speaker and servos. `s` + Enter skips a step.
 5. Pass when the summary at the end shows every part OK.
-
-Feature test on the same wiring: env `x_quiet_study` (`src/bench/extras/quiet_study.cpp`, noise -> servo "shush").
-Presence = book on the mat (pressure above `doll_tuning::book_on_fsr` in `settings.h`; the PIR was removed).
-Put the book on: after 3 s it listens. Talk loudly for 1 s: the arm waves "shush". Then 30 s rest. Book off for 10 s: idle.
 
 ---
 
@@ -250,7 +245,7 @@ The free mock AI and the books-from-a-file switch were retired on 2026-11-26 (ke
 
 ## Stage 9. Real doll firmware (`src/app/station/doll.cpp`)
 
-Wiring: full doll wiring from `config/settings.h` (`doll_pins`). Every part is optional at start-up (missing mic sends silence; missing RFID uses `04A1B2C3`; speaker playback awaits the replacement MAX98357A amps).
+Wiring: full doll wiring from `config/settings.h` (`doll_pins`). Every part is optional at start-up (missing mic sends silence; missing RFID uses `04A1B2C3`; the speaker needs a working MAX98357A amp).
 Upload env: `doll` (doll 1), `doll_2` (doll 2), or `doll_sh1106` (SH1106 screen). Monitor: `115200`.
 
 ### 9a. Laptop logic tests (no boards)
@@ -281,11 +276,10 @@ Pass: every binary prints `PASS` / `0 failure(s)`.
 | 9.9 | Dark room (D11b) | Cover nest BH1750 (< 10 lx for 3 s), also mid-recording; uncover (>= 15 lx for 3 s); unplug BH1750 | Within ~4 s OLED shows `Too dark: please turn on the light`, `CSV,dark,1,1`, inputs blocked, mid-recording cancelled; uncover restores within ~6 s; unplugged sensor never blocks |
 | 9.10 | Recovery + 2 dolls (D12, D13) | Pull nest power mid-reading; kill Wi-Fi 2 min; power-cycle doll; read on `doll` and `doll_2` together | Recovers without hands; both dolls get independent grades and appear separately on dashboard |
 
-Phrase WAV files (16 kHz, 16-bit mono, Piper `en_GB-jenny_dioco-medium`) go in `data/phrases/`:
-`well_done.wav`, `try_word.wav`, `move_closer.wav`, `try_again.wav`, `shh.wav`, `too_dark.wav`, `told_teacher.wav`, `teacher_coming.wav`.
-Keep large book files out of `data/` before running **Upload Filesystem Image** so the image fits the 1.2 MB LittleFS partition.
-
-
+Spoken phrases: `data_doll/phrases/*.wav` (already made; remake with `tools/make_phrases.py`).
+Put them on each doll once: select env `doll` (or `doll_2`), then **Platform > Upload Filesystem Image**.
+The doll envs pack `data_doll/`, not `data/`, so the books never fill the doll's flash.
+Pass: the boot line shows `fs=1`, and every command in 9.6 speaks.
 
 ---
 
@@ -354,4 +348,3 @@ head -c 8192 /dev/zero > /tmp/chunk.bin
 | 10.25 | router off 6 min | nest restarts itself after 5 min; dolls recover |
 | 10.26 | wrong `LUMPI_CLOUD_CA` | grades come back 4; monitor shows the cloud error. Put the right CA back |
 
-Known limits: the cloud must take 320000 bytes (today 256000: readings over 8 s get 4) and send S/W/P lines (today: code 2 shows no word on the doll).

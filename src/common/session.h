@@ -134,7 +134,7 @@ class Session {
         state = State::idle;
     }
 
-    // Called every 10 ms for every doll. A RESULT never times out.
+    // The nest calls this every second for every doll. A RESULT never times out.
     void check_timeouts(uint32_t now_ms) {
         // Subtracting unsigned numbers stays correct when millis() wraps after 49 days.
         const uint32_t elapsed = now_ms - timer_started_ms_;

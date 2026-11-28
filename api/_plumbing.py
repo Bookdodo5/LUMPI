@@ -25,8 +25,8 @@ WORD = re.compile(r"[a-z]+(?:'[a-z]+)*")  # a clip's word: no "/" or "..", so no
 EVENT_TYPES = ["room", "start", "status", "score", "help", "noise"]
 FIELDS = ["event_id", "node_id", "event_type", "recorded_at", "activity", "data"]
 MAX_EVENT_BYTES = 8192
-MAX_RECORDING_BYTES = 256000  # 8 s of 16 kHz 16-bit mono
-NEST_WAITS_S = 11             # /v1/assess must answer within the nest's 12 s
+MAX_RECORDING_BYTES = 320000  # 10 s of 16 kHz 16-bit mono
+NEST_WAITS_S = 14             # /v1/assess answers within 14 s; the nest waits 18 s (upload time included)
 deadline = {"at": None}       # set while a /v1/assess request runs
 
 
@@ -218,12 +218,14 @@ class Handler(BaseHTTPRequestHandler):
         q = {name: values[0] for name, values in parse_qs(url.query).items()}
         name = q.get("route", url.path.split("/")[-1])
         try:
-            if name in ["page", "word_audio"] and (self.lan_key_ok() or self.password_ok()):
+            if name in ["page", "word_audio", "book"] and (self.lan_key_ok() or self.password_ok()):
+                if name == "book":
+                    return self.reply(200, self.routes["book"](q.get("uid", "")), "text/plain; charset=utf-8")
                 if name == "page":
                     return self.reply(200, self.routes["page"](q.get("uid", ""), q.get("page", "")))
                 clip = self.routes["word_audio"](q.get("uid", ""), q.get("passage", ""), int(q.get("word", "")))
                 return self.reply(200, clip, "audio/wav") if clip else self.reply(404, "no clip", "text/plain")
-            if name in ["page", "word_audio"]:
+            if name in ["page", "word_audio", "book"]:
                 return self.reply(401, {"error": "LAN key or dashboard password needed"})
             if not self.password_ok():  # this header makes the browser ask for the password
                 return self.reply(401, {"error": "password needed"},

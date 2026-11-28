@@ -1,20 +1,16 @@
 #pragma once
-// THE MESSAGE CONTRACT: the names and numbers every board and the laptop must agree on.
+// THE MESSAGE CONTRACT: the names and numbers every board and the cloud must agree on.
 // Build guide: https://lumpi-build-guide.vercel.app/reference/messages
 //
-// Plain C++ (no Arduino), so the doll, the gateway and the laptop test all include
+// Plain C++ (no Arduino), so the doll, the gateway and the computer tests all include
 // this one file instead of typing the numbers again.
-// Change a number here and in laptop/adapter/reading_ai.py in the SAME commit.
+// A route or command number the cloud also uses must change in api/ in the SAME commit.
 //
 // Every local message is HTTP with the header  Authorization: Bearer <LUMPI_LAN_KEY>
 // and carries node (1..max_dolls). Reading messages also carry attempt.
 #include <cstdint>
 
 namespace lumpi {
-
-// The version is the "/v1" at the start of every route.
-// A change that old firmware cannot understand gets a new prefix ("/v2/...").
-constexpr uint32_t protocol_version = 1;
 
 // Doll -> gateway (the 11 routes on the nest).
 namespace route {
@@ -27,16 +23,15 @@ constexpr const char* cancel = "/v1/cancel";       // POST ?node&attempt -> "can
 constexpr const char* presence = "/v1/presence";   // POST ?node&present=0|1&fsr&mode=read|quiet -> "ok" | "dark"
 constexpr const char* help = "/v1/help";           // GET  ?node -> "waiting" | "coming" | "dark"
 constexpr const char* noise = "/v1/noise";         // POST ?node&db&peak -> "ok" | "command,5" | "dark"
-constexpr const char* book = "/v1/book";           // GET  ?node&uid&passage -> "ok,<title>" | "unknown" | "offline"
+constexpr const char* book = "/v1/book";           // GET  ?node&uid&passage -> "ok,<title>" | "pending" (ask again) | "offline"
 constexpr const char* status = "/v1/status";       // GET  -> JSON (room + every doll)
 } // namespace route
 
 // Gateway -> cloud.
-namespace laptop_route {
+namespace cloud_route {
 constexpr const char* assess = "/v1/assess";         // POST ?node&attempt&passage&uid, body = recording -> "<code>,<word>" (+ S/W/P)
-constexpr const char* word_audio = "/v1/word_audio"; // GET  ?uid&passage&word -> WAV | 404
-constexpr const char* page = "/v1/page";             // GET  ?uid&passage -> JSON page + book title | 404
-} // namespace laptop_route
+constexpr const char* title = "/v1/book";            // GET  ?uid -> the book title (<= 20 characters, no commas) | 404
+} // namespace cloud_route
 
 // Commands the doll acts out.
 // 1-4: cloud AI grade. 5: nest's answer to /v1/noise. 6: nest's dark-room block (or doll's dark screen).
@@ -54,6 +49,5 @@ enum Command : uint32_t {
 
 // Audio format of every recording: 16 kHz, 16-bit, mono.
 constexpr uint32_t sample_rate_hz = 16000;
-constexpr uint32_t bytes_per_sample = 2;
 
 } // namespace lumpi

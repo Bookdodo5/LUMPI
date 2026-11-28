@@ -122,23 +122,66 @@ class CloudTest(unittest.TestCase):
         self.assertEqual(lumpi.session_start(2, 40), 40)  # no status seen: the score starts its own session
 
     def test_grade(self):
-        self.assertEqual(lumpi.grade(BOOK["passages"]["1"]["words"], "en-gb", RIGHT)[:3], (1, 0, 100))
-        code, word, total, words = lumpi.grade(BOOK["passages"]["1"]["words"], "en-gb", ["ð", "ə", "p", "ɪ", "s", "s", "w", "ɪ", "m", "z"])
+        self.assertEqual(lumpi.grade(BOOK["passages"]["1"]["words"], RIGHT)[:3], (1, 0, 100))
+        code, word, total, first, words = lumpi.grade(BOOK["passages"]["1"]["words"], ["ð", "ə", "p", "ɪ", "s", "s", "w", "ɪ", "m", "z"])
         self.assertEqual((code, word), (2, 1))  # "fish" read as "pis": practise word 1
         self.assertEqual(words[1]["phonemes"][0], {"ipa": "f", "score": 0, "heard": "p"})
-        self.assertEqual(lumpi.grade(BOOK["passages"]["1"]["words"], "en-gb", [])[0], 3)  # nothing heard
-        self.assertEqual(lumpi.norm(["ˈkɑːɹ", "ɚ", "|"], "en-gb"), ["kɑɹ", "ə"])  # stress, length and "|" dropped
+        self.assertEqual(lumpi.grade(BOOK["passages"]["1"]["words"], [])[0], 3)  # nothing heard
+        self.assertEqual(lumpi.norm(["ˈkɑːɹ", "ɚ", "|"]), ["kɑɹ", "ə"])  # stress, length and "|" dropped
         self.assertEqual(lumpi.score_words([("a", ["a"])], ["a", "b"])[0]["extra"], ["b"])  # extra sound kept
+
+    def test_any_stretch_of_the_page(self):
+        """The child may read any part of the page; only the words read are graded (page word numbers)."""
+        page = [{"word": w, "ipa": i} for w, i in [
+            ("the", "ð ə"), ("cat", "k a t"), ("sat", "s a t"), ("on", "ɒ n"), ("the", "ð ə"), ("mat", "m a t"),
+            ("three", "θ ɹ i"), ("green", "ɡ ɹ i n"), ("trees", "t ɹ i z"), ("grow", "ɡ ɹ əʊ"), ("tall", "t ɔ l")]]
+
+        def read(sounds):
+            code, worst, total, first, words = lumpi.grade(page, sounds.split())
+            return code, worst, first, [word["word"] for word in words]
+
+        self.assertEqual(read("θ ɹ i ɡ ɹ i n t ɹ i z"), (1, 0, 6, ["three", "green", "trees"]))  # middle of the page
+        self.assertEqual(read("m a t θ ɹ i ɡ ɹ i n"), (1, 0, 5, ["mat", "three", "green"]))  # across two sentences
+        self.assertEqual(read("θ ɹ i ɡ ɹ i n tʃ ɹ i s"), (2, 8, 6, ["three", "green", "trees"]))  # page word 8 wrong
+        self.assertEqual(read("f ɹ i ɡ ɹ i n t ɹ i z")[2], 6)  # a wrong first sound still finds the start
+        whole = "ð ə k a t s a t ɒ n ð ə m a t θ ɹ i ɡ ɹ i n t ɹ i z ɡ ɹ əʊ t ɔ l"
+        self.assertEqual(read(whole)[3], [item["word"] for item in page])
+        # Known limit: a repeated word or phrase matches one of its places.
+        self.assertEqual(read("θ ɹ i t ɹ i z")[:3], (2, 7, 6))  # "green" skipped: it is the word to practise
+        self.assertIn(read("ð ə")[2], [0, 4])  # "the" is on the page twice
+        # A word cut off by the 10 s limit, or a first sound the AI missed, is not a word to practise.
+        self.assertEqual(read("ð ə k a t s")[:2], (1, 0))
+        self.assertEqual(read("ə k a t s a t")[:2], (1, 0))
+        self.assertEqual(lumpi.grade([], ["a"])[0], 3)  # an empty page
+
+    def test_reply_lines(self):
+        _, _, total, first, words = lumpi.grade(BOOK["passages"]["1"]["words"], ["ð", "ə", "p", "ɪ", "s", "s", "w", "ɪ", "m", "z"])
+        lines = lumpi.reply_lines(first, total, words, "/v1/word_audio?uid=FFFFFFFF&passage=1")
+        self.assertEqual(lines[:4], ["S,0,3,78", "W,0,r,the,ð ə,ð ə,",
+                                     "W,1,w,fish,f ɪ ʃ,p ɪ s,/v1/word_audio?uid=FFFFFFFF&passage=1&word=1",
+                                     "W,2,r,swims,s w ɪ m z,s w ɪ m z,"])
+        self.assertIn("P,f,w", lines)
+        self.assertIn("P,ɪ,r", lines)  # right in both words
+        self.assertEqual(len([line for line in lines if line.startswith("P,")]), 9)  # each sound once
+        missed = lumpi.score_words([("cat", ["k", "a", "t"])], ["k", "a", "t", "s"])
+        self.assertIn(",k a t,k a t +s,", lumpi.reply_lines(0, 75, missed, "/x")[1])  # extra sound as "+s"
+        self.assertIn(",k a t,k - t,", lumpi.reply_lines(0, 67, lumpi.score_words([("cat", ["k", "a", "t"])], ["k", "t"]), "/x")[1])
 
     def test_assess_answers_and_stores_score(self):
         global HEARD
         path = "/v1/assess?node=1&attempt=2&passage=1&uid=FFFFFFFF"
         HEARD = ["ð", "ə", "p", "ɪ", "s", "s", "w", "ɪ", "m", "z"]
-        self.assertEqual(call("POST", path, b"\0\0" * 100, LAN_KEY),
-                         (200, "2,1\n1,fish,f ɪ ʃ,/v1/word_audio?uid=FFFFFFFF&passage=1&word=1"))
+        code, reply = call("POST", path, b"\0\0" * 100, LAN_KEY)
+        self.assertEqual((code, reply.split("\n")[:3]), (200, ["2,1", "S,0,3,78", "W,0,r,the,ð ə,ð ə,"]))
         HEARD = RIGHT
-        self.assertEqual(call("POST", path, b"\0\0" * 100, LAN_KEY), (200, "1,0"))
+        self.assertTrue(call("POST", path, b"\0\0" * 100, LAN_KEY)[1].startswith("1,0\nS,0,3,100\n"))
         self.assertEqual([row["data"]["score"] for row in ROWS], [78, 100])  # the, fish (1 of 3 sounds), swims
+        self.assertEqual(ROWS[0]["data"]["first_word"], 0)
+        HEARD = []
+        self.assertEqual(call("POST", path, b"\0\0" * 100, LAN_KEY), (200, "3,0"))  # nothing heard: no more lines
+        HEARD = RIGHT
+        self.assertEqual(call("POST", path, b"\0\0" * 160000, LAN_KEY)[0], 200)  # 10 s is allowed
+        self.assertEqual(call("POST", path, b"\0\0" * 160001, LAN_KEY)[0], 400)  # longer is not
         self.assertEqual(call("POST", path.replace("FFFFFFFF", "AAAAAAAA"), b"\0\0", LAN_KEY), (200, "4,0"))  # no book
         self.assertEqual(call("POST", path.replace("uid=FFFFFFFF", "uid=../x"), b"\0\0", LAN_KEY)[0], 400)
         self.assertEqual(call("POST", path, b"", LAN_KEY)[0], 400)  # no recording
@@ -147,6 +190,9 @@ class CloudTest(unittest.TestCase):
         self.assertEqual(call("GET", "/v1/page?uid=FFFFFFFF&page=1", None, LAN_KEY)[0], 200)
         self.assertEqual(call("GET", "/v1/page?uid=FFFFFFFF&page=2", None, PASSWORD)[0], 404)
         self.assertEqual(call("GET", "/v1/page?uid=FFFFFFFF&page=1")[0], 401)
+        self.assertEqual(call("GET", "/v1/book?uid=FFFFFFFF", None, LAN_KEY), (200, "Fish"))
+        self.assertEqual(call("GET", "/v1/book?uid=AAAAAAAA", None, LAN_KEY)[0], 404)  # unknown book
+        self.assertEqual(call("GET", "/v1/book?uid=FFFFFFFF")[0], 401)
         self.assertEqual(call("GET", "/v1/word_audio?uid=FFFFFFFF&passage=1&word=1", None, LAN_KEY), (200, "RIFF"))
         self.assertEqual(call("GET", "/v1/word_audio?uid=FFFFFFFF&passage=1&word=0", None, LAN_KEY)[0], 404)  # no clip
 

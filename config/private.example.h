@@ -7,18 +7,17 @@
 #define LUMPI_WIFI_SSID "YOUR_WIFI_NAME"
 #define LUMPI_WIFI_PASSWORD "YOUR_WIFI_PASSWORD"
 
-// Addresses on that Wi-Fi. Give the gateway and the laptop fixed addresses
-// in your router ("DHCP reservation"); s5_nest prints its own address at start.
+// Addresses. Give the gateway a fixed address in your router ("DHCP reservation");
+// s5_nest prints its own address at start.
 #define LUMPI_GATEWAY_URL "http://192.168.1.50"
 // Where the nest sends dashboard events and recordings. One of:
-//   "http://192.168.1.60:8080"         laptop dashboard (laptop/dashboard_server.py), no AI
-//   "http://192.168.1.60:8081"         cloud API run on the laptop (python3 api/index.py)
 //   "https://<your-site>.vercel.app"   the real cloud
-#define LUMPI_ADAPTER_URL "http://192.168.1.60:8080"
+//   "http://<computer>:8081"           the cloud code run locally (python3 api/lumpi.py)
+#define LUMPI_ADAPTER_URL "https://<your-site>.vercel.app"
 // Optional, https only: the site's root certificate (PEM), so the nest checks it talks to the real site.
 // #define LUMPI_CLOUD_CA "-----BEGIN CERTIFICATE-----\n...\n-----END CERTIFICATE-----\n"
 
-// One shared password for every local request (station <-> gateway <-> laptop).
+// One shared password for every local request (doll <-> nest <-> cloud).
 // Make a random one:  python -c "import secrets; print(secrets.token_hex(16))"
-// The laptop needs the same value:  $env:LUMPI_LAN_KEY = '...'
+// Vercel needs the same value (environment variable LUMPI_LAN_KEY).
 #define LUMPI_LAN_KEY "PASTE_A_RANDOM_32_CHARACTER_KEY"

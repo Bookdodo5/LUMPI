@@ -9,7 +9,7 @@
 // Version 0x00/0xFF means check SPI wiring and power.
 // Status repeats every 2 seconds as a table row: time | version | antenna | tags | verdict.
 // A tag adds a row with its UID. IRQ is unused; disconnect other SPI-pin devices.
-// This library test checks the part. It does not count as your own E8 driver.
+// This library test checks the part.
 // Guide: https://lumpi-build-guide.vercel.app/station/rfid
 #include <Arduino.h>
 #include <SPI.h>

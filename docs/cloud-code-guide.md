@@ -19,9 +19,15 @@ one speech model on **Runpod**. Standard library only, no frameworks.
 1. **The nest sends an event** (`POST /api/telemetry`: room, start, status, help, noise).
    `telemetry()` stores it once: a resent `event_id` is a `duplicate`.
 2. **The nest sends a recording** (`POST /v1/assess`). `assess()`: load the book -> the AI writes
-   the sounds it heard -> `grade()` compares them with the book's sounds -> store a `score` event ->
-   reply `code,word` (1 good, 2 practise that word, 3 nothing heard, 4 try again) plus, for code 2,
-   one line per wrong word with its sounds and clip address.
+   the sounds it heard -> `grade()` finds which part of the page was read and compares it with the
+   book's sounds -> store a `score` event -> reply `code,word` (1 good, 2 practise that word, 3 nothing
+   heard, 4 try again), then for codes 1 and 2 the `S`, `W` and `P` lines of `reply_lines()`:
+   ```text
+   S,14,3,72                                    first page word read, words read, score
+   W,14,w,fish,f ɪ ʃ,p ɪ s,/v1/word_audio?...   page word, r/w, word, book sounds, heard ("-" missed), clip
+   P,ɪ,r                                        each book sound read: r right, w wrong somewhere
+   ```
+   - `words_read()` finds the stretch of the page that was read (the child may start anywhere).
    - `norm()` makes both sides spell a sound the same way (British base, accents, stress marks).
    - `align()` lines the two sound lists up with the fewest changes (Levenshtein distance).
    - `score_words()`: a word's score = sounds right / its sounds (extra sounds count against it).
@@ -38,12 +44,13 @@ one speech model on **Runpod**. Standard library only, no frameworks.
   `watchScores()` (Today / Past buttons), score maths (`sessionsOf`, `wordsOf`, `soundsOf`), lists and charts.
 - `style.css`: every style; the HTML only holds structure and ids that the JavaScript fills.
 - The pages only read `/api/dashboard/*`; the server works out online/stale/offline and `needs_help`.
+- Full guided tour of the dashboard code, for beginners: [dashboard-guide.md](dashboard-guide.md).
 
 ## What the plumbing guarantees (so the logic need not)
 
 - Only the nest (LAN key) can send; only the teacher (dashboard password) can read the dashboard.
 - Bodies have a size limit; a UID or word must match a strict pattern before it becomes a file name.
-- `/v1/assess` always answers within the nest's 12 s; any failure answers `4,0` ("try again").
+- `/v1/assess` always answers within 14 s (the nest waits 18 s); recordings up to 10 s; any failure answers `4,0` ("try again").
 - Database down on `/api/telemetry` = `503`, so the nest keeps the event and resends it.
 - An event without the six fields of the right types is refused (`400`) so it cannot break the dashboard.
 

@@ -102,19 +102,24 @@ function drawDoll(scores) {
   });
 }
 
-// The whole class: per book and passage, word order from the latest try; each word is averaged
-// over every try that read the same word in the same place.
+// The whole class: per book and passage, every page word anyone read, in page order. A try may read
+// only part of the page: first_word is the page word it began at. Each word is averaged over its reads.
 function drawClass(scores) {
   const dolls = new Set(scores.map((line) => line.node_id)).size;
   const sessions = new Set(scores.map((line) => `${line.node_id}/${line.session}`)).size;
   const rows = groupBy(scores, (line) => `${line.uid}/${line.passage}`).map((group) => {
-    const latest = group.items[group.items.length - 1];
-    const cells = latest.words.map((word, index) => {
-      const same = group.items.map((line) => line.words[index])
-        .filter((item) => item !== undefined && item.word.toLowerCase() === word.word.toLowerCase());
-      const score = mean(same, (item) => item.score);
-      return wordCell(word.word, score, soundsInOrder(same), `${same.length} reads`);
+    const reads = new Map();  // page word number -> every read of that word
+    for (const line of group.items) {
+      line.words.forEach((word, index) => {
+        const place = (line.first_word || 0) + index;
+        reads.set(place, [...(reads.get(place) || []), word]);
+      });
+    }
+    const cells = [...reads.keys()].sort((a, b) => a - b).map((place) => {
+      const same = reads.get(place);
+      return wordCell(same[0].word, mean(same, (item) => item.score), soundsInOrder(same), `${same.length} reads`);
     });
+    const latest = group.items[group.items.length - 1];
     const readers = new Set(group.items.map((line) => line.node_id)).size;
     const label = `Book ${latest.uid} · p.${latest.passage}\n${group.items.length} tries · ${readers} dolls`;
     return passageRow(label, cells);

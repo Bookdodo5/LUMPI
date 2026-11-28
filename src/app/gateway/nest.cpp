@@ -95,6 +95,10 @@ SemaphoreHandle_t dolls_lock;
 SemaphoreHandle_t outbox_lock;
 QueueHandle_t grade_queue;      // http -> cloud: a finished recording to grade
 int uploading_node = 0;         // the doll whose recording file the cloud task is reading (under dolls_lock)
+struct BookTitle { String uid, title; };  // title "" = the cloud does not know this book
+BookTitle titles[4];            // the last books asked for (under dolls_lock)
+int next_title = 0;             // the slot the next new book replaces
+String title_wanted = "";      // a book uid the cloud task should look up (under dolls_lock)
 
 volatile bool room_is_dark = false;
 volatile float room_lux = NAN;
@@ -373,6 +377,31 @@ Reply on_noise(int node) {
     return ok(answer);
 }
 
+// The book's title for the doll's screen. The cloud task asks the cloud (this task never waits for it):
+// meanwhile the answer is "pending", and the doll asks again 2 s later.
+Reply on_book(int node) {
+    const String uid = text("uid");
+    if (!dashboard_event::is_hex_uid(uid.c_str())) {
+        return refuse("uid must be uppercase hex, 8-20 characters, like 04A1B2C3");
+    }
+    lock_dolls();
+    int found = -1;
+    for (int i = 0; i < 4; ++i) {
+        if (titles[i].uid == uid) {
+            found = i;
+        }
+    }
+    const String title = found >= 0 ? titles[found].title : String();
+    if (found < 0) {
+        title_wanted = uid;
+    }
+    unlock_dolls();
+    if (found >= 0) {
+        return ok("ok," + title);
+    }
+    return ok(lumpi_net::connected() ? "pending" : "offline");
+}
+
 // For people: every doll's step as a number, 0 idle, 1 recording, 2 assessing, 3 result.
 Reply on_status() {
     String json = "{\"dark\":" + String(room_is_dark ? "true" : "false") + ",\"dolls\":[";
@@ -410,6 +439,7 @@ Reply answer() {
     if (path == route::presence)  return on_presence(node);
     if (path == route::help)      return on_help(node);
     if (path == route::noise)     return on_noise(node);
+    if (path == route::book)      return on_book(node);
     return {404, "unknown route"};
 }
 
@@ -482,7 +512,7 @@ int send_recording(const GradeJob& job, const Reading& reading, String& cloud_re
         cloud_reply = "recording file missing or the wrong size";
         return -1;
     }
-    const String url = String(LUMPI_ADAPTER_URL) + laptop_route::assess + "?node=" + job.node + "&attempt=" +
+    const String url = String(LUMPI_ADAPTER_URL) + cloud_route::assess + "?node=" + job.node + "&attempt=" +
                        job.attempt + "&passage=" + reading.passage + "&uid=" + reading.uid;
     const int code = lumpi_net::request("POST", url, file, reading.bytes, "application/octet-stream", cloud_reply,
                                         cloud_wait_ms);
@@ -622,7 +652,10 @@ void send_oldest_events() {
             failed_ms = millis();
             return;
         }
-        if (uxQueueMessagesWaiting(grade_queue) > 0) {
+        lock_dolls();
+        const bool title_waits = !title_wanted.isEmpty();
+        unlock_dolls();
+        if (uxQueueMessagesWaiting(grade_queue) > 0 || title_waits) {  // a reading or a title goes first
             return;
         }
         start = end + 1;
@@ -637,6 +670,30 @@ void send_oldest_events() {
     tries = 0;
 }
 
+// A book title a doll asked for. Not found or no answer: nothing is kept, so the doll's next ask tries again
+// (a book added later is then found).
+void fetch_title() {
+    lock_dolls();
+    const String uid = title_wanted;
+    title_wanted = "";
+    unlock_dolls();
+    if (uid.isEmpty()) {
+        return;
+    }
+    String answer;
+    const int code = lumpi_net::request("GET", String(LUMPI_ADAPTER_URL) + cloud_route::title + "?uid=" + uid, answer,
+                                        event_wait_ms);
+    if (code != 200) {
+        Serial.printf("  nest    book       %s not found (%d)\n", uid.c_str(), code);
+        return;
+    }
+    lock_dolls();
+    titles[next_title] = {uid, answer.substring(0, 20)};
+    next_title = (next_title + 1) % 4;
+    unlock_dolls();
+    Serial.printf("  nest    book       %s = %s\n", uid.c_str(), answer.c_str());
+}
+
 void cloud_task(void*) {
     esp_task_wdt_add(nullptr);
     while (true) {
@@ -645,6 +702,7 @@ void cloud_task(void*) {
         if (xQueueReceive(grade_queue, &job, pdMS_TO_TICKS(200)) == pdTRUE) {
             grade(job);
         } else {
+            fetch_title();
             send_oldest_events();
         }
     }

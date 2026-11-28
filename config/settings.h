@@ -17,7 +17,7 @@
 #endif
 
 #ifndef LUMPI_ADAPTER_URL
-#define LUMPI_ADAPTER_URL "http://10.61.117.202:8080"
+#define LUMPI_ADAPTER_URL ""
 #endif
 
 #ifndef LUMPI_LAN_KEY

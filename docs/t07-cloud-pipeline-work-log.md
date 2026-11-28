@@ -223,6 +223,22 @@ Old files kept in `.old/2026-11-26-tanakit/` (same relative paths).
 - Not deployed by this step.
 - 2026-11-26 after review: gzip database replies; a refused event answers 400 (not 503); silent-node query skips score rows; `.old/` git-ignored. 9 tests OK.
 
+## Firmware + Discord review (2026-11-28)
+
+Full result: `docs/firmware-review.md`. Doll firmware does not link (`doll_parts.h` 3 `inline IRAM_ATTR`);
+cloud does not yet send what the firmware expects (10 s, partial page, S/W/P lines), so no word
+corrections or teacher call end to end. Nest builds; events and Discord path fit the cloud (laptop test).
+Nothing run on hardware.
+
+Decided 2026-11-28: E8 = nest BH1750 driver (doll keeps the MFRC522 library); dark limit 10/15 lx
+(prompts updated); retired laptop comments removed.
+Cleanup: dead code, 3 extra sketches and old files moved to `.old/2026-11-28-cleanup/`; `grade()` no longer
+takes a language.
+
+Same day, later: cloud grades any part of the page and replies with S/W/P lines (`reply_lines()`),
+limits 10 s / 14 s, new `/v1/book` title route; doll link error, stacks, Wi-Fi hang and feedback race fixed;
+phrases in `data_doll/`; nest points at the cloud with its root CA. All tests and builds pass. Hardware next.
+
 ## Live on Vercel, full path tested (2026-11-27)
 
 - https://lumpi.vercel.app, production, commit 3d879dc (same content as `main`).
@@ -256,3 +272,4 @@ Old files kept in `.old/2026-11-26-tanakit/` (same relative paths).
   `~/.cache/lumpi-dash/`, not in the repo). `python3 -m unittest tests.test_cloud tests.test_add_book`: OK.
 - 2026-11-27 after dashboard review: missing lux/distance shows no reading (was NaN); help popup only for dolls 1 and 2 again. When deploying, reload open dashboard tabs (help field changed).
 - 2026-11-27 dashboard: light card shows no made-up reading before data; help popup keeps focus and now also on the session page; doll page never draws past scores as today (not browser-tested).
+- 2026-11-27 dashboard: Doll 2 drawn blue (was the alert red); light scatter to 2000 lx; gauge screen-reader text follows the reading; help OK saved in the browser; removed the fixed 'Cloud: no status yet'. Browser checks pass. Guide: docs/dashboard-guide.md.

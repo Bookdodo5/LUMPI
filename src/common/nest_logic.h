@@ -23,15 +23,7 @@ namespace nest_logic {
 constexpr size_t max_doll_reply = 4096; // the doll reads at most this much
 constexpr int max_clips = 3;            // word clips the nest fetches per reading (flash and time)
 
-inline std::string_view next_line(std::string_view& rest) {
-    const size_t end = rest.find('\n');
-    std::string_view line = rest.substr(0, end);
-    rest = end == std::string_view::npos ? std::string_view() : rest.substr(end + 1);
-    if (!line.empty() && line.back() == '\r') {
-        line.remove_suffix(1);
-    }
-    return line;
-}
+using query::next_line;
 
 struct Grade {
     bool ok = false;

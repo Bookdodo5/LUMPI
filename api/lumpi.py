@@ -2,7 +2,7 @@
 
     1. POST /api/telemetry   the nest sends an event (room, start, status, help, noise) -> store it
     2. POST /v1/assess       the nest sends a recording -> AI hears sounds -> compare with the book -> reply
-    3. GET  /v1/page, /v1/word_audio   a page's words, one word's practice clip
+    3. GET  /v1/page, /v1/word_audio, /v1/book   a page's words, one word's practice clip, a book's title
     4. GET  /api/dashboard/{nodes,history,scores}   what the teacher's dashboard shows
 
 The web server, passwords, Supabase calls and input checks are in _plumbing.py
@@ -58,42 +58,64 @@ def session_start(node, score_time):
 # ---- 2. The nest sends a recording: grade it ----------------------------------------------
 
 def assess(node, attempt, page, uid, audio):
-    """Returns the nest's answer: "code,word" (1 all good, 2 practise word number `word`,
-    3 nothing heard; 4 = try again, sent by _plumbing.py if anything fails), and for code 2
-    one more line per word to practise: "<index>,<word>,<book sounds>,<clip address>"."""
+    """Returns the nest's answer, one record per line. Line 1 is "code,word": 1 all good,
+    2 practise page word number `word`, 3 nothing heard (4 = try again, sent by _plumbing.py if
+    anything fails). For codes 1 and 2 the lines of reply_lines() follow."""
     book = load_book(uid)
     words = book["passages"][str(page)]["words"]  # [{"word": "three", "ipa": "θ ɹ iː"}, ...]
     heard = ask_ai(audio)                          # the sounds the AI heard, e.g. ["θ", "ɹ", "iː"]
-    code, worst, total, scored = grade(words, book["language"], heard)
+    code, worst, total, first, scored = grade(words, heard)
 
     score = {"event_id": f"cloud_ai/{node}-{attempt}-{int(time.time() * 1000)}", "node_id": node,
              "event_type": "score", "recorded_at": int(time.time()), "activity": None,
-             "data": {"uid": uid, "passage": page, "attempt": attempt, "score": total, "words": scored}}
+             "data": {"uid": uid, "passage": page, "attempt": attempt, "score": total,
+                      "first_word": first, "words": scored}}
     try:
         telemetry(score)
     except OSError:
         print(f"score not stored (database down); node {node} still gets its answer")
 
     answer = f"{code},{worst}"
-    if code == 2:
-        for i, word in enumerate(scored):
-            if word["score"] < PASS_SCORE:
-                answer += f"\n{i},{word['word']},{words[i]['ipa']},/v1/word_audio?uid={uid}&passage={page}&word={i}"
+    if code in (1, 2):
+        answer += "\n" + "\n".join(reply_lines(first, total, scored, f"/v1/word_audio?uid={uid}&passage={page}"))
     return answer
 
 
-def grade(book_words, language, phones):
-    """Compare the sounds heard with the book's. Returns (code, worst word, total score, words)."""
-    words = [(item["word"], norm(item["ipa"].split(), language)) for item in book_words]
-    heard = norm(phones, language)
-    scored = score_words(words, heard)
+MAX_WORD_LINES = 40  # the doll keeps at most 40 words
+
+
+def reply_lines(first, total, scored, clip_address):
+    """S,<first page word>,<word count>,<score>
+    W,<page word>,<r|w>,<word>,<book sounds>,<heard>,<clip>   one per word read ("-" = missed, "+x" = extra)
+    P,<sound>,<r|w>   one per book sound read; w if it was wrong anywhere in this reading"""
+    lines = [f"S,{first},{len(scored)},{total}"]
+    sounds = {}  # sound -> right everywhere so far
+    for i, word in enumerate(scored):
+        right = word["score"] >= PASS_SCORE
+        heard = [p["heard"] or "-" for p in word["phonemes"]] + ["+" + x for x in word["extra"]]
+        if i < MAX_WORD_LINES:
+            clip = "" if right else f"{clip_address}&word={first + i}"
+            lines.append(f"W,{first + i},{'r' if right else 'w'},{word['word']},"
+                         f"{' '.join(p['ipa'] for p in word['phonemes'])},{' '.join(heard)},{clip}")
+        for p in word["phonemes"]:
+            sounds[p["ipa"]] = sounds.get(p["ipa"], True) and p["score"] == 100
+    return lines + [f"P,{sound},{'r' if right else 'w'}" for sound, right in sounds.items()]
+
+
+def grade(book_words, phones):
+    """Compare the sounds heard with the part of the page that was read.
+    Returns (code, worst page word, total score, first page word read, the words read with scores)."""
+    words = [(item["word"], norm(item["ipa"].split())) for item in book_words]
+    heard = norm(phones)
+    if not heard or not words:
+        return 3, 0, 0, 0, []
+    first, end = words_read(words, heard)
+    scored = score_words(words[first:end], heard)
     total = round(sum(word["score"] for word in scored) / len(scored))
-    if not heard:
-        return 3, 0, total, scored
     worst = min(range(len(scored)), key=lambda i: scored[i]["score"])
     if scored[worst]["score"] >= PASS_SCORE:
-        return 1, 0, total, scored
-    return 2, worst, total, scored
+        return 1, 0, total, first, scored
+    return 2, first + worst, total, first, scored
 
 
 # Every book is British English ("en-gb"). The model writes some sounds differently from the book;
@@ -107,15 +129,42 @@ SAME_EN = {"ɚ": "ə", "ɝ": "ɜ", "ɑɹ": "ɑ", "ɔɹ": "ɔ", "oɹ": "ɔ", "aɪ
 NOT_HEARD = str.maketrans("", "", "ˈˌ̞ᵝ̯̚˥˦˧˨˩0123456789ː.")  # stress, fine detail, tones, length, "." = syllable break
 
 
-def norm(phones, language):
+def norm(phones):
     """Clean a list of sounds so the book and the AI spell the same sound the same way.
-    `language` is the book's; only "en-gb" books exist, so the English rules above always apply."""
+    Only British English books exist, so the English rules above always apply."""
     out = []
     for phone in phones:
         phone = phone.translate(NOT_HEARD)
         if phone and phone != "|":  # "|" marks a word end, not a sound
             out += SAME_EN.get(phone, phone).split()
     return out
+
+
+def words_read(words, heard):
+    """Which stretch of the page was read: the child may start and stop anywhere (at most 10 s).
+    Fitting alignment: like align() below, but skipping whole page words before and after the
+    stretch costs nothing. The stretch starts and ends at word edges, so a word cut off by the 10 s
+    limit (or a first sound the AI missed) costs the same as it scores. The cheapest stretch wins;
+    on a tie, the shorter one (an extra sound counts less against a word than a missed one).
+    Returns whole words [first, end).
+    Limits: a 1-2 word stretch or a repeated phrase can match the same sounds elsewhere on the page."""
+    page = [sound for _, sounds in words for sound in sounds]
+    owner = [k for k, (_, sounds) in enumerate(words) for _ in sounds]  # the word of each page sound
+    edge = [i == 0 or i == len(page) or owner[i - 1] != owner[i] for i in range(len(page) + 1)]  # word starts/ends
+    m = len(heard)
+    previous = [(j, 0) for j in range(m + 1)]  # (cost, page sound where the stretch began)
+    best = (m + 1, 0, 0, 0)                    # cost, length, start, end
+    for i in range(1, len(page) + 1):
+        row = [(0, i) if edge[i] else (previous[0][0] + 1, previous[0][1])]  # a stretch may start at a word start
+        for j in range(1, m + 1):
+            change = page[i - 1] != heard[j - 1]
+            row.append(min((previous[j - 1][0] + change, previous[j - 1][1]),
+                           (previous[j][0] + 1, previous[j][1]), (row[j - 1][0] + 1, row[j - 1][1]),
+                           key=lambda cell: (cell[0], -cell[1])))  # same cost: the later start (shorter)
+        if edge[i]:  # ... and end at a word end
+            best = min(best, (row[m][0], i - row[m][1], row[m][1], i))
+        previous = row
+    return owner[best[2]], owner[best[3] - 1] + 1
 
 
 def align(expected, heard):
@@ -172,6 +221,12 @@ def page(uid, page):
              for i, w in enumerate(passage["words"])]
     return {"uid": uid, "page": int(page), "title": book["title"], "language": book["language"],
             "text": passage["text"], "words": words}
+
+
+def book(uid):
+    """The book's title for the doll's small screen: at most 20 characters, no commas (the nest
+    sends it to the doll as "ok,<title>")."""
+    return load_book(uid)["title"].encode("ascii", "ignore").decode().replace(",", "")[:20]  # ASCII: the doll's font
 
 
 def word_audio(uid, page, index):
@@ -252,7 +307,7 @@ def scores(now, day):
 
 class handler(Handler):
     """Vercel runs this class: the web server from _plumbing.py, answering with the functions above."""
-    routes = {"telemetry": telemetry, "assess": assess, "page": page, "word_audio": word_audio,
+    routes = {"telemetry": telemetry, "assess": assess, "page": page, "word_audio": word_audio, "book": book,
               "nodes": nodes, "history": history, "scores": scores}
 
 

@@ -52,7 +52,7 @@ def add_book(request, tok, get_voice, force=False):
 def ipa_of(tok, word, language):
     """'three' -> 'θ ɹ iː', written by the grading model's own tokenizer ("|" = word end, not a sound)."""
     ipa = " ".join(p for p in tok.phonemize(word, phonemizer_lang=language).split() if p != "|")
-    if not norm(ipa.split(), language):
+    if not norm(ipa.split()):
         raise ValueError(f"no sounds for {word!r}; the grader could never pass it")
     return ipa
 

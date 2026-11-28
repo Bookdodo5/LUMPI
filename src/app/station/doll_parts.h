@@ -150,7 +150,9 @@ struct Debouncer {
 
 inline QueueHandle_t button_queue = nullptr;
 
-inline void IRAM_ATTR push_edge(int pin) {
+// static, not inline: an inline function's constants are not placed in IRAM, and the link fails
+// ("dangerous relocation: l32r: literal placed after use").
+static void IRAM_ATTR push_edge(int pin) {
     const ButtonEdge e = {static_cast<uint8_t>(pin),
                           static_cast<uint8_t>(gpio_get_level(static_cast<gpio_num_t>(pin))),
                           static_cast<uint32_t>(xTaskGetTickCountFromISR() * portTICK_PERIOD_MS)};
@@ -159,8 +161,8 @@ inline void IRAM_ATTR push_edge(int pin) {
     portYIELD_FROM_ISR(woken);
 }
 
-inline void IRAM_ATTR record_isr() { push_edge(doll_pins::record); }
-inline void IRAM_ATTR stop_isr() { push_edge(doll_pins::stop); }
+static void IRAM_ATTR record_isr() { push_edge(doll_pins::record); }
+static void IRAM_ATTR stop_isr() { push_edge(doll_pins::stop); }
 
 inline void buttons_init() {
     pinMode(doll_pins::record, INPUT_PULLUP);
@@ -258,7 +260,7 @@ inline size_t mic_read_pcm16(int16_t* dst, size_t count) {
     return n;
 }
 
-// 250 ms peak using (raw >> 8), matching readPeak() in src/bench/extras/quiet_study.cpp.
+// 250 ms peak using (raw >> 8).
 inline uint32_t mic_peak_250ms() {
     if (!mic_ok) {
         vTaskDelay(pdMS_TO_TICKS(250));

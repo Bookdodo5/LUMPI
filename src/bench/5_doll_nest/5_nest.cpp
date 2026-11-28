@@ -18,7 +18,7 @@
 //            4 uncertain (try again), 6 too dark, 7 the teacher was told
 //   LAN key  the shared password every board and server checks (LUMPI_LAN_KEY)
 // In code names the nest is still called "gateway" (gateway_pins, LUMPI_GATEWAY_URL ...), and
-// LUMPI_ADAPTER_URL means "where the nest sends grades and events": the laptop or the cloud.
+// LUMPI_ADAPTER_URL means "where the nest sends grades and events": the cloud.
 //
 // ONE READING, message by message. Every message carries ?node=<doll 1-3>&...
 //   doll: POST /v1/start   attempt=7 passage=1 uid=04A1B2C3 fsr=2500   nest: "ok"
@@ -35,11 +35,9 @@
 //   config/private.h: LUMPI_WIFI_SSID, LUMPI_WIFI_PASSWORD, LUMPI_LAN_KEY (the same on every
 //   board), and LUMPI_ADAPTER_URL, where grades come from and events go:
 //     ""                           no cloud: every reading gets grade 1 "accepted" (stage 5)
-//     "http://<laptop>:8080"       laptop dashboard; it has no AI, so grades are 4 "uncertain"
-//     "http://<laptop>:8081"       the cloud code running on the laptop (python3 api/index.py)
+//     "http://<computer>:8081"     the cloud code run locally (python3 api/lumpi.py)
 //     "https://<site>.vercel.app"  the real cloud
 //   Monitor at 115200. The nest prints its address: put it in LUMPI_GATEWAY_URL for the dolls.
-//   No doll board yet? The laptop can play one: python3 tests/fake_doll.py
 //
 // WIRING: config/settings.h, gateway_pins. Every part is optional: a missing sensor reports null.
 //
@@ -289,7 +287,7 @@ Reply on_noise(int node, Doll&) {
     return ok("ok");
 }
 
-// For a person or tests/fake_doll.py: every doll's step as a number,
+// For a person: every doll's step as a number,
 // 0 idle, 1 recording, 2 assessing, 3 result (the order of State in session.h).
 Reply on_status() {
     String json = "{\"dolls\":[";
@@ -384,7 +382,7 @@ void grade_waiting_recording() {
         grade = accepted;
         Serial.printf("  doll %d  grade      no LUMPI_ADAPTER_URL: answering 1 without asking anyone\n", node);
     } else {
-        const String url = String(LUMPI_ADAPTER_URL) + laptop_route::assess + "?node=" + node +
+        const String url = String(LUMPI_ADAPTER_URL) + cloud_route::assess + "?node=" + node +
                            "&attempt=" + s.attempt + "&passage=" + s.passage + "&uid=" + d.uid;
         String answer;  // "<grade>,<word>", e.g. "2,5" = retry word 5
         const int code = lumpi_net::request("POST", url, audio, s.bytes, "application/octet-stream", answer, cloud_wait_ms);

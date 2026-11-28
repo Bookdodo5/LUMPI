@@ -105,7 +105,6 @@ static void doll_reads_nest_reply() {
     const std::string r = doll_reply(cloud_code_2, 2, 14, held, 1);
     const doll_logic::AttemptReply a = doll_logic::parse_attempt(r);
     check(a.valid && !a.pending && a.code == 2 && a.worst_word == 14, "doll parser: line 1 read");
-    check(a.first_word == 12 && a.word_count == 4 && a.score == 61, "doll parser: S line read");
     check(a.words_n == 4 && a.sounds_n == 2, "doll parser: 4 W lines, 2 P lines");
     check(a.words[2].page_index == 14 && !a.words[2].right && a.words[2].has_clip, "doll parser: word 14 wrong + clip");
     check(std::strcmp(a.words[2].word, "fish") == 0 && std::strcmp(a.words[2].heard, "p ɪ s +s") == 0,

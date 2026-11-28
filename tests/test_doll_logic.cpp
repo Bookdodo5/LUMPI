@@ -38,7 +38,6 @@ int main() {
             "P,t,w\n";
         const AttemptReply r = parse_attempt(sample);
         check(r.valid && !r.pending && r.code == 2 && r.worst_word == 14, "parse result line");
-        check(r.first_word == 12 && r.word_count == 3 && r.score == 67, "parse S line");
         check(r.words_n == 3 && r.words[0].right && !r.words[1].right && r.words[1].has_clip,
               "parse W lines and clip flags");
         check(std::strcmp(r.words[1].word, "green") == 0 &&

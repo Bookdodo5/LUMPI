@@ -11,10 +11,10 @@ called the **nest**, that manages all the dolls.
 
 The main reading flow is:
 
-`Child reads to doll → Nest receives audio → Laptop AI checks words → Nest decides → Doll responds`
+`Child reads to doll → Nest receives audio → Cloud AI checks words → Nest decides → Doll responds`
 
-The nest also saves the result for the dashboard and can alert the teacher in
-Discord when a child is stuck.
+The cloud also saves the result for the teacher's dashboard and alerts the teacher in
+Discord when a child calls for help.
 
 ### The parts
 
@@ -22,8 +22,8 @@ Discord when a child is stuck.
 | --- | --- |
 | Doll 1 and Doll 2 | Detect a child and book, select a page, record reading, move, speak and show status |
 | Nest | Keep each doll's session separate, measure room light and teacher distance, decide the response and queue cloud events |
-| Laptop | Run the pronunciation AI, store book text and word clips, serve the dashboard and send Discord alerts |
-| Cloud | Keep reading and room-event history when the Internet is available |
+| Cloud (Vercel, `api/`) | Grade readings with the pronunciation AI (Runpod), keep books, word clips and every event (Supabase), serve the dashboard, send Discord alerts |
+| Teacher dashboard (`dashboard/v7`) | Live doll states, help popups, scores, word and sound practice, room light |
 
 ### Reading mode
 
@@ -31,9 +31,9 @@ Discord when a child is stuck.
 2. The child chooses a page and presses Record.
 3. The doll records and sends numbered audio pieces to the nest. Missing pieces
    are sent again.
-4. The nest sends the complete recording to the laptop AI.
-5. The AI scores the words. The nest combines that result with room light and
-   the child's recent attempts.
+4. The nest sends the complete recording to the cloud AI.
+5. The AI scores the words that were read (any part of the page). The nest
+   combines that result with the room light; the doll counts repeated mistakes.
 6. The doll responds: praise, practise a word, turn on the light or ask the
    teacher for help.
 
@@ -48,19 +48,19 @@ the warning from repeating constantly.
 
 ### Safety and reliability
 
-- Every doll has a STOP button that stops the servo pulses, stops sound and
-  cancels the current reading. A toggle switch on the servo charger is the
-  manual power cut.
+- A toggle switch on the servo charger is the manual power cut for the moving parts.
 - Servo pulses stop after at most 3 seconds.
 - Each audio piece is numbered and acknowledged so a lost message can be retried.
-- Dolls, nest and laptop work over local Wi-Fi. Reading still works without the
-  Internet; cloud events wait until the connection returns.
+- Dolls and nest talk over local Wi-Fi. Without the Internet a reading gets
+  "let us try again"; dashboard events wait in the nest's flash until the connection returns.
 
 Detailed explanation: [How LUMPI works](https://lumpi-build-guide.vercel.app/guide/overview)
 and [one reading end to end](https://lumpi-build-guide.vercel.app/fundamentals/inner-workings).
 
-For now: testing the parts. Code is in `src/bench`.
-Each cpp starts with the wiring and what you should see.
+The real firmware: env `doll` / `doll_2` (`src/app/station/`) and env `nest` (`src/app/gateway/`).
+Hardware test steps: [docs/testing-steps.md](docs/testing-steps.md) stages 9 and 10.
+
+The part tests are in `src/bench`. Each cpp starts with the wiring and what you should see.
 
 Open this folder in VS Code with PlatformIO installed.
 In PlatformIO > Project Tasks, pick the test name, then click Upload.
@@ -112,7 +112,6 @@ stage number. Step-by-step instructions and what "pass" looks like:
 | 4 Full nest | `4_full_nest/` | `s4_nest_check` |
 | 5 Doll <-> nest (also 7, 8) | `5_doll_nest/` | `s5_nest`, `s5_doll`, `s5_doll_2` |
 | 6 Nest -> cloud | `6_nest_cloud/` | `s6_nest_to_dashboard` |
-| Extras | `extras/` | `x_i2c_probe` (I2C wire trouble), `x_quiet_study` (feature) |
 
 SH1106 screen instead of SSD1306: use the `_sh1106` version of `s1f`, `s2d`, `s3`, `s4`.
 

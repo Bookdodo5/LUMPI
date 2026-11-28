@@ -37,7 +37,7 @@ struct SoundLine {
 
 struct AttemptReply {
     bool valid = false, pending = false;
-    uint32_t code = 0, worst_word = 0, first_word = 0, word_count = 0, score = 0;
+    uint32_t code = 0, worst_word = 0;
     WordLine words[max_reply_words] = {};
     int words_n = 0;
     SoundLine sounds[max_reply_sounds] = {};
@@ -59,15 +59,8 @@ inline void store(char* dst, size_t cap, std::string_view src) {
 
 inline AttemptReply parse_attempt(std::string_view rest) {
     AttemptReply r;
-    auto line = [&]() {
-        std::string_view s = cut(rest, '\n');
-        if (!s.empty() && s.back() == '\r') {
-            s.remove_suffix(1);
-        }
-        return s;
-    };
 
-    std::string_view f = line();
+    std::string_view f = query::next_line(rest);
     if (f == "pending") {
         r.valid = r.pending = true;
         return r;
@@ -79,13 +72,9 @@ inline AttemptReply parse_attempt(std::string_view rest) {
     r.valid = true;
 
     while (!rest.empty()) {
-        f = line();
+        f = query::next_line(rest);
         const std::string_view tag = cut(f, ',');
-        if (tag == "S") {
-            query::read_number(cut(f, ','), r.first_word);
-            query::read_number(cut(f, ','), r.word_count);
-            query::read_number(cut(f, ','), r.score);
-        } else if (tag == "W" && r.words_n < max_reply_words) {
+        if (tag == "W" && r.words_n < max_reply_words) {
             WordLine& w = r.words[r.words_n];
             if (query::read_number(cut(f, ','), w.page_index)) {
                 w.right = cut(f, ',') == "r";

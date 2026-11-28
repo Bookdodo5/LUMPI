@@ -37,7 +37,7 @@ struct NetJob { NetKind kind; uint32_t arg; float db; };
 struct FbJob { uint32_t command; bool log_csv; char l1[24], l2[24], l3[24]; };
 
 constexpr size_t chunk_bytes = Session::max_chunk_bytes;  // 8192 B = 256 ms
-int pool_blocks = 0;
+constexpr int pool_blocks = 10;  // 80 kB = 2.5 s of slack while Wi-Fi stalls
 uint8_t* audio_pool = nullptr;
 QueueHandle_t free_slots, audio_queue, net_queue, evt_queue, fb_queue, clip_queue;
 
@@ -628,12 +628,7 @@ void setup() {
     Serial.begin(115200);
     delay(400);
 
-    pool_blocks = ESP.getFreeHeap() > 180000 ? 10 : 6;
-    audio_pool = static_cast<uint8_t*>(malloc(static_cast<size_t>(pool_blocks) * chunk_bytes));
-    if (!audio_pool) {
-        pool_blocks = 4;
-        audio_pool = static_cast<uint8_t*>(malloc(static_cast<size_t>(pool_blocks) * chunk_bytes));
-    }
+    audio_pool = static_cast<uint8_t*>(malloc(pool_blocks * chunk_bytes));
     if (!audio_pool) {
         Serial.println("[memory] audio pool failed");
         while (true) {

@@ -31,7 +31,7 @@ one speech model on **Runpod**. Standard library only, no frameworks.
    - `norm()` makes both sides spell a sound the same way (British base, accents, stress marks).
    - `align()` lines the two sound lists up with the fewest changes (Levenshtein distance).
    - `score_words()`: a word's score = sounds right / its sounds (extra sounds count against it).
-3. **A page and a word's clip** (`GET /v1/page`, `GET /v1/word_audio`) for the nest and the teacher.
+3. **A word's clip and a book's title** (`GET /v1/word_audio`, `GET /v1/book`) for the nest.
 4. **The dashboard** (`GET /api/dashboard/nodes|history|scores`): rebuilt from the stored events on
    every request: latest state per doll (online/stale/offline, help), recent messages, scores.
 

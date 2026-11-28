@@ -252,19 +252,8 @@ inline void wifi_watch(bool reading_in_flight) {
     }
 }
 
-inline const char* reset_reason() {
-    switch (esp_reset_reason()) {
-    case ESP_RST_POWERON:  return "poweron";
-    case ESP_RST_SW:       return "restart";
-    case ESP_RST_PANIC:    return "panic";
-    case ESP_RST_TASK_WDT: return "task_wdt";
-    case ESP_RST_BROWNOUT: return "brownout";
-    default:               return "other";
-    }
-}
-
 inline void csv_boot(uint32_t outbox_pending) {
-    Serial.printf("CSV,boot,0,%s,%u,%u\n", reset_reason(), unsigned(ESP.getFreeHeap()), unsigned(outbox_pending));
+    Serial.printf("CSV,boot,0,%s,%u,%u\n", lumpi_net::reset_reason(), unsigned(ESP.getFreeHeap()), unsigned(outbox_pending));
 }
 
 inline void csv_beat(uint32_t outbox_pending) {

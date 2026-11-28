@@ -7,7 +7,6 @@
     { "source": "/api/telemetry", "destination": "/api/lumpi?route=telemetry" },
     { "source": "/v1/assess", "destination": "/api/lumpi?route=assess" },
     { "source": "/v1/word_audio", "destination": "/api/lumpi?route=word_audio" },
-    { "source": "/v1/page", "destination": "/api/lumpi?route=page" },
     { "source": "/v1/book", "destination": "/api/lumpi?route=book" },
     { "source": "/api/dashboard/:name", "destination": "/api/lumpi?route=:name" },
     { "source": "/", "destination": "/dashboard/v7/index.html" },

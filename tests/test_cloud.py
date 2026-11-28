@@ -187,9 +187,6 @@ class CloudTest(unittest.TestCase):
         self.assertEqual(call("POST", path, b"", LAN_KEY)[0], 400)  # no recording
 
     def test_books_routes(self):
-        self.assertEqual(call("GET", "/v1/page?uid=FFFFFFFF&page=1", None, LAN_KEY)[0], 200)
-        self.assertEqual(call("GET", "/v1/page?uid=FFFFFFFF&page=2", None, PASSWORD)[0], 404)
-        self.assertEqual(call("GET", "/v1/page?uid=FFFFFFFF&page=1")[0], 401)
         self.assertEqual(call("GET", "/v1/book?uid=FFFFFFFF", None, LAN_KEY), (200, "Fish"))
         self.assertEqual(call("GET", "/v1/book?uid=AAAAAAAA", None, LAN_KEY)[0], 404)  # unknown book
         self.assertEqual(call("GET", "/v1/book?uid=FFFFFFFF")[0], 401)

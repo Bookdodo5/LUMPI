@@ -2,7 +2,7 @@
 
     1. POST /api/telemetry   the nest sends an event (room, start, status, help, noise) -> store it
     2. POST /v1/assess       the nest sends a recording -> AI hears sounds -> compare with the book -> reply
-    3. GET  /v1/page, /v1/word_audio, /v1/book   a page's words, one word's practice clip, a book's title
+    3. GET  /v1/word_audio, /v1/book   one word's practice clip, a book's title
     4. GET  /api/dashboard/{nodes,history,scores}   what the teacher's dashboard shows
 
 The web server, passwords, Supabase calls and input checks are in _plumbing.py
@@ -214,15 +214,6 @@ def score_words(words, heard):
 
 # ---- 3. A page's words and one word's practice clip ----------------------------------------
 
-def page(uid, page):
-    book = load_book(uid)
-    passage = book["passages"][page]
-    words = [{"word": w["word"], "ipa": w["ipa"], "audio": f"/v1/word_audio?uid={uid}&passage={page}&word={i}"}
-             for i, w in enumerate(passage["words"])]
-    return {"uid": uid, "page": int(page), "title": book["title"], "language": book["language"],
-            "text": passage["text"], "words": words}
-
-
 def book(uid):
     """The book's title for the doll's small screen: at most 20 characters, no commas (the nest
     sends it to the doll as "ok,<title>")."""
@@ -307,7 +298,7 @@ def scores(now, day):
 
 class handler(Handler):
     """Vercel runs this class: the web server from _plumbing.py, answering with the functions above."""
-    routes = {"telemetry": telemetry, "assess": assess, "page": page, "word_audio": word_audio, "book": book,
+    routes = {"telemetry": telemetry, "assess": assess, "word_audio": word_audio, "book": book,
               "nodes": nodes, "history": history, "scores": scores}
 
 

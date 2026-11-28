@@ -510,16 +510,13 @@ inline void poll_attempt(uint32_t attempt, doll_logic::AttemptReply& reply) {
 
 // Streams GET /v1/word_clip into clip_queue (512 B slices, no whole-file RAM buffer).
 inline void stream_word_clip(uint32_t attempt, uint32_t word_index, QueueHandle_t clip_queue) {
-    WiFiClient client;
+    static WiFiClient plain;
+    static WiFiClientSecure secure;  // unused: the nest is plain http
     HTTPClient http;
     const String url = String(LUMPI_GATEWAY_URL) + lumpi::route::word_clip +
                        "?node=" + String(LUMPI_NODE_ID) + "&attempt=" + String(attempt) +
                        "&word=" + String(word_index);
-    if (http.begin(client, url)) {
-        http.setReuse(false);
-        http.setTimeout(5000);
-        http.setConnectTimeout(5000);
-        http.addHeader("Authorization", String("Bearer ") + LUMPI_LAN_KEY);
+    if (lumpi_net::open(http, plain, secure, url, nullptr, 5000)) {
         if (http.GET() == 200) {
             WiFiClient* s = http.getStreamPtr();
             int left = http.getSize();
@@ -589,10 +586,8 @@ inline void wifi_maintain(bool idle) {
 }
 
 inline void csv_boot() {
-    const int r = esp_reset_reason();
-    const char* name = r == ESP_RST_POWERON ? "poweron" : r == ESP_RST_BROWNOUT ? "brownout"
-                     : r == ESP_RST_PANIC   ? "panic"   : r == ESP_RST_TASK_WDT ? "task_wdt" : "other";
-    Serial.printf("CSV,boot,%d,%s,%lu\n", LUMPI_NODE_ID, name, static_cast<unsigned long>(ESP.getFreeHeap()));
+    Serial.printf("CSV,boot,%d,%s,%lu\n", LUMPI_NODE_ID, lumpi_net::reset_reason(),
+                  static_cast<unsigned long>(ESP.getFreeHeap()));
 }
 
 inline void csv_beat() {

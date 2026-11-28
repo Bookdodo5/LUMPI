@@ -1,5 +1,5 @@
 """Add a book (or more pages of one), run on the laptop: each word gets its sounds (IPA) and a
-spoken practice clip, uploaded to Supabase Storage, where the cloud's /v1/page and /v1/word_audio read them.
+spoken practice clip, uploaded to Supabase Storage, where the cloud's /v1/assess, /v1/word_audio and /v1/book read them.
 
     python3 tools/add_book.py tools/example_book.json   # only words without a clip yet are spoken
     python3 tools/add_book.py book.json --force         # speak every word of these pages again

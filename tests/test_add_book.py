@@ -56,7 +56,7 @@ class AddBookTest(unittest.TestCase):
         book = _plumbing.load_book("04A1B2C3")
         self.assertEqual(sorted(book["passages"]), ["1", "2", "3"])
         self.assertEqual(book["passages"]["1"]["words"][1], {"word": "cat", "ipa": "c a t"})
-        self.assertEqual(lumpi.page("04A1B2C3", "1")["words"][2]["audio"], "/v1/word_audio?uid=04A1B2C3&passage=1&word=2")
+        self.assertEqual(lumpi.book("04A1B2C3"), "Cats")  # the cloud reads the stored book
 
     def test_split_words(self):
         self.assertEqual(add_book.split_words(1, "Don’t stop, well-known cat!"), ["don't", "stop", "well", "known", "cat"])

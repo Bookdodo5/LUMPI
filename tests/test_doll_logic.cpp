@@ -4,6 +4,8 @@
 #include <cmath>
 #include <cstdio>
 #include <cstring>
+#include <map>
+#include <string>
 
 #include "doll_logic.h"
 
@@ -11,14 +13,16 @@ using namespace doll_logic;
 
 static int failures = 0;
 static int logged_changes = 0;
+static std::map<std::string, int> counts;  // the latest count of each word and sound, as logged
 
 static void check(bool ok, const char* what) {
     std::printf("%s  %s\n", ok ? "PASS" : "FAIL", what);
     if (!ok) failures += 1;
 }
 
-static void count_logger(const char*, uint8_t) {
+static void count_logger(const char* key, uint8_t count) {
     logged_changes += 1;
+    counts[key] = count;
 }
 
 int main() {
@@ -49,50 +53,53 @@ int main() {
               "parse P lines");
     }
 
+    counts.clear();
     // 2. Mistake counts: 4 misses then a recording without that word stays 4; 5th miss triggers.
     {
         MistakeCounts m;
         const AttemptReply miss_cat = parse_attempt(
             "result,2,0\nW,0,w,cat,k a t,k a -,1\nP,t,w\n");
         for (int i = 0; i < 4; ++i) {
-            check(!m.apply(miss_cat), "miss 1..4 does not trigger teacher proposal yet");
+            check(!m.apply(miss_cat, count_logger), "miss 1..4 does not trigger teacher proposal yet");
         }
-        check(m.word_count("cat") == 4 && m.sound_count("t") == 4, "counts reach 4");
+        check(counts["cat"] == 4 && counts["t"] == 4, "counts reach 4");
 
         // Recording without "cat" or "t": both stay at 4.
         const AttemptReply other = parse_attempt(
             "result,1,0\nW,1,r,dog,d ɒ ɡ,d ɒ ɡ,0\nP,d,r\n");
-        check(!m.apply(other), "unrelated recording does not trigger");
-        check(m.word_count("cat") == 4 && m.sound_count("t") == 4, "absent word and sound stay at 4");
+        check(!m.apply(other, count_logger), "unrelated recording does not trigger");
+        check(counts["cat"] == 4 && counts["t"] == 4, "absent word and sound stay at 4");
 
         // Codes 3 and 4 change nothing.
-        check(!m.apply(parse_attempt("result,3,0")) && !m.apply(parse_attempt("result,4,0")),
+        check(!m.apply(parse_attempt("result,3,0"), count_logger) && !m.apply(parse_attempt("result,4,0"), count_logger),
               "codes 3 and 4 do not trigger");
-        check(m.word_count("cat") == 4 && m.sound_count("t") == 4, "codes 3 and 4 keep counts");
+        check(counts["cat"] == 4 && counts["t"] == 4, "codes 3 and 4 keep counts");
 
         // 5th miss triggers teacher proposal and logs the two changes.
         logged_changes = 0;
         check(m.apply(miss_cat, count_logger), "5th miss triggers teacher proposal");
-        check(m.word_count("cat") == 5 && m.sound_count("t") == 5 && logged_changes == 2,
+        check(counts["cat"] == 5 && counts["t"] == 5 && logged_changes == 2,
               "count reaches 5 and calls logger for CSV");
 
         // Restarting reached counts clears 5 -> 0.
         m.reset_reached();
-        check(m.word_count("cat") == 0 && m.sound_count("t") == 0, "reset_reached restarts 5 -> 0");
+        m.apply(miss_cat, count_logger);
+        check(counts["cat"] == 1 && counts["t"] == 1, "reset_reached restarts 5 -> 0 (the next miss is 1)");
     }
 
+    counts.clear();
     // 3. Repeated word in one recording counts once; right resets to 0.
     {
         MistakeCounts m;
         const AttemptReply twice = parse_attempt(
             "result,2,0\nW,0,w,the,ð ə,d ə,1\nW,3,w,the,ð ə,d ə,1\nP,ð,w\n");
-        m.apply(twice);
-        check(m.word_count("the") == 1, "two misses of same word in one recording count once");
+        m.apply(twice, count_logger);
+        check(counts["the"] == 1, "two misses of same word in one recording count once");
 
         const AttemptReply fixed = parse_attempt(
             "result,1,0\nW,0,r,the,ð ə,ð ə,0\nP,ð,r\n");
-        m.apply(fixed);
-        check(m.word_count("the") == 0 && m.sound_count("ð") == 0, "right resets count to 0");
+        m.apply(fixed, count_logger);
+        check(counts["the"] == 0 && counts["ð"] == 0, "right resets count to 0");
     }
 
     // 4. Table slot reuse: zeroed slots are reused so the table does not clog up.
@@ -101,12 +108,12 @@ int main() {
         for (int i = 0; i < 80; ++i) {
             char buf[96];
             std::snprintf(buf, sizeof(buf), "result,2,0\nW,0,w,w%d,a,b,0\n", i);
-            m.apply(parse_attempt(buf));
+            m.apply(parse_attempt(buf), count_logger);
             std::snprintf(buf, sizeof(buf), "result,1,0\nW,0,r,w%d,a,a,0\n", i);
-            m.apply(parse_attempt(buf));
+            m.apply(parse_attempt(buf), count_logger);
         }
-        m.apply(parse_attempt("result,2,0\nW,0,w,final,a,b,0\n"));
-        check(m.word_count("final") == 1, "zero-count table slots are reused");
+        m.apply(parse_attempt("result,2,0\nW,0,w,final,a,b,0\n"), count_logger);
+        check(counts["final"] == 1, "zero-count table slots are reused");
     }
 
     // 5. Knob steps: relative steps, hysteresis, clamped to 1..999, reset on new book.

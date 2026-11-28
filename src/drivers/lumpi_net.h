@@ -15,6 +15,7 @@
 #include <WiFi.h>
 #include <WiFiClientSecure.h>
 #include <ctime>
+#include <esp_system.h>
 
 #include "settings.h"
 
@@ -33,6 +34,18 @@ inline bool begin() {
     configTime(0, 0, "pool.ntp.org", "time.google.com");
     Serial.printf("[wifi] joining %s\n", LUMPI_WIFI_SSID);
     return true;
+}
+
+// Why the board last started, for the CSV boot line.
+inline const char* reset_reason() {
+    switch (esp_reset_reason()) {
+    case ESP_RST_POWERON:  return "poweron";
+    case ESP_RST_SW:       return "restart";
+    case ESP_RST_PANIC:    return "panic";
+    case ESP_RST_TASK_WDT: return "task_wdt";
+    case ESP_RST_BROWNOUT: return "brownout";
+    default:               return "other";
+    }
 }
 
 inline bool connected() {

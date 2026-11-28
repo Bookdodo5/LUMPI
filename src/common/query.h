@@ -8,44 +8,33 @@
 
 namespace query {
 
-// The text after "wanted_key=", or "" when the key is not there.
-inline std::string_view find_value(std::string_view text, std::string_view wanted_key) {
-    size_t pair_start = 0;
-
-    while (pair_start <= text.size()) {
-        size_t pair_end = text.find('&', pair_start);
-        if (pair_end == std::string_view::npos) {
-            pair_end = text.size();
-        }
-
-        std::string_view pair = text.substr(pair_start, pair_end - pair_start);
-        size_t equals = pair.find('=');
-
-        if (equals != std::string_view::npos) {
-            std::string_view key = pair.substr(0, equals);
-            if (key == wanted_key) {
-                return pair.substr(equals + 1);
-            }
-        }
-
-        if (pair_end == text.size()) {
-            break;
-        }
-        pair_start = pair_end + 1;
-    }
-
-    return {};
+// The text before the first sep; rest moves on past it ("" after the last piece).
+inline std::string_view cut(std::string_view& rest, char sep) {
+    const size_t at = rest.find(sep);
+    const std::string_view head = rest.substr(0, at);
+    rest = at == std::string_view::npos ? std::string_view() : rest.substr(at + 1);
+    return head;
 }
 
-// The next line of a reply, without its "\r\n"; rest moves on past it.
+// The next line of a reply, without its "\r".
 inline std::string_view next_line(std::string_view& rest) {
-    const size_t end = rest.find('\n');
-    std::string_view line = rest.substr(0, end);
-    rest = end == std::string_view::npos ? std::string_view() : rest.substr(end + 1);
+    std::string_view line = cut(rest, '\n');
     if (!line.empty() && line.back() == '\r') {
         line.remove_suffix(1);
     }
     return line;
+}
+
+// The text after "wanted_key=", or "" when the key is not there.
+inline std::string_view find_value(std::string_view text, std::string_view wanted_key) {
+    while (!text.empty()) {
+        const std::string_view pair = cut(text, '&');
+        const size_t equals = pair.find('=');
+        if (equals != std::string_view::npos && pair.substr(0, equals) == wanted_key) {
+            return pair.substr(equals + 1);
+        }
+    }
+    return {};
 }
 
 // Digits only -> number. False for "", a non-digit, or a number too big for 32 bits.

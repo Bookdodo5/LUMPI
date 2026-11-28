@@ -4,6 +4,7 @@
 //   2. MistakeCounts      tracks consecutive misses per word and sound (5 -> propose teacher)
 //   3. PageKnob           turns relative potentiometer steps into page numbers 1..999
 //   4. quietest_of_four() / peak_to_db()   one-second room noise summary
+#include <algorithm>
 #include <cmath>
 #include <cstdint>
 #include <cstring>
@@ -44,12 +45,7 @@ struct AttemptReply {
     int sounds_n = 0;
 };
 
-inline std::string_view cut(std::string_view& rest, char sep) {
-    const size_t at = rest.find(sep);
-    const std::string_view head = (at == std::string_view::npos) ? rest : rest.substr(0, at);
-    rest = (at == std::string_view::npos) ? std::string_view{} : rest.substr(at + 1);
-    return head;
-}
+using query::cut;
 
 inline void store(char* dst, size_t cap, std::string_view src) {
     const size_t n = src.size() < cap - 1 ? src.size() : cap - 1;
@@ -109,15 +105,6 @@ struct Slot {
 
 using CountLogger = void (*)(const char* key, uint8_t new_count);
 
-inline uint8_t read_count(const Slot* table, int cap, const char* key) {
-    for (int i = 0; i < cap; ++i) {
-        if (std::strcmp(table[i].key, key) == 0) {
-            return table[i].count;
-        }
-    }
-    return 0;
-}
-
 // Marks one word or sound as seen in this recording; reuses any 0-count slot for new misses.
 inline void mark_seen(Slot* table, int cap, const char* key, bool wrong, uint32_t run) {
     if (key[0] == '\0') {
@@ -174,31 +161,17 @@ struct MistakeCounts {
     uint32_t run = 0;
 
     void clear() {
-        for (Slot& s : words) {
-            s = {};
-        }
-        for (Slot& s : sounds) {
-            s = {};
-        }
+        std::fill(std::begin(words), std::end(words), Slot{});
+        std::fill(std::begin(sounds), std::end(sounds), Slot{});
         run = 0;
     }
 
     // Restarts any count that reached 5 (after a teacher call, or when reading on without calling).
     void reset_reached() {
-        for (Slot& s : words) {
-            if (s.count >= teacher_limit) {
-                s.count = 0;
-            }
-        }
-        for (Slot& s : sounds) {
-            if (s.count >= teacher_limit) {
-                s.count = 0;
-            }
-        }
+        auto restart = [](Slot& s) { s.count = s.count >= teacher_limit ? 0 : s.count; };
+        std::for_each(std::begin(words), std::end(words), restart);
+        std::for_each(std::begin(sounds), std::end(sounds), restart);
     }
-
-    uint8_t word_count(const char* word) const { return read_count(words, word_slots, word); }
-    uint8_t sound_count(const char* sound) const { return read_count(sounds, sound_slots, sound); }
 
     bool apply(const AttemptReply& reply, CountLogger log = nullptr) {
         if (reply.code != 1 && reply.code != 2) {
@@ -254,13 +227,7 @@ struct PageKnob {
 // ---- 4. Quiet-mode noise over one second -------------------------------------------------
 
 inline uint32_t quietest_of_four(const uint32_t peaks[4]) {
-    uint32_t lowest = peaks[0];
-    for (int i = 1; i < 4; ++i) {
-        if (peaks[i] < lowest) {
-            lowest = peaks[i];
-        }
-    }
-    return lowest;
+    return *std::min_element(peaks, peaks + 4);
 }
 
 inline float peak_to_db(uint32_t peak) {

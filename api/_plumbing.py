@@ -218,14 +218,12 @@ class Handler(BaseHTTPRequestHandler):
         q = {name: values[0] for name, values in parse_qs(url.query).items()}
         name = q.get("route", url.path.split("/")[-1])
         try:
-            if name in ["page", "word_audio", "book"] and (self.lan_key_ok() or self.password_ok()):
+            if name in ["word_audio", "book"] and (self.lan_key_ok() or self.password_ok()):
                 if name == "book":
                     return self.reply(200, self.routes["book"](q.get("uid", "")), "text/plain; charset=utf-8")
-                if name == "page":
-                    return self.reply(200, self.routes["page"](q.get("uid", ""), q.get("page", "")))
                 clip = self.routes["word_audio"](q.get("uid", ""), q.get("passage", ""), int(q.get("word", "")))
                 return self.reply(200, clip, "audio/wav") if clip else self.reply(404, "no clip", "text/plain")
-            if name in ["page", "word_audio", "book"]:
+            if name in ["word_audio", "book"]:
                 return self.reply(401, {"error": "LAN key or dashboard password needed"})
             if not self.password_ok():  # this header makes the browser ask for the password
                 return self.reply(401, {"error": "password needed"},

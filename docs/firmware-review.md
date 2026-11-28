@@ -111,8 +111,11 @@ duplicated request and line-reading code.
 Kept on purpose: `s5_*` (fallback until the real firmware passes on hardware), `s6_nest_to_dashboard`
 (nest to dashboard connection test), ArduinoOTA (spare depth item E6).
 
-Still possible later: three pool sizes and the repeated proposal screen in `doll.cpp`; the debug-only
-`on_status` in `nest.cpp`.
+Second pass (same day): OCR tool moved to `.old/` (books already made), unused `/v1/page` route,
+one `query::cut()` for all text splitting, one audio pool size, `std::min_element`, one reset-reason list,
+clip download through `lumpi_net::open()`, test-only count readers removed.
+
+After the hardware tests pass: `s5_*`, `check_tools.h` (s3/s4 only), `flash_write_kb_per_s`, `on_status`.
 
 For the presentation, the hardest function to explain is `control_task` (about 220 lines). Splitting it
 into buttons, events and sensors would help.

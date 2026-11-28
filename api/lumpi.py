@@ -145,7 +145,7 @@ def words_read(words, heard):
     Fitting alignment: like align() below, but skipping whole page words before and after the
     stretch costs nothing. The stretch starts and ends at word edges, so a word cut off by the 10 s
     limit (or a first sound the AI missed) costs the same as it scores. The cheapest stretch wins;
-    on a tie, the shorter one (an extra sound counts less against a word than a missed one).
+    on a tie, the longer one (a badly read first or last word is checked, not ignored).
     Returns whole words [first, end).
     Limits: a 1-2 word stretch or a repeated phrase can match the same sounds elsewhere on the page."""
     page = [sound for _, sounds in words for sound in sounds]
@@ -153,16 +153,15 @@ def words_read(words, heard):
     edge = [i == 0 or i == len(page) or owner[i - 1] != owner[i] for i in range(len(page) + 1)]  # word starts/ends
     m = len(heard)
     previous = [(j, 0) for j in range(m + 1)]  # (cost, page sound where the stretch began)
-    best = (m + 1, 0, 0, 0)                    # cost, length, start, end
+    best = (m + 1, 0, 0, 0)                    # cost, -length, start, end
     for i in range(1, len(page) + 1):
         row = [(0, i) if edge[i] else (previous[0][0] + 1, previous[0][1])]  # a stretch may start at a word start
         for j in range(1, m + 1):
             change = page[i - 1] != heard[j - 1]
             row.append(min((previous[j - 1][0] + change, previous[j - 1][1]),
-                           (previous[j][0] + 1, previous[j][1]), (row[j - 1][0] + 1, row[j - 1][1]),
-                           key=lambda cell: (cell[0], -cell[1])))  # same cost: the later start (shorter)
+                           (previous[j][0] + 1, previous[j][1]), (row[j - 1][0] + 1, row[j - 1][1])))
         if edge[i]:  # ... and end at a word end
-            best = min(best, (row[m][0], i - row[m][1], row[m][1], i))
+            best = min(best, (row[m][0], -(i - row[m][1]), row[m][1], i))
         previous = row
     return owner[best[2]], owner[best[3] - 1] + 1
 

@@ -238,6 +238,9 @@ takes a language.
 Same day, later: cloud grades any part of the page and replies with S/W/P lines (`reply_lines()`),
 limits 10 s / 14 s, new `/v1/book` title route; doll link error, stacks, Wi-Fi hang and feedback race fixed;
 phrases in `data_doll/`; nest points at the cloud with its root CA. All tests and builds pass. Hardware next.
+Live test (real AI, 1 worker on for ~2 min, then 0-0): book 00000001 page 3, a 3.1 s fragment from the middle
+-> graded from page word 19, 2 wrong words with clips, 29 reply lines. `/v1/book` -> "Minecraft: The Islan".
+Still to do by the owner: new long LUMPI_LAN_KEY on Vercel and in every config/private.h.
 
 ## Live on Vercel, full path tested (2026-11-27)
 
